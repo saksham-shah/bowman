@@ -1,5 +1,5 @@
 let game;
-
+let dt;
 
 function preload() {
     
@@ -21,7 +21,11 @@ function setup() {
     });
     
     //add screens
-    addScreen('menu');
+    addScreen('game', {
+        draw: () => {
+            drawLevel(game.toObject());
+        }
+    });
 
     addStyles();
 
@@ -34,12 +38,17 @@ function setup() {
     //     ghost: 'assets/ghost.cur'
     // });
 
-    setScreen('menu');
+    setScreen('game');
+
+    game = new Level(TUTORIAL);
 
 }
 
 function draw() {
-    // if (game && !game.paused) game.update();
+    if (game) {
+        dt = deltaTime * 0.06;
+        game.update();
+    }
 
     updateUI();
     drawUI();
