@@ -4,7 +4,7 @@ const TUTORIAL = {
     end: { x: 7, y: 1 },
 
     map: {
-        walls: [{ x: 6, y: 0 }, { x: 7, y: 0 }, { x: 6, y: 2 }, { x: 7, y: 2 }]
+        walls: [{ x: 0, y: 0 }, { x: 0, y: 2 }, { x: 6, y: 0 }, { x: 7, y: 0 }, { x: 6, y: 2 }, { x: 7, y: 2 }]
     },
 
     entities: {

@@ -1,5 +1,9 @@
 const
 
+// Values
+CELL = 48,
+PICKUP = 40, PICKUPSQ = PICKUP * PICKUP,
+
 // Directions
 NORTH = 0,
 EAST = 1,
@@ -28,4 +32,5 @@ WALL = 1,
 BREAKABLE = 2,
 FENCE = 3,
 BUTTON = 4,
-BOW = 5
+BOW = 5,
+END = 6

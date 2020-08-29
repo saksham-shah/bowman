@@ -1,6 +1,8 @@
 let game;
 let dt;
 
+let cornerX, cornerY, zoom;
+
 function preload() {
     
 }
@@ -25,6 +27,10 @@ function setup() {
         draw: () => {
             drawLevel(game.toObject());
         }
+    })
+    .on('mouseDown', e => {
+        if (e.button != 0) return;
+        if (game) game.click();
     });
 
     addStyles();
