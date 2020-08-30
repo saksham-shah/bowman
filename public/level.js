@@ -3,7 +3,9 @@ class Level {
         normaliseLevel(data);
 
         this.mousePos = { x: 0, y: 0 };
-        zoom = 1.5;
+        let xRatio = 1400 / data.size.width / CELL;
+        let yRatio = 700 / data.size.height / CELL;
+        zoom = Math.min(1.5, xRatio, yRatio);
         cornerX = 800 - data.size.width * CELL / 2 * zoom;
         cornerY = 450 - data.size.height * CELL / 2 * zoom;
 

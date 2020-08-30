@@ -9,7 +9,8 @@ let graphics = {
     map: {},
     player: {},
     buttons: {},
-    doors: {}
+    doors: {},
+    rock: {}
 };
 
 function preload() {
@@ -17,6 +18,10 @@ function preload() {
     graphics.map.wall = loadImage(graphicsFolder + 'map/wall.png');
 
     graphics.player.base = loadImage(graphicsFolder + 'player/playerbase.png');
+
+    graphics.rock.base = loadImage(graphicsFolder + 'rock/rock.png');
+    graphics.rock.close = loadImage(graphicsFolder + 'rock/rockclose.png');
+    graphics.rock.hover = loadImage(graphicsFolder + 'rock/rockhover.png');
 
     for (let colour of COLOURS) {
         graphics.buttons[colour] = [];

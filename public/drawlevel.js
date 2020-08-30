@@ -82,26 +82,23 @@ function drawEntity(entity, placePosition) {
             // line(entity.r + 15, 0, entity.r + 10, -5)
             break;
         case ROCK:
+            let img = graphics.rock.base;
             if (entity.pickedUp) {
-                // rotate(-entity.angle);
-                // translate(p5.Vector.sub(placePosition, entity.pos));
-                // rotate(entity.angle);
-
                 if (entity.canBePlaced) {
-                    fill(0, 255, 0, 150);
+                    tint(255, 150);
                 } else {
-                    fill(255, 0, 0, 150);
+                    tint(255, 0, 0, 150);
                 }
                
-            } else if (entity.hovered) {
-                fill(0, 255, 0);
-            } else if (entity.closeToPlayer) {
-                fill(255, 255, 0);
             } else {
-                fill(50);
+                if (entity.hovered) {
+                    img = graphics.rock.hover;
+                } else if (entity.closeToPlayer) {
+                    img = graphics.rock.close;
+                }
             }
-            stroke(200);
-            ellipse(0, 0, entity.r * 2);
+
+            image(img, -CELL / 2, -CELL / 2);
             break;
         default:
             fill(50);
