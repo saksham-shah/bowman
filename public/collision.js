@@ -297,3 +297,9 @@ function playerCollides(x, y, grid) {
     let cell = grid[x][y];
     return cell.type == WALL || cell.type == DOOR || cell.type == BREAKABLE || cell.type == FENCE;
 }
+
+function projectileCollides(x, y, grid) {
+    if (x < 0 || y < 0 || x >= grid.length || y >= grid[0].length) return true;
+    let cell = grid[x][y];
+    return cell.type == WALL || cell.type == DOOR || cell.type == BREAKABLE;
+}

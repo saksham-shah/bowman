@@ -2,8 +2,14 @@ const
 
 // Values
 CELL = 48,
-PICKUP = 40, PICKUPSQ = PICKUP * PICKUP,
+PICKUP = 60, PICKUPSQ = PICKUP * PICKUP,
 BUTTONR = 16,
+
+// Arrows
+MINSPEED = 5,
+MAXSPEED = 20,
+PULLBACK = 60,
+FORCE = 0.7,
 
 // Directions
 NORTH = 0,
@@ -43,3 +49,13 @@ OPENDOOR = 8,
 // Enemy spawns
 S_NOTHING = 0,
 S_BOW = 1
+S_REPEAT = '*',
+
+// Projectile fired by
+P_PLAYER = 0,
+P_ENEMY = 1,
+P_NEUTRAL = 2,
+// Projectile hit
+P_GROUND = 0,
+P_CELL = 1,
+P_ENTITY = 2

@@ -38,6 +38,7 @@ class Level {
         if (data.bow !== null) {
             this.grid[data.bow.x][data.bow.y].type = BOW;
         }
+        this.arrows = [];
 
         this.interactables = [];
         this.buttons = [];
@@ -100,7 +101,8 @@ class Level {
 
             let caveObj = {
                 pos: { x: cave.pos.x, y: cave.pos.y },
-                enemies: cave.enemies
+                enemies: cave.enemies,
+                counter: 0
             }
 
             this.caves.push(caveObj);
@@ -131,18 +133,25 @@ class Level {
             y: (mousePosAbs.y - cornerY) / zoom            
         }
 
-        this.updateEntitiesBullets();
+        this.updateEntities();
+        this.updateButtons();
+        this.updatePickables();
     }
 
-    updateEntitiesBullets() {
-        for (let i = 0; i < this.entities.length; i++) {
-            let entity = this.entities[i];
-
+    updateEntities() {
+        for (let entity of this.entities) {
             if (entity.pickedUp) continue;
 
-            entity.superUpdate(this.grid, this.entities);
+            let projectile = entity.superUpdate(this.grid, this.entities);
+            if (projectile) this.arrows.push(projectile);
         }
 
+        for (let arrow of this.arrows) {
+            if (arrow.hit === null) arrow.update(this.grid, this.entities);
+        }
+    }
+
+    updateButtons() {
         for (let button of this.buttons) {
             let interactable = this.interactables[button.interactID];
 
@@ -168,6 +177,10 @@ class Level {
 
                         for (let door of interactable.doors) {
                             this.grid[door.x][door.y].type = EMPTY;
+
+                            for (let arrow of this.grid[door.x][door.y].arrows) {
+                                arrow.remove = true;
+                            }
                         }
                     }
                 }
@@ -181,7 +194,9 @@ class Level {
                 }
             }
         }
+    }
 
+    updatePickables() {
         function entityClose(entity, player) {
             let distToPlayerSq = Math.pow(player.pos.x - entity.pos.x, 2) + Math.pow(player.pos.y - entity.pos.y, 2);
             return distToPlayerSq <= PICKUPSQ
@@ -205,13 +220,6 @@ class Level {
 
             let colliding = this.pickedUpEntity.checkCollisions(this.grid, this.entities, true);//this.placePosition);
             this.pickedUpEntity.canBePlaced = !colliding;
-
-            // if (!colliding) {
-            //     let cell = getCell(this.pickedUpEntity.pos, this.grid.length, this.grid[0].length);
-            //     if (playerCollides(this.grid[cell.x][cell.y])) {
-            //         this.pickedUpEntity.canBePlaced = false;
-            //     }
-            // }
 
         } else {
             // Check what can be picked up
@@ -258,8 +266,11 @@ class Level {
                 entity.closeToPlayer = false;
                 entity.hovered = false;
             }
-        } else {
+        } else if (this.player.bow) {
+            // pull back bow
+            this.player.pullingBack = true;
 
+            // this.arrows.push(new Arrow(this.player.pos.copy(), 5, this.player.angle, P_PLAYER));
         }
     }
 
@@ -271,8 +282,20 @@ class Level {
             entities.push(entity.superToObject());
         }
 
+        let arrows = [];
+        for (let i = this.arrows.length - 1; i >= 0; i--) {
+            let arrow = this.arrows[i];
+            if (arrow.hit == P_ENTITY) continue;
+
+            if (arrow.remove) {
+                this.arrows.splice(i, 1);
+            } else {
+                arrows.push(arrow.toObject());
+            }
+        }
+
         return {
-            entities,
+            entities, arrows,
             grid: this.grid,
             interactables: this.interactables,
             buttons: this.buttons,

@@ -1,10 +1,11 @@
 class Entity {
-    constructor(cell, r, mass = 1, type = PLAYER, canPickUp = false) {
+    constructor(cell, r, mass = 1, type = PLAYER) {
         this.pos = createVector(cell.x * CELL + CELL / 2, cell.y * CELL + CELL / 2);
         this.vel = createVector(0, 0);
         this.acc = null;
 
-        this.player = (type == PLAYER);
+        // this.player = (type == PLAYER);
+        this.fireAs = P_NEUTRAL;
 
         this.type = type;
         this.r = r;
@@ -13,19 +14,27 @@ class Entity {
 
         this.colour = 255;
 
-        this.maxAcc = 0.8;
-        this.maxVel = 7;
+        this.maxAcc = 50;
+        this.maxVel = 50;
 
         this.pickedUp = false;
         this.hovered = false;
         this.closeToPlayer = false;
         this.canBePlaced = false;
+
+        this.arrows = [];
+        /*
+        {
+            pos: { x, y },
+            angle: 0 - 2 * Math.PI
+        }
+        */
     }
 
     superUpdate(grid, entities) {
         this.acc = createVector(0, 0);
 
-        this.update(grid, entities);
+        let projectile = this.update(grid, entities);
 
         this.acc.limit(this.maxAcc);
         this.vel.add(p5.Vector.mult(this.acc, dt));
@@ -35,10 +44,24 @@ class Entity {
 
         this.checkCollisions(grid, entities);
 
-        this.angle = Math.atan2(this.vel.y, this.vel.x);
+        if (this.type == PLAYER && !this.bow) {
+            let cell = getCell(this.pos);
+            if (grid[cell.x][cell.y].type == BOW) {
+                grid[cell.x][cell.y].type = EMPTY;
+                this.bow = true;
+            }
+        }
+
+        this.updateAngle();
+
+        return projectile;
     }
 
     update() {}
+
+    updateAngle() {
+        this.angle = Math.atan2(this.vel.y, this.vel.x);
+    }
 
     checkCollisions(grid, entities, pos = this.pos) {
         let moved = false;
@@ -78,6 +101,7 @@ class Entity {
             angle: this.angle,
             r: this.r,
             type: this.type,
+            arrows: this.arrows,
 
             pickedUp: this.pickedUp,
             closeToPlayer: this.closeToPlayer,

@@ -2,17 +2,49 @@ class Player extends Entity {
     constructor(cell) {
         super(cell, 10, 1, PLAYER);
 
-        this.player = true;
+        this.fireAs = P_PLAYER;
 
         this.mouseAngle = 0;
 
         this.maxAcc = 0.7;
         this.maxVel = 3;
+        
+        this.bow = false;
+
+        this.pullback = 0;
+        this.pullingBack = false;
+
+        this.fireRate = 30;
+
+        this.cooldown = 0;
     }
 
-    update(mousePos) {
+    update() {
         this.move();
-        this.aimToMouse(mousePos);
+        this.aimToMouse();
+
+        if (this.cooldown > 0) this.cooldown--;
+
+        if (this.pullingBack) {
+            if (mouseIsPressed) {
+                if (this.cooldown == 0) {
+                    this.pullback++;
+                }
+
+            } else {
+                this.pullingBack = false;
+                if (this.cooldown == 0) {
+                    this.cooldown = this.fireRate;
+                    if (this.pullback > PULLBACK) this.pullback = PULLBACK;
+                    let speed = MINSPEED + (MAXSPEED - MINSPEED) * this.pullback / PULLBACK;
+                    this.pullback = 0;
+                    console.log(speed);
+                    return new Arrow(this.pos.copy(), speed, this.mouseAngle, P_PLAYER);
+                }
+            }
+        }
+
+        return null;
     }
 
     move() {
@@ -49,7 +81,11 @@ class Player extends Entity {
         this.mouseAngle = Math.atan2(dy, dx);
     }
 
+    updateAngle() { this.angle = this.mouseAngle }
+
     toObject(obj) {
-        obj.angle = this.mouseAngle;
+        // obj.angle = this.mouseAngle;
+        obj.bow = this.bow;
+        obj.pullback = this.pullback;
     }
 }

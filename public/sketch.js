@@ -16,9 +16,14 @@ let graphics = {
 function preload() {
     graphics.map.floor = loadImage(graphicsFolder + 'map/floor.png');
     graphics.map.wall = loadImage(graphicsFolder + 'map/wall.png');
+    graphics.map.fence = loadImage(graphicsFolder + 'map/fence.png');
     graphics.map.bow = loadImage(graphicsFolder + 'map/bow.png');
 
     graphics.player.base = loadImage(graphicsFolder + 'player/playerbase.png');
+    graphics.player.bow = [];
+    for (let i = 0; i < 4; i++) {
+        graphics.player.bow.push(loadImage(graphicsFolder + `player/playerbow${i}.png`));
+    }
 
     graphics.rock.base = loadImage(graphicsFolder + 'rock/rock.png');
     graphics.rock.close = loadImage(graphicsFolder + 'rock/rockclose.png');

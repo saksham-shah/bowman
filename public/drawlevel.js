@@ -1,22 +1,28 @@
 let _grid;
 function drawLevel(level) {
-    let { entities, grid, interactables, buttons, targets, placePosition } = level;
+    let { entities, arrows, grid, interactables, buttons, targets } = level;
 
     _grid = grid;
 
-    let w = 48 * grid.length, h = 48 * grid[0].length;
     push();
     translate(cornerX, cornerY);
     scale(zoom);
 
-    // noFill();
-    // stroke(255, 0, 0);
-    // rect(w / 2, h / 2, w, h);
 
     drawGrid(grid, interactables, buttons, targets);
 
+    for (let arrow of arrows) {
+        if (!arrow.grounded) continue;
+        drawArrow(arrow);
+    }
+
     for (let entity of entities) {
-        drawEntity(entity, placePosition);
+        drawEntity(entity);
+    }
+
+    for (let arrow of arrows) {
+        if (arrow.grounded) continue;
+        drawArrow(arrow);
     }
 
     pop();
@@ -49,8 +55,7 @@ function drawGrid(grid, interactables, buttons, targets) {
                     image(graphics.doors[colour], x * CELL, y * CELL);
                     break;
                 case FENCE:
-                    fill(0, 0, 255);
-                    rect(x * CELL + CELL / 2, y * CELL + CELL / 2, CELL, CELL);
+                    image(graphics.map.fence, x * CELL, y * CELL);
                     break;
                 case BUTTON:
                     colour = interactables[cell.interactID].colour;
@@ -74,26 +79,27 @@ function drawGrid(grid, interactables, buttons, targets) {
     }
 }
 
-function drawEntity(entity, placePosition) {
+function drawEntity(entity) {
     push();
     translate(entity.pos);
     rotate(entity.angle);
     strokeWeight(2);
 
+    let img;
     switch (entity.type) {
         case PLAYER:
             rotate(Math.PI / 2);
-            image(graphics.player.base, -CELL / 2, -CELL * 3 / 4);
-            // fill(200, 200, 0, 150);
-            // stroke(255, 255, 0);
-            // ellipse(0, 0, entity.r * 2);
-
-            // strokeWeight(5);
-            // line(entity.r + 15, 0, entity.r + 10, 5)
-            // line(entity.r + 15, 0, entity.r + 10, -5)
+            img;
+            if (entity.bow) {
+                let frame = Math.min(3, Math.ceil(entity.pullback / 20));
+                img = graphics.player.bow[frame];
+            } else {
+                img = graphics.player.base;
+            }
+            image(img, -CELL / 2, -CELL * 3 / 4);
             break;
         case ROCK:
-            let img = graphics.rock.base;
+            img = graphics.rock.base;
             if (entity.pickedUp) {
                 if (entity.canBePlaced) {
                     tint(255, 150);
@@ -117,6 +123,23 @@ function drawEntity(entity, placePosition) {
             ellipse(0, 0, entity.r * 2);
 
     }
+
+    for (let arrow of entity.arrows) {
+        drawArrow(arrow);
+    }
+
+    pop();
+}
+
+function drawArrow(arrow) {
+    push();
+    translate(arrow.pos);
+    rotate(arrow.angle);
+
+    stroke(255);
+    strokeWeight(2);
+    // ellipse(0, 0, 10);
+    line(0, 0, -10, 0)
 
     pop();
 }
