@@ -47,7 +47,7 @@ class Entity {
             if (this == entity) continue;
             if (entity.pickedUp) continue;
 
-            let entityCollide = collideWithPoint(pos, entity.pos, this.r + entity.r, entity.mass / (this.mass + entity.mass));
+            let entityCollide = collideWithPoint(this.pos, entity.pos, this.r + entity.r, entity.mass / (this.mass + entity.mass));
             if (entityCollide.moved) {
                 if (!this.pickedUp) {
                     this.pos.x = entityCollide.pos.x;
@@ -58,7 +58,7 @@ class Entity {
             }
         }
 
-        let wallCollide = collideWithWalls(pos, this.r, grid);
+        let wallCollide = collideWithWalls(this.pos, this.r, grid);
 
         if (wallCollide.moved) {
             if (!this.pickedUp) {

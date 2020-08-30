@@ -1,16 +1,19 @@
+let _grid;
 function drawLevel(level) {
-    let { entities, grid, placePosition } = level;
+    let { entities, grid, interactables, buttons, targets, placePosition } = level;
+
+    _grid = grid;
 
     let w = 48 * grid.length, h = 48 * grid[0].length;
     push();
     translate(cornerX, cornerY);
     scale(zoom);
 
-    noFill();
-    stroke(255, 0, 0);
-    rect(w / 2, h / 2, w, h);
+    // noFill();
+    // stroke(255, 0, 0);
+    // rect(w / 2, h / 2, w, h);
 
-    drawGrid(grid);
+    drawGrid(grid, interactables, buttons, targets);
 
     for (let entity of entities) {
         drawEntity(entity, placePosition);
@@ -19,24 +22,42 @@ function drawLevel(level) {
     pop();
 }
 
-function drawGrid(grid) {
+function drawGrid(grid, interactables, buttons, targets) {
     noStroke();
+    for (let x = -1; x <= grid.length; x++) {
+        image(graphics.map.wall, x * CELL, -CELL);
+        image(graphics.map.wall, x * CELL, grid[0].length * CELL);
+    }
+
+    for (let y = 0; y < grid[0].length; y++) {
+        image(graphics.map.wall, -CELL, y * CELL);
+        image(graphics.map.wall, grid.length * CELL, y * CELL);
+    }
+
     for (let x = 0; x < grid.length; x++) {
         for (let y = 0; y < grid[0].length; y++) {
-            let draw = true;;
-            switch (grid[x][y].type) {
+            let colour, cell = grid[x][y];
+            switch (cell.type) {
+                case EMPTY:
+                    image(graphics.map.floor, x * CELL, y * CELL);
+                    break;
                 case WALL:
-                    fill(150);
+                    image(graphics.map.wall, x * CELL, y * CELL);
+                    break;
+                case DOOR:
+                    colour = interactables[cell.interactID].colour;
+                    image(graphics.doors[colour], x * CELL, y * CELL);
+                    break;
+                case BUTTON:
+                    colour = interactables[cell.interactID].colour;
+                    image(graphics.buttons[colour][buttons[cell.buttonID].pressed ? 1 : 0], x * CELL, y * CELL);
                     break;
                 case END:
                     fill(0, 255, 0);
+                    rect(x * CELL + CELL / 2, y * CELL + CELL / 2, CELL, CELL);
                     break;
                 default:
-                    draw = false;
-            }
-
-            if (draw) {
-                rect(x * CELL + CELL / 2, y * CELL + CELL / 2, CELL, CELL);
+                    // draw = false;
             }
         }
     }
@@ -50,19 +71,21 @@ function drawEntity(entity, placePosition) {
 
     switch (entity.type) {
         case PLAYER:
-            fill(200, 200, 0, 150);
-            stroke(255, 255, 0);
-            ellipse(0, 0, entity.r * 2);
+            rotate(Math.PI / 2);
+            image(graphics.player.base, -CELL / 2, -CELL * 3 / 4);
+            // fill(200, 200, 0, 150);
+            // stroke(255, 255, 0);
+            // ellipse(0, 0, entity.r * 2);
 
-            strokeWeight(5);
-            line(entity.r + 15, 0, entity.r + 10, 5)
-            line(entity.r + 15, 0, entity.r + 10, -5)
+            // strokeWeight(5);
+            // line(entity.r + 15, 0, entity.r + 10, 5)
+            // line(entity.r + 15, 0, entity.r + 10, -5)
             break;
         case ROCK:
             if (entity.pickedUp) {
-                rotate(-entity.angle);
-                translate(p5.Vector.sub(placePosition, entity.pos));
-                rotate(entity.angle);
+                // rotate(-entity.angle);
+                // translate(p5.Vector.sub(placePosition, entity.pos));
+                // rotate(entity.angle);
 
                 if (entity.canBePlaced) {
                     fill(0, 255, 0, 150);

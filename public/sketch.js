@@ -3,8 +3,28 @@ let dt;
 
 let cornerX, cornerY, zoom;
 
+let graphicsFolder = '/assets/graphics/';
+
+let graphics = {
+    map: {},
+    player: {},
+    buttons: {},
+    doors: {}
+};
+
 function preload() {
-    
+    graphics.map.floor = loadImage(graphicsFolder + 'map/floor.png');
+    graphics.map.wall = loadImage(graphicsFolder + 'map/wall.png');
+
+    graphics.player.base = loadImage(graphicsFolder + 'player/playerbase.png');
+
+    for (let colour of COLOURS) {
+        graphics.buttons[colour] = [];
+        graphics.buttons[colour].push(loadImage(graphicsFolder + `buttons/button${colour}.png`));
+        graphics.buttons[colour].push(loadImage(graphicsFolder + `buttons/button${colour}press.png`));
+
+        graphics.doors[colour] = loadImage(graphicsFolder + `doors/door${colour}.png`);
+    }
 }
 
 function setup() {

@@ -3,7 +3,7 @@ class Level {
         normaliseLevel(data);
 
         this.mousePos = { x: 0, y: 0 };
-        zoom = 2;
+        zoom = 1.5;
         cornerX = 800 - data.size.width * CELL / 2 * zoom;
         cornerY = 450 - data.size.height * CELL / 2 * zoom;
 
@@ -27,6 +27,60 @@ class Level {
         }
 
         this.grid[data.end.x][data.end.y].type = END;
+
+        this.interactables = [];
+        this.buttons = [];
+        this.triggers = [];
+
+        for (let interactable of data.interactables) {
+            let interactableObj = {
+                doors: [],
+                colour: interactable.colour,
+                activated: false,
+                triggers: []
+            }
+
+            for (let door of interactable.doors) {
+                this.grid[door.x][door.y].type = DOOR;
+                this.grid[door.x][door.y].interactID = this.interactables.length;
+
+                interactableObj.doors.push({ x: door.x, y: door.y });
+            }
+
+            for (let trigger of interactable.triggers) {
+                switch (trigger.type) {
+                    case BUTTON:
+                        let buttonObj = {
+                            pressed: false,
+                            interactID: this.interactables.length,
+                            pos: {
+                                x: trigger.pos.x * CELL + CELL / 2,
+                                y: trigger.pos.y * CELL + CELL / 2                                
+                            }
+                        }
+
+                        this.grid[trigger.pos.x][trigger.pos.y].type = BUTTON;
+                        this.grid[trigger.pos.x][trigger.pos.y].buttonID = this.buttons.length;
+                        this.grid[trigger.pos.x][trigger.pos.y].interactID = this.interactables.length;
+
+                        this.buttons.push(buttonObj);
+                        interactableObj.triggers.push(buttonObj);
+                        break;
+                    case TARGET:
+                        // NEED TO FINISH
+                        let targetObj = {
+                            pressed: false,
+                            direction: trigger.direction,
+                            interactID: this.interactables.length
+                        }
+                        this.targets.push(targetObj);
+                        interactableObj.triggers.push(buttonObj);
+                        break;
+                }
+            }
+
+            this.interactables.push(interactableObj);
+        }
 
         this.entities = [];
         this.pickupables = [];
@@ -65,6 +119,45 @@ class Level {
             entity.superUpdate(this.grid, this.entities);
         }
 
+        for (let button of this.buttons) {
+            let interactable = this.interactables[button.interactID];
+
+            button.pressed = false;
+            for (let entity of this.entities) {
+                if (entity.pickedUp) continue;
+                let dSq = Math.pow(entity.pos.x - button.pos.x, 2) + Math.pow(entity.pos.y - button.pos.y, 2);
+                if (dSq < Math.pow(entity.r + BUTTONR, 2)) {
+                    // Button should be pressed
+                    button.pressed = true;
+                }
+            }
+
+            if (button.pressed) {
+                if (!interactable.activated) {
+                    let activate = true;
+                    for (let trigger of interactable.triggers) {
+                        if (!trigger.pressed) activate = false;
+                    }
+
+                    if (activate) {
+                        interactable.activated = true;
+
+                        for (let door of interactable.doors) {
+                            this.grid[door.x][door.y].type = EMPTY;
+                        }
+                    }
+                }
+            } else {
+                if (interactable.activated) {
+                    interactable.activated = false;
+
+                    for (let door of interactable.doors) {
+                        this.grid[door.x][door.y].type = DOOR;
+                    }
+                }
+            }
+        }
+
         function entityClose(entity, player) {
             let distToPlayerSq = Math.pow(player.pos.x - entity.pos.x, 2) + Math.pow(player.pos.y - entity.pos.y, 2);
             return distToPlayerSq <= PICKUPSQ
@@ -76,28 +169,25 @@ class Level {
         }
 
         if (this.pickedUpEntity) {
-            this.placePosition = createVector(this.mousePos.x, this.mousePos.y);
+            // this.placePosition = createVector(this.mousePos.x, this.mousePos.y);
+            this.pickedUpEntity.pos.x = this.mousePos.x;
+            this.pickedUpEntity.pos.y = this.mousePos.y;
 
-            let awayVector = p5.Vector.sub(this.player.pos, this.placePosition);
+            let awayVector = p5.Vector.sub(this.player.pos, this.pickedUpEntity.pos);
             if (awayVector.magSq() > PICKUPSQ) {
                 awayVector.setMag(awayVector.mag() - PICKUP);
-                this.placePosition.add(awayVector);
+                this.pickedUpEntity.pos.add(awayVector);
             }
 
-            let d = Math.pow(this.placePosition.x - this.player.pos.x, 2) + Math.pow(this.placePosition.y - this.player.pos.y, 2);
-            if (d > PICKUPSQ) {
-                
-            }
-
-            let colliding = this.pickedUpEntity.checkCollisions(this.grid, this.entities, this.placePosition);
+            let colliding = this.pickedUpEntity.checkCollisions(this.grid, this.entities, true);//this.placePosition);
             this.pickedUpEntity.canBePlaced = !colliding;
 
-            if (!colliding) {
-                let cell = getCell(this.placePosition, this.grid.length, this.grid[0].length);
-                if (playerCollides(this.grid[cell.x][cell.y])) {
-                    this.pickedUpEntity.canBePlaced = false;
-                }
-            }
+            // if (!colliding) {
+            //     let cell = getCell(this.pickedUpEntity.pos, this.grid.length, this.grid[0].length);
+            //     if (playerCollides(this.grid[cell.x][cell.y])) {
+            //         this.pickedUpEntity.canBePlaced = false;
+            //     }
+            // }
 
         } else {
             // Check what can be picked up
@@ -126,8 +216,8 @@ class Level {
     click() {
         if (this.pickedUpEntity) {
             if (this.pickedUpEntity.canBePlaced) {
-                this.pickedUpEntity.pos.x = this.placePosition.x;
-                this.pickedUpEntity.pos.y = this.placePosition.y;
+                // this.pickedUpEntity.pos.x = this.placePosition.x;
+                // this.pickedUpEntity.pos.y = this.placePosition.y;
                 this.pickedUpEntity.pickedUp = false;
                 this.pickedUpEntity = null;
             }
@@ -160,6 +250,9 @@ class Level {
         return {
             entities,
             grid: this.grid,
+            interactables: this.interactables,
+            buttons: this.buttons,
+            targets: this.targets,
             placePosition: this.placePosition
         }
     }
@@ -187,7 +280,7 @@ example cell data
 {
     type: EMPTY,
     buttonID: -1, // only if there is a button
-    interactID: -1, // same as above
+    interactID: -1, // only if there is a button or door
     targets: [
         {
             targetID: 2,
