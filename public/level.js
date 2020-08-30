@@ -17,7 +17,8 @@ class Level {
                     type: EMPTY,
                     buttonID: -1,
                     interactID: -1,
-                    targets: []
+                    targets: [],
+                    arrows: []
                 });
             }
 
@@ -28,7 +29,15 @@ class Level {
             this.grid[wall.x][wall.y].type = WALL;
         }
 
+        for (let fence of data.map.fences) {
+            this.grid[fence.x][fence.y].type = FENCE;
+        }
+
         this.grid[data.end.x][data.end.y].type = END;
+
+        if (data.bow !== null) {
+            this.grid[data.bow.x][data.bow.y].type = BOW;
+        }
 
         this.interactables = [];
         this.buttons = [];
@@ -84,6 +93,19 @@ class Level {
             this.interactables.push(interactableObj);
         }
 
+        this.caves = [];
+
+        for (let cave of data.caves) {
+            this.grid[cave.pos.x][cave.pos.y].type = CAVE;
+
+            let caveObj = {
+                pos: { x: cave.pos.x, y: cave.pos.y },
+                enemies: cave.enemies
+            }
+
+            this.caves.push(caveObj);
+        }
+
         this.entities = [];
         this.pickupables = [];
 
@@ -92,7 +114,7 @@ class Level {
 
         for (let rock of data.entities.rocks) {
             let rockEntity = new Rock(rock);
-            this.entities.push(rockEntity);
+            this.entities.splice(0, 0, rockEntity);
             this.pickupables.push(rockEntity);
         }
 

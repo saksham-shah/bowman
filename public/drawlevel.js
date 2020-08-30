@@ -48,12 +48,23 @@ function drawGrid(grid, interactables, buttons, targets) {
                     colour = interactables[cell.interactID].colour;
                     image(graphics.doors[colour], x * CELL, y * CELL);
                     break;
+                case FENCE:
+                    fill(0, 0, 255);
+                    rect(x * CELL + CELL / 2, y * CELL + CELL / 2, CELL, CELL);
+                    break;
                 case BUTTON:
                     colour = interactables[cell.interactID].colour;
                     image(graphics.buttons[colour][buttons[cell.buttonID].pressed ? 1 : 0], x * CELL, y * CELL);
                     break;
+                case BOW:
+                    image(graphics.map.bow, x * CELL, y * CELL);
+                    break;
                 case END:
                     fill(0, 255, 0);
+                    rect(x * CELL + CELL / 2, y * CELL + CELL / 2, CELL, CELL);
+                    break;
+                case CAVE:
+                    fill(0);
                     rect(x * CELL + CELL / 2, y * CELL + CELL / 2, CELL, CELL);
                     break;
                 default:

@@ -37,4 +37,9 @@ FENCE = 4,
 BUTTON = 5,
 BOW = 6,
 END = 7,
-OPENDOOR = 8
+CAVE = 8,
+OPENDOOR = 8,
+
+// Enemy spawns
+S_NOTHING = 0,
+S_BOW = 1

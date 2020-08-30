@@ -16,6 +16,7 @@ let graphics = {
 function preload() {
     graphics.map.floor = loadImage(graphicsFolder + 'map/floor.png');
     graphics.map.wall = loadImage(graphicsFolder + 'map/wall.png');
+    graphics.map.bow = loadImage(graphicsFolder + 'map/bow.png');
 
     graphics.player.base = loadImage(graphicsFolder + 'player/playerbase.png');
 
@@ -71,7 +72,7 @@ function setup() {
 
     setScreen('game');
 
-    game = new Level(TUTORIAL);
+    game = new Level(TUTORIALBOW);
 
 }
 
