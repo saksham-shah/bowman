@@ -1,5 +1,12 @@
 const
 
+// Settings
+CLICK = 0,
+DRAG = 1,
+SETTINGS = {
+    pickup: CLICK
+},
+
 // Values
 CELL = 48,
 PICKUP = 60, PICKUPSQ = PICKUP * PICKUP,

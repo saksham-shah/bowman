@@ -214,12 +214,25 @@ class Level {
 
             let awayVector = p5.Vector.sub(this.player.pos, this.pickedUpEntity.pos);
             if (awayVector.magSq() > PICKUPSQ) {
-                awayVector.setMag(awayVector.mag() - PICKUP);
+                awayVector.setMag(awayVector.mag() - PICKUP + 1);
                 this.pickedUpEntity.pos.add(awayVector);
             }
 
             let colliding = this.pickedUpEntity.checkCollisions(this.grid, this.entities, true);//this.placePosition);
             this.pickedUpEntity.canBePlaced = !colliding;
+            if (SETTINGS.pickup == DRAG) {
+                if (!mouseIsPressed) {
+                    if (this.pickedUpEntity.canBePlaced) {
+                        this.pickedUpEntity.vel.mult(0);
+                        if (this.pickedUpEntity.type == ROCK) {
+                            this.pickedUpEntity.angularVel = 0;
+                        }
+
+                        this.pickedUpEntity.pickedUp = false;
+                        this.pickedUpEntity = null;
+                    }
+                }
+            }
 
         } else {
             // Check what can be picked up
@@ -246,10 +259,13 @@ class Level {
     }
 
     click() {
-        if (this.pickedUpEntity) {
+        if (this.pickedUpEntity && SETTINGS.pickup == CLICK) {
             if (this.pickedUpEntity.canBePlaced) {
-                // this.pickedUpEntity.pos.x = this.placePosition.x;
-                // this.pickedUpEntity.pos.y = this.placePosition.y;
+                this.pickedUpEntity.vel.mult(0);
+                if (this.pickedUpEntity.type == ROCK) {
+                    this.pickedUpEntity.angularVel = 0;
+                }
+
                 this.pickedUpEntity.pickedUp = false;
                 this.pickedUpEntity = null;
             }
@@ -262,10 +278,10 @@ class Level {
             this.pickedUpEntity.pickedUp = true;
             this.pickedUpEntity.canBePlaced = true;
 
-            this.pickedUpEntity.vel.mult(0);
-            if (this.pickedUpEntity.type == ROCK) {
-                this.pickedUpEntity.angularVel = 0;
-            }
+            // this.pickedUpEntity.vel.mult(0);
+            // if (this.pickedUpEntity.type == ROCK) {
+            //     this.pickedUpEntity.angularVel = 0;
+            // }
 
             for (let entity of this.pickupables) {
                 entity.closeToPlayer = false;

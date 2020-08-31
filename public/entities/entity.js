@@ -73,6 +73,11 @@ class Entity {
             let entityCollide = collideWithPoint(this.pos, entity.pos, this.r + entity.r, entity.mass / (this.mass + entity.mass));
             if (entityCollide.moved) {
                 if (!this.pickedUp) {
+                    if (this.type !== PLAYER) {
+                        this.vel.x += 2 * (entityCollide.pos.x - this.pos.x);
+                        this.vel.y += 2 * (entityCollide.pos.y - this.pos.y);
+                    }
+
                     this.pos.x = entityCollide.pos.x;
                     this.pos.y = entityCollide.pos.y;
                 }
@@ -85,6 +90,11 @@ class Entity {
 
         if (wallCollide.moved) {
             if (!this.pickedUp) {
+                if (this.type !== PLAYER) {
+                    this.vel.x += 2 * (wallCollide.pos.x - this.pos.x);
+                    this.vel.y += 2 * (wallCollide.pos.y - this.pos.y);
+                }
+
                 this.pos.x = wallCollide.pos.x;
                 this.pos.y = wallCollide.pos.y;
             }

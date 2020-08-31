@@ -77,7 +77,7 @@ function setup() {
 
     setScreen('game');
 
-    game = new Level(TUTORIALBOW);
+    game = new Level(TUTORIALFENCE);
 
 }
 
