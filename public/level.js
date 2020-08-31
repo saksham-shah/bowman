@@ -106,6 +106,8 @@ class Level {
         }
 
         this.caves = [];
+        this.caveTimer = data.caveInterval;
+        this.caveInterval = data.caveInterval;
 
         for (let cave of data.caves) {
             this.grid[cave.pos.x][cave.pos.y].type = CAVE;
@@ -144,6 +146,7 @@ class Level {
             y: (mousePosAbs.y - cornerY) / zoom            
         }
 
+        if (this.player.bow) this.updateCaves();
         this.updateEntities();
         this.updateButtons();
         this.updatePickables();
@@ -159,6 +162,34 @@ class Level {
 
         for (let arrow of this.arrows) {
             if (arrow.hit === null) arrow.update(this.grid, this.entities, this.targets);
+        }
+    }
+
+    updateCaves() {
+        this.caveTimer += dt;
+        while (this.caveTimer > this.caveInterval) {
+            this.caveTimer -= this.caveInterval;
+
+            for (let cave of this.caves) {
+                if (cave.counter >= cave.enemies.length) return;
+
+                let enemyType = cave.enemies[cave.counter];
+                if (enemyType == S_REPEAT) {
+                    cave.counter = 0;
+                    enemyType = cave.enemies[0];
+                }
+
+                enemyType = parseInt(enemyType);
+
+                switch(enemyType) {
+                    case S_BOW: {
+                        console.log('Bow enemy spawning!');
+                        break;
+                    }
+                }
+
+                cave.counter++;
+            }
         }
     }
 
@@ -342,6 +373,8 @@ function normaliseLevel(data) {
     if (typeof data.bow == 'undefined') data.bow = null;
     if (typeof data.caves == 'undefined') data.caves = [];
     if (typeof data.interactables == 'undefined') data.interactables = [];
+
+    if (typeof data.caveInterval == 'undefined') data.caveInterval = 60;
 
     if (typeof data.map == 'undefined') data.map = {};
     if (typeof data.map.walls == 'undefined') data.map.walls = [];
