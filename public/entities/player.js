@@ -27,14 +27,14 @@ class Player extends Entity {
 
         if (this.pullingBack) {
             if (mouseIsPressed) {
-                if (this.cooldown == 0) {
+                // if (this.cooldown == 0) {
                     this.pullback++;
-                }
+                // }
 
             } else {
                 this.pullingBack = false;
-                if (this.cooldown == 0) {
-                    this.cooldown = this.fireRate;
+                if (this.pullback > 0) {
+                    // this.cooldown = this.fireRate;
                     if (this.pullback > PULLBACK) this.pullback = PULLBACK;
                     let speed = MINSPEED + (MAXSPEED - MINSPEED) * this.pullback / PULLBACK;
                     this.pullback = 0;

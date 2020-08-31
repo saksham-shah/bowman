@@ -262,13 +262,19 @@ class Level {
             this.pickedUpEntity.pickedUp = true;
             this.pickedUpEntity.canBePlaced = true;
 
+            this.pickedUpEntity.vel.mult(0);
+            if (this.pickedUpEntity.type == ROCK) {
+                this.pickedUpEntity.angularVel = 0;
+            }
+
             for (let entity of this.pickupables) {
                 entity.closeToPlayer = false;
                 entity.hovered = false;
             }
-        } else if (this.player.bow) {
+        } else if (this.player.bow && this.player.cooldown == 0) {
             // pull back bow
             this.player.pullingBack = true;
+            this.player.cooldown = this.player.fireRate;
 
             // this.arrows.push(new Arrow(this.player.pos.copy(), 5, this.player.angle, P_PLAYER));
         }

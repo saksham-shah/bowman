@@ -4,9 +4,19 @@ class Rock extends Entity {
 
         // this.maxAcc = 0;
         // this.maxVel = 0;
+
+        this.manualAngle = 0;
+        this.angularVel = 0;
     }
 
     update() {
         this.vel = p5.Vector.mult(this.vel, Math.pow(0.95, dt));
+
+        this.angularVel *= 0.95;
+        this.manualAngle = (this.manualAngle + this.angularVel) % (2 * Math.PI);
+    }
+
+    updateAngle() {
+        this.angle = this.manualAngle;
     }
 }

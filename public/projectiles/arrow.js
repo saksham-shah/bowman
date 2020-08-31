@@ -68,8 +68,8 @@ class Arrow {
             if (dSq < entity.r * entity.r) {
                 this.hit = P_ENTITY;
                 // Collision with an entity
-                let relAngle = Math.atan2(diffVec.y, diffVec.x) - entity.angle;
-                let relPos = p5.Vector.fromAngle(relAngle, Math.sqrt(dSq));
+                let relAngle = Math.atan2(diffVec.y, diffVec.x);
+                let relPos = p5.Vector.fromAngle(relAngle - entity.angle, Math.sqrt(dSq));
 
                 entity.arrows.push({
                     pos: relPos,
@@ -77,6 +77,10 @@ class Arrow {
                 });
 
                 entity.vel.add(p5.Vector.fromAngle(this.angle, this.speed * FORCE));
+
+                if (entity.type == ROCK) {
+                    entity.angularVel += 0.2 * FORCE * Math.sin(this.angle - relAngle);
+                }
 
                 // console.log(entity);
                 return true;
