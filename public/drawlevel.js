@@ -118,7 +118,7 @@ function drawEntity(entity) {
             image(img, -CELL / 2, -CELL * 3 / 4);
             pop();
 
-            if (entity.bow && (entity.cooldown == 0 || frame > 0)) {
+            if (entity.bow && (entity.cooldown <= 0 || frame > 0)) {
                 rotate()
                 drawArrow({
                     pos: createVector(30 - frame * 3, 0),

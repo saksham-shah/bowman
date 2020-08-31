@@ -329,7 +329,7 @@ class Level {
                 entity.closeToPlayer = false;
                 entity.hovered = false;
             }
-        } else if (this.player.bow && this.player.cooldown == 0) {
+        } else if (this.player.bow && this.player.cooldown <= 0) {
             // pull back bow
             this.player.pullingBack = true;
             this.player.cooldown = this.player.fireRate;

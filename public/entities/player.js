@@ -23,7 +23,7 @@ class Player extends Entity {
         this.move();
         this.aimToMouse();
 
-        if (this.cooldown > 0) this.cooldown--;
+        if (this.cooldown > 0) this.cooldown -= dt;
 
         if (this.pullingBack) {
             if (mouseIsPressed) {

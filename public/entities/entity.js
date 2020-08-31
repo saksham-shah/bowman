@@ -15,7 +15,7 @@ class Entity {
         this.colour = 255;
 
         this.maxAcc = 50;
-        this.maxVel = 50;
+        this.maxVel = 20;
 
         this.pickedUp = false;
         this.hovered = false;
