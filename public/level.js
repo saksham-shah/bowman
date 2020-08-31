@@ -42,7 +42,7 @@ class Level {
 
         this.interactables = [];
         this.buttons = [];
-        this.triggers = [];
+        this.targets = [];
 
         for (let interactable of data.interactables) {
             let interactableObj = {
@@ -61,7 +61,7 @@ class Level {
 
             for (let trigger of interactable.triggers) {
                 switch (trigger.type) {
-                    case BUTTON:
+                    case I_BUTTON:
                         let buttonObj = {
                             pressed: false,
                             interactID: this.interactables.length,
@@ -78,15 +78,26 @@ class Level {
                         this.buttons.push(buttonObj);
                         interactableObj.triggers.push(buttonObj);
                         break;
-                    case TARGET:
+                    case I_TARGET:
                         // NEED TO FINISH
                         let targetObj = {
                             pressed: false,
                             direction: trigger.direction,
-                            interactID: this.interactables.length
+                            interactID: this.interactables.length,
+                            pos: {
+                                x: trigger.pos.x,
+                                y: trigger.pos.y                                
+                            }
                         }
+                        
+                        this.grid[trigger.pos.x][trigger.pos.y].targets.push({
+                            targetID: this.targets.length,
+                            interactID: this.interactables.length,
+                            direction: trigger.direction
+                        });
+
                         this.targets.push(targetObj);
-                        interactableObj.triggers.push(buttonObj);
+                        interactableObj.triggers.push(targetObj);
                         break;
                 }
             }
@@ -147,7 +158,7 @@ class Level {
         }
 
         for (let arrow of this.arrows) {
-            if (arrow.hit === null) arrow.update(this.grid, this.entities);
+            if (arrow.hit === null) arrow.update(this.grid, this.entities, this.targets);
         }
     }
 
@@ -390,11 +401,11 @@ example level data
             doors: [...],
             triggers: [
                 {
-                    type: BUTTON,
+                    type: I_BUTTON,
                     pos: [...]
                 },
                 {
-                    type: TARGET,
+                    type: I_TARGET,
                     pos: [...],
                     direction: 0/1/2/3
                 }, ...

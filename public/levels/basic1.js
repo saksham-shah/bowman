@@ -22,14 +22,14 @@ const TUTORIALBOW = {
             colour: RED,
             doors: [{ x: 2, y: 3 }],
             triggers: [{
-                type: BUTTON,
+                type: I_BUTTON,
                 pos: { x: 7, y: 5 }
             }]
         }, {
             colour: BLUE,
             doors: [{ x: 5, y: 0 }],
             triggers: [{
-                type: BUTTON,
+                type: I_BUTTON,
                 pos: { x: 0, y: 5 }
             }]
         }

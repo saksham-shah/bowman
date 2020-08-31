@@ -17,7 +17,7 @@ const TUTORIAL = {
             doors: [{ x: 6, y: 1 }],
             triggers: [
                 {
-                    type: BUTTON,
+                    type: I_BUTTON,
                     pos: { x: 4, y: 1 }
                 }
             ]

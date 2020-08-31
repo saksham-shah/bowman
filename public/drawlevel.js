@@ -12,17 +12,21 @@ function drawLevel(level) {
     drawGrid(grid, interactables, buttons, targets);
 
     for (let arrow of arrows) {
-        if (!arrow.grounded) continue;
+        // if (!arrow.grounded) continue;
         drawArrow(arrow);
     }
+
+    // for (let arrow of arrows) {
+    //     if (arrow.grounded) continue;
+    //     drawArrow(arrow);
+    // }
 
     for (let entity of entities) {
         drawEntity(entity);
     }
 
-    for (let arrow of arrows) {
-        if (arrow.grounded) continue;
-        drawArrow(arrow);
+    for (let entity of entities) {
+        drawEntityArrows(entity);
     }
 
     pop();
@@ -75,6 +79,20 @@ function drawGrid(grid, interactables, buttons, targets) {
                 default:
                     // draw = false;
             }
+
+            if (cell.targets.length == 0) continue;
+            push();
+            translate(x * CELL + CELL / 2, y * CELL + CELL / 2);
+            for (let target of cell.targets) {
+                push();
+                rotate((target.direction * Math.PI - Math.PI) / 2);
+
+                colour = interactables[target.interactID].colour;
+                image(graphics.targets[colour][targets[target.targetID].pressed ? 1 : 0], -CELL / 2, -CELL / 2);
+
+                pop();
+            }
+            pop();
         }
     }
 }
@@ -88,15 +106,26 @@ function drawEntity(entity) {
     let img;
     switch (entity.type) {
         case PLAYER:
+            push();
             rotate(Math.PI / 2);
-            img;
+            let frame = 0;
             if (entity.bow) {
-                let frame = Math.min(3, Math.ceil(entity.pullback / 20));
+                frame = Math.min(3, Math.ceil(entity.pullback / 20));
                 img = graphics.player.bow[frame];
             } else {
                 img = graphics.player.base;
             }
             image(img, -CELL / 2, -CELL * 3 / 4);
+            pop();
+
+            if (entity.bow && (entity.cooldown == 0 || frame > 0)) {
+                rotate()
+                drawArrow({
+                    pos: createVector(30 - frame * 3, 0),
+                    angle: 0
+                });
+            }
+
             break;
         case ROCK:
             img = graphics.rock.base;
@@ -124,6 +153,18 @@ function drawEntity(entity) {
 
     }
 
+    // for (let arrow of entity.arrows) {
+    //     drawArrow(arrow);
+    // }
+
+    pop();
+}
+
+function drawEntityArrows(entity) {
+    push();
+    translate(entity.pos);
+    rotate(entity.angle);
+
     for (let arrow of entity.arrows) {
         drawArrow(arrow);
     }
@@ -134,12 +175,14 @@ function drawEntity(entity) {
 function drawArrow(arrow) {
     push();
     translate(arrow.pos);
-    rotate(arrow.angle);
+    rotate(arrow.angle + Math.PI / 2);
 
-    stroke(255);
-    strokeWeight(2);
-    // ellipse(0, 0, 10);
-    line(0, 0, -10, 0)
+    image(graphics.projectiles.arrow, -4.5, -12);//, 6, 24)
+
+    // stroke(255);
+    // strokeWeight(2);
+    // // ellipse(0, 0, 10);
+    // line(0, 0, -10, 0)
 
     pop();
 }

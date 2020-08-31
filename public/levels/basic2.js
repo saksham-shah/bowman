@@ -23,29 +23,29 @@ const TUTORIALFENCE = {
             colour: RED,
             doors: [{ x: 5, y: 1 }],
             triggers: [{
-                type: BUTTON,
+                type: I_BUTTON,
                 pos: { x: 3, y: 0 }
             }]
         }, {
             colour: BLUE,
             doors: [{ x: 3, y: 6 }],
             triggers: [{
-                type: BUTTON,
+                type: I_BUTTON,
                 pos: { x: 0, y: 0 }
             // }, {
-            //     type: BUTTON,
+            //     type: I_BUTTON,
             //     pos: { x: 7, y: 4 }
             }]
         },  {
             colour: GREEN,
             doors: [{ x: 7, y: 1 }],
             triggers: [{
-                type: BUTTON,
+                type: I_BUTTON,
                 pos: { x: 7, y: 6 }
-            // }, {
-            //     type: TARGET,
-            //     pos: { x: 6, y: 2 },
-            //     direction: NORTH
+            }, {
+                type: I_TARGET,
+                pos: { x: 6, y: 2 },
+                direction: NORTH
             }]
         }
     ]

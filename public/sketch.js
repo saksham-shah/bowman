@@ -9,8 +9,10 @@ let graphics = {
     map: {},
     player: {},
     buttons: {},
+    targets: {},
     doors: {},
-    rock: {}
+    rock: {},
+    projectiles: {}
 };
 
 function preload() {
@@ -29,10 +31,16 @@ function preload() {
     graphics.rock.close = loadImage(graphicsFolder + 'rock/rockclose.png');
     graphics.rock.hover = loadImage(graphicsFolder + 'rock/rockhover.png');
 
+    graphics.projectiles.arrow = loadImage(graphicsFolder + 'projectiles/arrow.png');
+
     for (let colour of COLOURS) {
         graphics.buttons[colour] = [];
         graphics.buttons[colour].push(loadImage(graphicsFolder + `buttons/button${colour}.png`));
         graphics.buttons[colour].push(loadImage(graphicsFolder + `buttons/button${colour}press.png`));
+
+        graphics.targets[colour] = [];
+        graphics.targets[colour].push(loadImage(graphicsFolder + `targets/target${colour}.png`));
+        graphics.targets[colour].push(loadImage(graphicsFolder + `targets/target${colour}press.png`));
 
         graphics.doors[colour] = loadImage(graphicsFolder + `doors/door${colour}.png`);
     }

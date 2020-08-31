@@ -10,9 +10,11 @@ class Arrow {
         this.remove = false;
 
         this.time = 0;
+
+        this.previousCell = { x: -1, y: -1 };
     }
 
-    update(grid, entities) {
+    update(grid, entities, targets) {
 
         if (this.time > 20) {
             this.hit = P_GROUND;
@@ -23,17 +25,19 @@ class Arrow {
         // Prevents fast bullets from going through objects without skipping them
         let maxStep = this.speed * dt;
         let distanceMoved = 0;
-        let step = maxStep / Math.ceil(maxStep);
+        let step = maxStep / Math.ceil(maxStep / MINSTEP);
         let collide = false;
+        let numSteps = 0;
         // Keeps moving until it collides or moves the max distance of one frame
         while (distanceMoved < maxStep && !collide) {
             this.pos.x += step * Math.cos(this.angle);
             this.pos.y += step * Math.sin(this.angle);
             distanceMoved += step;
-            collide = this.checkCollisions(grid, entities);
+            collide = this.checkCollisions(grid, entities, targets);
+            numSteps++;
         }
         
-        if (collide && this.time == 0) {
+        if (collide && this.time == 0 && numSteps < 2) {
             this.remove = true;
         }
 
@@ -42,7 +46,7 @@ class Arrow {
         return collide;
     }
 
-    checkCollisions(grid, entities) {
+    checkCollisions(grid, entities, targets) {
         let cell = getCell(this.pos);
 
         if (projectileCollides(cell.x, cell.y, grid)) {
@@ -52,10 +56,29 @@ class Arrow {
             if (cell.x >= 0 && cell.y >= 0 && cell.x < grid.length && cell.y < grid[0].length) {
                 grid[cell.x][cell.y].arrows.push(this);
             }
+
+            for (let target of targets) {
+                if (target.pressed) continue;
+                // Optimisation
+                if (Math.abs(cell.x - target.pos.x) + Math.abs(cell.y - target.pos.y) == 1) {
+                    let relPos = createVector(this.pos.x % CELL - CELL / 2, this.pos.y % CELL - CELL / 2);
+                    let relAngle = Math.atan2(relPos.y, relPos.x);
+                    let relMag = relPos.mag();
+
+                    let rotated = p5.Vector.fromAngle(relAngle - target.direction * Math.PI / 2, relMag);
+
+                    console.log(relPos.x, relPos.y, rotated.x, rotated.y);
+
+                    if (rotated.y >= CELL / 2 - MINSTEP && rotated.x >= -TARGETR / 2 && rotated.x <= TARGETR / 2) {
+                        target.pressed = true;
+                    }
+                }
+            }
             
-            // console.log(cell);
             return true;
         }
+
+        this.previousCell = cell;
 
         for (let entity of entities) {
             if (entity.fireAs == this.firedBy) continue;

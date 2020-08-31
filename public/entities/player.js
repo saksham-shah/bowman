@@ -28,7 +28,7 @@ class Player extends Entity {
         if (this.pullingBack) {
             if (mouseIsPressed) {
                 // if (this.cooldown == 0) {
-                    this.pullback++;
+                    this.pullback += dt;
                 // }
 
             } else {
@@ -36,10 +36,11 @@ class Player extends Entity {
                 if (this.pullback > 0) {
                     // this.cooldown = this.fireRate;
                     if (this.pullback > PULLBACK) this.pullback = PULLBACK;
-                    let speed = MINSPEED + (MAXSPEED - MINSPEED) * this.pullback / PULLBACK;
+                    let percent = this.pullback / PULLBACK;
+                    let speed = MINSPEED + (MAXSPEED - MINSPEED) * percent * percent;
                     this.pullback = 0;
                     console.log(speed);
-                    return new Arrow(this.pos.copy(), speed, this.mouseAngle, P_PLAYER);
+                    return new Arrow(p5.Vector.fromAngle(this.mouseAngle, 30).add(this.pos), speed, this.mouseAngle, P_PLAYER);
                 }
             }
         }
@@ -87,5 +88,6 @@ class Player extends Entity {
         // obj.angle = this.mouseAngle;
         obj.bow = this.bow;
         obj.pullback = this.pullback;
+        obj.cooldown = this.cooldown;
     }
 }
