@@ -44,7 +44,8 @@ I_TARGET = 1,
 // Entities
 PLAYER = 0,
 ROCK = 1,
-ARCHER = 2,
+CORPSE = 2,
+ARCHER = 3,
 
 // Cell types
 EMPTY = 0,

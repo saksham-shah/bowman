@@ -136,6 +136,7 @@ class Level {
         this.pickedUpEntity = null;
         this.placePosition = null;
         this.hoveredEntity = null;
+        this.droppingEntity = false;
     }
 
     update() {
@@ -162,6 +163,17 @@ class Level {
 
         for (let arrow of this.arrows) {
             if (arrow.hit === null) arrow.update(this.grid, this.entities, this.targets);
+        }
+
+        for (let i = this.entities.length - 1; i >= 0; i--) {
+            let entity = this.entities[i];
+            if (entity.hit) {
+                let corpse = new Corpse(entity.pos.copy(), entity.vel.copy(), entity.angle, entity.type, entity.shownHealth, entity.maxHealth);
+                this.entities.push(corpse);
+                this.entities.splice(i, 1);
+
+                this.pickupables.push(corpse);
+            }
         }
     }
 
@@ -263,17 +275,31 @@ class Level {
 
             let colliding = this.pickedUpEntity.checkCollisions(this.grid, this.entities, true);//this.placePosition);
             this.pickedUpEntity.canBePlaced = !colliding;
-            if (SETTINGS.pickup == DRAG) {
-                if (!mouseIsPressed) {
-                    if (this.pickedUpEntity.canBePlaced) {
-                        this.pickedUpEntity.vel.mult(0);
-                        if (this.pickedUpEntity.type == ROCK) {
-                            this.pickedUpEntity.angularVel = 0;
-                        }
+            // if (SETTINGS.pickup == DRAG) {
+            //     if (!mouseIsPressed) {
+            //         if (this.pickedUpEntity.canBePlaced) {
+            //             this.pickedUpEntity.vel.mult(0);
+            //             // if (this.pickedUpEntity.type == ROCK) {
+            //                 this.pickedUpEntity.angularVel = 0;
+            //             // }
 
-                        this.pickedUpEntity.pickedUp = false;
-                        this.pickedUpEntity = null;
-                    }
+            //             this.pickedUpEntity.pickedUp = false;
+            //             this.pickedUpEntity = null;
+            //         }
+            //     }
+            // }
+
+            if (this.droppingEntity) {
+                if (this.pickedUpEntity.canBePlaced) {
+                    this.pickedUpEntity.vel.mult(0);
+                    // if (this.pickedUpEntity.type == ROCK) {
+                        this.pickedUpEntity.angularVel = 0;
+                    // }
+    
+                    this.pickedUpEntity.pickedUp = false;
+                    this.pickedUpEntity = null;
+
+                    this.droppingEntity = false;
                 }
             }
 
@@ -301,19 +327,28 @@ class Level {
         }
     }
 
-    click() {
-        if (this.pickedUpEntity && SETTINGS.pickup == CLICK) {
+    click(leftMouse) {
+        if (this.pickedUpEntity) { // && SETTINGS.pickup == CLICK) {
             if (this.pickedUpEntity.canBePlaced) {
                 this.pickedUpEntity.vel.mult(0);
-                if (this.pickedUpEntity.type == ROCK) {
+                // if (this.pickedUpEntity.type == ROCK) {
                     this.pickedUpEntity.angularVel = 0;
-                }
+                // }
 
                 this.pickedUpEntity.pickedUp = false;
                 this.pickedUpEntity = null;
+            } else {
+                this.droppingEntity = true;
             }
 
-        } else if (this.hoveredEntity) {
+        } else if (this.hoveredEntity || !leftMouse) {
+            if (!this.hoveredEntity) {
+                for (let entity of this.pickupables) {
+                    if (entity.closeToPlayer) {
+                        this.hoveredEntity = entity;
+                    }
+                }
+            }
             // console.log(this.hoveredEntity);
             this.pickedUpEntity = this.hoveredEntity;
             this.hoveredEntity = null;
@@ -330,22 +365,24 @@ class Level {
                 entity.closeToPlayer = false;
                 entity.hovered = false;
             }
-        } else if (this.player.bow && this.player.cooldown <= 0) {
-            // pull back bow
-            this.player.pullingBack = true;
-            this.player.cooldown = this.player.fireRate;
-
-            // this.arrows.push(new Arrow(this.player.pos.copy(), 5, this.player.angle, P_PLAYER));
+        } else {
+            if (this.player.bow && this.player.cooldown <= 0) {
+                // pull back bow
+                this.player.pullingBack = true;
+                this.player.cooldown = this.player.fireRate;
+            }
         }
     }
 
     toObject() {
         let entities = [];
         for (let entity of this.entities) {
-            // if (entity.pickedUp) continue;
+            if (entity == this.player) continue;
 
             entities.push(entity.superToObject());
         }
+
+        entities.push(this.player.superToObject());
 
         let arrows = [];
         for (let i = this.arrows.length - 1; i >= 0; i--) {

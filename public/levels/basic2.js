@@ -6,11 +6,11 @@ const TUTORIALFENCE = {
 
     caves: [{
         pos: { x: 0, y: 5 },
-        enemies: '10101'
+        enemies: '1001001'
     }],
 
     map: {
-        walls: [{ x: 3, y: 5 }, { x: 4, y: 5 }, { x: 5, y: 5 }, { x: 6, y: 5 }, { x: 7, y: 5 }, { x: 4, y: 0 }, { x: 4, y: 1 }, { x: 6, y: 0 }, { x: 6, y: 1 }],
+        walls: [{ x: 3, y: 5 }, { x: 4, y: 5 }, { x: 5, y: 5 }, { x: 6, y: 5 }, { x: 4, y: 0 }, { x: 4, y: 1 }, { x: 6, y: 0 }, { x: 6, y: 1 }],
         fences: [{ x: 4, y: 6 }]
     },
 
@@ -32,13 +32,13 @@ const TUTORIALFENCE = {
             triggers: [{
                 type: I_BUTTON,
                 pos: { x: 0, y: 0 }
-            // }, {
-            //     type: I_BUTTON,
-            //     pos: { x: 7, y: 4 }
+            }, {
+                type: I_BUTTON,
+                pos: { x: 7, y: 4 }
             }]
         },  {
             colour: GREEN,
-            doors: [{ x: 7, y: 1 }],
+            doors: [{ x: 7, y: 1 }, { x: 7, y: 5 }],
             triggers: [{
                 type: I_BUTTON,
                 pos: { x: 7, y: 6 }

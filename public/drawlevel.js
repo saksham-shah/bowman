@@ -146,6 +146,31 @@ function drawEntity(entity) {
 
             image(img, -CELL / 2, -CELL / 2);
             break;
+        case ARCHER:
+            fill(150, 0, 0);
+            stroke(200);
+            ellipse(0, 0, entity.r * 2);
+            line(0, 0, entity.r, 0);
+
+            rotate(-entity.angle);
+            rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
+            fill(0, 150, 0);
+            rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)
+            break;
+        case CORPSE:
+            fill(150);
+            stroke(200);
+            ellipse(0, 0, entity.r * 2);
+            line(0, 0, entity.r, 0);
+
+            if (entity.healthPercent > 0) {
+                rotate(-entity.angle);
+                fill(150, 0, 0);
+                rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
+                fill(0, 150, 0);
+                rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)
+            }
+            break;
         default:
             fill(50);
             stroke(200);

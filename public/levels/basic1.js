@@ -6,7 +6,7 @@ const TUTORIALBOW = {
 
     caves: [{
         pos: { x: 0, y: 2 },
-        enemies: '101'
+        enemies: '01'
     }],
 
     map: {
@@ -14,7 +14,7 @@ const TUTORIALBOW = {
     },
 
     entities: {
-        rocks: [{ x: 0, y: 0 }, { x: 1, y: 5 }]
+        rocks: [{ x: 0, y: 0 }]
     },
 
     interactables: [

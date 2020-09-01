@@ -13,7 +13,7 @@ class Archer extends Enemy {
 
         this.fireRate = 300;
 
-        this.cooldown = 0;
+        this.cooldown = 120;
     }
 
     subUpdate() {
@@ -25,18 +25,18 @@ class Archer extends Enemy {
             this.pullingBack = true;
             this.moving = false;
             this.firingAt = { x: this.target.pos.x, y: this.target.pos.y };
+            this.cooldown = this.fireRate;
         }
 
         if (this.pullingBack) {
             if (this.pullback < PULLBACK) {
-                this.pullback += dt;
+                this.pullback += 2 * dt;
 
             } else {
                 this.moving = true;
                 this.pullingBack = false;
-                this.cooldown = this.fireRate;
                 this.pullback = 0;
-                let angle = this.fireAngle + Math.random() * ARCHERERROR * 2 - ARCHERERROR;
+                let angle = this.fireAngle;// + Math.random() * ARCHERERROR * 2 - ARCHERERROR;
                 return new Arrow(p5.Vector.fromAngle(angle, 30).add(this.pos), MAXSPEED, angle, P_ENEMY);
             }
         }
@@ -46,13 +46,13 @@ class Archer extends Enemy {
 
     aimAtTarget() {
         let dx, dy;
-        // if (this.pullingBack) {
-        //     dx = this.firingAt.x - this.pos.x;
-        //     dy = this.firingAt.y - this.pos.y;
-        // } else {
+        if (this.pullingBack) {
+            dx = this.firingAt.x - this.pos.x;
+            dy = this.firingAt.y - this.pos.y;
+        } else {
             dx = this.target.pos.x - this.pos.x;
             dy = this.target.pos.y - this.pos.y;
-        // }
+        }
 
         this.fireAngle = Math.atan2(dy, dx);
     }

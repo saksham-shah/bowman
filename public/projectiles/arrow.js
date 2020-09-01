@@ -1,7 +1,7 @@
 class Arrow {
     constructor(pos, speed, angle, firedBy) {
         this.pos = pos;
-        this.speed = speed;
+        this.speed = Math.round(speed);
         this.angle = angle;
 
         this.firedBy = firedBy;
@@ -101,8 +101,12 @@ class Arrow {
 
                 entity.vel.add(p5.Vector.fromAngle(this.angle, this.speed * FORCE / entity.mass));
 
-                if (entity.type == ROCK) {
+                if (entity.type == ROCK || entity.type == CORPSE) {
                     entity.angularVel += 0.2 * FORCE * Math.sin(this.angle - relAngle);
+                }
+
+                if (typeof entity.damage == 'function') {
+                    entity.damage(this.speed);
                 }
 
                 // console.log(entity);
