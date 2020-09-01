@@ -76,8 +76,10 @@ class Entity {
             if (entityCollide.moved) {
                 if (!this.pickedUp) {
                     if (this.type !== PLAYER) {
-                        this.vel.x += 2 * (entityCollide.pos.x - this.pos.x);
-                        this.vel.y += 2 * (entityCollide.pos.y - this.pos.y);
+                        let mag = this.vel.mag();
+                        this.vel.x += 2 * (entityCollide.pos.x - this.pos.x) / dt;
+                        this.vel.y += 2 * (entityCollide.pos.y - this.pos.y) / dt;
+                        this.vel.limit(mag);
                     }
 
                     this.pos.x = entityCollide.pos.x;
@@ -93,8 +95,10 @@ class Entity {
         if (wallCollide.moved) {
             if (!this.pickedUp) {
                 if (this.type !== PLAYER) {
-                    this.vel.x += 2 * (wallCollide.pos.x - this.pos.x);
-                    this.vel.y += 2 * (wallCollide.pos.y - this.pos.y);
+                    let mag = this.vel.mag();
+                    this.vel.x += 2 * (wallCollide.pos.x - this.pos.x) / dt;
+                    this.vel.y += 2 * (wallCollide.pos.y - this.pos.y) / dt;
+                    this.vel.limit(mag);
                 }
 
                 this.pos.x = wallCollide.pos.x;

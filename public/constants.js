@@ -20,6 +20,8 @@ PULLBACK = 60,
 FORCE = 0.5,
 MINSTEP = 1,
 
+ARCHERERROR = Math.PI / 8,
+
 // Directions
 NORTH = 0,
 EAST = 1,
@@ -42,6 +44,7 @@ I_TARGET = 1,
 // Entities
 PLAYER = 0,
 ROCK = 1,
+ARCHER = 2,
 
 // Cell types
 EMPTY = 0,

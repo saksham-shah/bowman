@@ -99,7 +99,7 @@ class Arrow {
                     angle: this.angle - entity.angle
                 });
 
-                entity.vel.add(p5.Vector.fromAngle(this.angle, this.speed * FORCE));
+                entity.vel.add(p5.Vector.fromAngle(this.angle, this.speed * FORCE / entity.mass));
 
                 if (entity.type == ROCK) {
                     entity.angularVel += 0.2 * FORCE * Math.sin(this.angle - relAngle);

@@ -184,6 +184,7 @@ class Level {
                 switch(enemyType) {
                     case S_BOW: {
                         console.log('Bow enemy spawning!');
+                        this.entities.push(new Archer(cave.pos, this.player));
                         break;
                     }
                 }

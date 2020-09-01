@@ -1,13 +1,13 @@
 class Player extends Entity {
     constructor(cell) {
-        super(cell, 10, 1, PLAYER);
+        super(cell, 10, 3, PLAYER);
 
         this.fireAs = P_PLAYER;
 
         this.mouseAngle = 0;
 
         this.maxAcc = 0.7;
-        this.maxVel = 3;
+        this.targetVel = 3;
         
         this.bow = false;
 
@@ -23,27 +23,27 @@ class Player extends Entity {
         this.move();
         this.aimToMouse();
 
-        if (this.cooldown > 0) this.cooldown -= dt;
+    if (this.cooldown > 0) this.cooldown -= dt;
 
-        if (this.pullingBack) {
-            if (mouseIsPressed) {
-                // if (this.cooldown == 0) {
-                    this.pullback += dt;
-                // }
+    if (this.pullingBack) {
+        if (mouseIsPressed) {
+            // if (this.cooldown == 0) {
+                this.pullback += dt;
+            // }
 
-            } else {
-                this.pullingBack = false;
-                if (this.pullback > 0) {
-                    // this.cooldown = this.fireRate;
-                    if (this.pullback > PULLBACK) this.pullback = PULLBACK;
-                    let percent = this.pullback / PULLBACK;
-                    let speed = MINSPEED + (MAXSPEED - MINSPEED) * percent * percent;
-                    this.pullback = 0;
-                    console.log(speed);
-                    return new Arrow(p5.Vector.fromAngle(this.mouseAngle, 30).add(this.pos), speed, this.mouseAngle, P_PLAYER);
-                }
+        } else {
+            this.pullingBack = false;
+            if (this.pullback > 0) {
+                // this.cooldown = this.fireRate;
+                if (this.pullback > PULLBACK) this.pullback = PULLBACK;
+                let percent = this.pullback / PULLBACK;
+                let speed = MINSPEED + (MAXSPEED - MINSPEED) * percent * percent;
+                this.pullback = 0;
+                console.log(speed);
+                return new Arrow(p5.Vector.fromAngle(this.mouseAngle, 30).add(this.pos), speed, this.mouseAngle, P_PLAYER);
             }
         }
+    }
 
         return null;
     }
@@ -52,23 +52,23 @@ class Player extends Entity {
         let des = createVector(0, 0);
 
         if (keyIsDown(87)) { // w
-            des.y -= this.maxVel;
+            des.y -= this.targetVel;
         }
 
         if (keyIsDown(83)) { // s
-            des.y += this.maxVel;
+            des.y += this.targetVel;
         }
 
         if (keyIsDown(65)) { // a
-            des.x -= this.maxVel;
+            des.x -= this.targetVel;
         }
 
         if (keyIsDown(68)) { // d
-            des.x += this.maxVel;
+            des.x += this.targetVel;
         }
 
-        des.normalize();
-        des.mult(this.maxVel);
+        // des.normalize();
+        des.setMag(this.targetVel);
 
         this.acc.add(des);
         this.acc.sub(this.vel);

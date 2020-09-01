@@ -150,6 +150,7 @@ function drawEntity(entity) {
             fill(50);
             stroke(200);
             ellipse(0, 0, entity.r * 2);
+            line(0, 0, entity.r, 0);
 
     }
 

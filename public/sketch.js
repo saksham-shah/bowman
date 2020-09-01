@@ -64,7 +64,7 @@ function setup() {
     //add screens
     addScreen('game', {
         draw: () => {
-            drawLevel(game.toObject());
+            if (game) drawLevel(game.toObject());
         }
     })
     .on('mouseDown', e => {
@@ -85,7 +85,9 @@ function setup() {
 
     setScreen('game');
 
-    game = new Level(TUTORIALFENCE);
+    setTimeout(() => {
+        game = new Level(TUTORIALFENCE);
+    }, 100);
 
 }
 

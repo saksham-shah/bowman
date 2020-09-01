@@ -94,7 +94,7 @@ function collideWithWalls(pos, r, grid) {
             switch (dir) {
                 case WEST:
                     if (!playerCollides(cell.x - 1, cell.y, grid)) {
-                        newPos.x -= relativePos.x + 1;
+                        newPos.x -= relativePos.x + r;
                         return {
                             moved: true,
                             pos: newPos
@@ -103,7 +103,7 @@ function collideWithWalls(pos, r, grid) {
                     break;
                 case EAST:
                     if (!playerCollides(cell.x + 1, cell.y, grid)) {
-                        newPos.x += CELL - relativePos.x;
+                        newPos.x += CELL - relativePos.x + r;
                         return {
                             moved: true,
                             pos: newPos
@@ -112,7 +112,7 @@ function collideWithWalls(pos, r, grid) {
                     break;
                 case NORTH:
                     if (!playerCollides(cell.x, cell.y - 1, grid)) {
-                        newPos.y -= relativePos.y - 1;
+                        newPos.y -= relativePos.y + r;
                         return {
                             moved: true,
                             pos: newPos
@@ -121,7 +121,7 @@ function collideWithWalls(pos, r, grid) {
                     break;
                 case SOUTH:
                     if (!playerCollides(cell.x, cell.y + 1, grid)) {
-                        newPos.y += CELL - relativePos.y;
+                        newPos.y += CELL - relativePos.y + r;
                         return {
                             moved: true,
                             pos: newPos
@@ -130,6 +130,38 @@ function collideWithWalls(pos, r, grid) {
                     break;
             }
         }
+
+        if (cell.x < 0) {
+            newPos.x += CELL - relativePos.x + r;
+            return {
+                moved: true,
+                pos: newPos
+            }
+        }
+
+        if (cell.y < 0) {
+            newPos.y += CELL - relativePos.y + r;
+            return {
+                moved: true,
+                pos: newPos
+            }
+        }
+
+        if (cell.x >= grid.length) {
+            newPos.x -= relativePos.x + r;
+            return {
+                moved: true,
+                pos: newPos
+            }
+        }
+
+        // if (cell.y >= grid[0].length) {
+            newPos.y -= relativePos.y + r;
+            return {
+                moved: true,
+                pos: newPos
+            }
+        // }
     }
 
     let dx = 0, dy = 0;
