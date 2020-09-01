@@ -378,11 +378,16 @@ class Level {
         let entities = [];
         for (let entity of this.entities) {
             if (entity == this.player) continue;
+            if (entity == this.pickedUpEntity) continue;
 
             entities.push(entity.superToObject());
         }
 
         entities.push(this.player.superToObject());
+
+        if (this.pickedUpEntity) {
+            entities.push(this.pickedUpEntity.superToObject());
+        }
 
         let arrows = [];
         for (let i = this.arrows.length - 1; i >= 0; i--) {

@@ -10,7 +10,7 @@ const TUTORIALFENCE = {
     }],
 
     map: {
-        walls: [{ x: 3, y: 5 }, { x: 4, y: 5 }, { x: 5, y: 5 }, { x: 6, y: 5 }, { x: 4, y: 0 }, { x: 4, y: 1 }, { x: 6, y: 0 }, { x: 6, y: 1 }],
+        walls: [{ x: 3, y: 5 }, { x: 4, y: 5 }, { x: 7, y: 5 }, { x: 6, y: 5 }, { x: 4, y: 0 }, { x: 4, y: 1 }, { x: 6, y: 0 }, { x: 6, y: 1 }],
         fences: [{ x: 4, y: 6 }]
     },
 
@@ -38,7 +38,7 @@ const TUTORIALFENCE = {
             }]
         },  {
             colour: GREEN,
-            doors: [{ x: 7, y: 1 }, { x: 7, y: 5 }],
+            doors: [{ x: 7, y: 1 }, { x: 5, y: 5 }],
             triggers: [{
                 type: I_BUTTON,
                 pos: { x: 7, y: 6 }

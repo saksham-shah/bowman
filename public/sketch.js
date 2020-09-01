@@ -75,6 +75,8 @@ function setup() {
         if (game) game.click(false);
     });
 
+    setupLevelSelect();
+
     addStyles();
 
     setupUI();
@@ -86,11 +88,11 @@ function setup() {
     //     ghost: 'assets/ghost.cur'
     // });
 
-    setScreen('game');
+    setScreen('levels');
 
-    setTimeout(() => {
-        game = new Level(TUTORIALFENCE);
-    }, 100);
+    // setTimeout(() => {
+    //     game = new Level(TUTORIALFENCE);
+    // }, 100);
 
 }
 
