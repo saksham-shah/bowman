@@ -16,16 +16,20 @@ class Archer extends Enemy {
         this.cooldown = 120;
     }
 
-    subUpdate() {
+    subUpdate(grid) {
         this.aimAtTarget();
 
         if (this.cooldown > 0) {
             this.cooldown -= dt;
         } else if (!this.pullingBack) {
-            this.pullingBack = true;
-            this.moving = false;
-            this.firingAt = { x: this.target.pos.x, y: this.target.pos.y };
-            this.cooldown = this.fireRate;
+            if (this.clearLineOfSight(grid)) {
+                this.pullingBack = true;
+                this.moving = false;
+                this.firingAt = { x: this.target.pos.x, y: this.target.pos.y };
+                this.cooldown = this.fireRate;
+            } else {
+                this.cooldown = REFRESH;
+            }
         }
 
         if (this.pullingBack) {
@@ -55,6 +59,40 @@ class Archer extends Enemy {
         }
 
         this.fireAngle = Math.atan2(dy, dx);
+    }
+
+    clearLineOfSight(grid) {
+        let dx = this.target.pos.x - this.pos.x;
+        let dy = this.target.pos.y - this.pos.y;
+
+        let angle = Math.atan2(dy, dx);
+        let d = Math.sqrt(dx * dx + dy * dy);
+
+        let x = this.pos.x, y = this.pos.y;
+
+        // Ensures that the bullet only moves a maximum of 5 pixels at a time
+        // Prevents fast bullets from going through objects without skipping them
+        let distanceMoved = 0;
+        let step = d / Math.ceil(d / MINSTEP);
+        let collide = false;
+        let lastCell = null;
+        // Keeps moving until it collides or moves the max distance of one frame
+        while (distanceMoved < d && !collide) {
+            x += step * Math.cos(angle);
+            y += step * Math.sin(angle);
+            distanceMoved += step;
+
+            let cell = getCell(createVector(x, y));
+            if (cell != lastCell) {
+                lastCell = cell;
+
+                collide = projectileCollides(cell.x, cell.y, grid);
+            }
+        }
+
+        console.log(collide);
+
+        return !collide;
     }
 
     updateAngle() { this.angle = this.fireAngle }

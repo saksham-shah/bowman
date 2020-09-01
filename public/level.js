@@ -168,7 +168,7 @@ class Level {
         for (let i = this.entities.length - 1; i >= 0; i--) {
             let entity = this.entities[i];
             if (entity.hit) {
-                let corpse = new Corpse(entity.pos.copy(), entity.vel.copy(), entity.angle, entity.type, entity.shownHealth, entity.maxHealth);
+                let corpse = new Corpse(entity.pos.copy(), entity.vel.copy(), entity.angle, entity.arrows, entity.type, entity.shownHealth, entity.maxHealth);
                 this.entities.push(corpse);
                 this.entities.splice(i, 1);
 

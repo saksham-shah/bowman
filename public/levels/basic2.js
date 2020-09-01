@@ -15,7 +15,7 @@ const TUTORIALFENCE = {
     },
 
     entities: {
-        rocks: [{ x: 5, y: 6 }, { x: 7, y: 2 }]
+        rocks: [{ x: 5, y: 6 }, { x: 7, y: 3 }]
     },
 
     interactables: [
@@ -44,8 +44,8 @@ const TUTORIALFENCE = {
                 pos: { x: 7, y: 6 }
             }, {
                 type: I_TARGET,
-                pos: { x: 6, y: 2 },
-                direction: NORTH
+                pos: { x: 7, y: 2 },
+                direction: EAST
             }]
         }
     ]

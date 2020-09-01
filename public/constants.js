@@ -18,9 +18,9 @@ MINSPEED = 5,
 MAXSPEED = 30,
 PULLBACK = 60,
 FORCE = 0.5,
-MINSTEP = 1,
+MINSTEP = 5,
 
-ARCHERERROR = Math.PI / 8,
+REFRESH = 60,
 
 // Directions
 NORTH = 0,
