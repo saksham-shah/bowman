@@ -90,8 +90,6 @@ class Archer extends Enemy {
             }
         }
 
-        console.log(collide);
-
         return !collide;
     }
 

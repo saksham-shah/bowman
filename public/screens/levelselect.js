@@ -1,7 +1,13 @@
+let stats = {
+    levelData: [],
+    gainedStars: 0,
+    freeStars: 0,
+    totalStars: 0
+}
+
 function setupLevelSelect() {
-    let levelData = [];
     for (let i = 0; i < levels.length; i++) {
-        levelData.push({
+        stats.levelData.push({
             stars: 0,
             secret: false
         });
@@ -29,7 +35,7 @@ function setupLevelSelect() {
             if (relPos.x < 100 && relPos.y < 100) {
                 let cell = {
                     x: Math.floor(mousePos.x / 150),
-                    y: Math.floor(mousePos.y / 150)                    
+                    y: Math.floor(mousePos.y / 150)
                 }
 
                 hovered = cell.x + cell.y * 5;
@@ -54,17 +60,52 @@ function setupLevelSelect() {
                     fill(255);
                 }
 
-                rect(x + 50, y + 50, 100, 100);
+                rect(x + 50, y + 50, 100, 100, 10);
             }
 
             pop();
         },
     })
-    .on('mouseUp', e => {
-        if (hovered >= 0) {
-            setScreen('game');
+        .on('mouseUp', e => {
+            if (hovered >= 0) {
+                setScreen('game');
 
-            game = new Level(levels[hovered]);
-        }
-    })
+                game = new Level(hovered);
+            }
+        })
+}
+
+/*
+{
+    level: number,
+    stars: 0/1/2/3,
+    secret: boolean
+}
+*/
+function updateStars(result) {
+    let levelData = stats.levelData[result.level];
+
+    if (result.stars > levelData.stars) {
+        let extra = result.stars - levelData.stars;
+        stats.gainedStars += extra;
+        levelData.stars = result.stars;
+    }
+
+    if (result.stars > 0 && result.secret && !levelData.secret) {
+        stats.gainedStars++;
+        levelData.secret = true;
+    }
+
+    stats.totalStars = stats.gainedStars + stats.freeStars;
+    if (stats.totalStars > 4 * levels.length) {
+        stats.freeStars = 4 * levels.length - stats.gainedStars;
+        stats.totalStars = 4 * levels.length;
+    }
+
+    // openPopup('level end', {
+    //     level: result.level,
+    //     stars: result.stars,
+    //     secret: false,
+    //     arrows: 1
+    // });
 }

@@ -949,7 +949,7 @@ main.Button = class Button extends core_element {
             noStroke();
         }
 
-        rect(0, 0, this.width, this.height);
+        rect(0, 0, this.width, this.height, 10);
 
         textAlign(CENTER);
         textSize(this.tSize);

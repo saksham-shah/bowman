@@ -64,31 +64,50 @@ function setup() {
     //add screens
     addScreen('game', {
         draw: () => {
+            if (game && !game.paused) {
+                // dt = deltaTime * 0.06;
+                // if (dt > 5) dt = 5;
+                game.update();
+            }
+
             if (game) drawLevel(game.toObject());
         }
     })
     .on('mouseDown', e => {
-        if (game) game.click(e.button == 0);
+        if (game && !game.paused) game.click(e.button == 0);
     })
     .on('keyDown', e => {
-        if (e.key != ' ') return;
-        if (game) game.click(false);
+        if (e.key == ' ' && game && !game.paused) return game.click(false);
+        if (e.key == 'p' && game) game.paused = !game.paused;
     });
 
     setupLevelSelect();
+    addLevelEndScreen();
 
     addStyles();
 
     setupUI();
 
+    let sounds = {
+        hover: { play: () => {} },
+        click: { play: () => {} },
+    }
+
     // setFont(font);
-    // setSounds(sounds);
+    setSounds(sounds);
     // setCursors({
     //     game: 'assets/game.cur',
     //     ghost: 'assets/ghost.cur'
     // });
 
     setScreen('levels');
+
+    // openPopup('level end', {
+    //     level: 1,
+    //     stars: 2,
+    //     secret: false,
+    //     arrows: 1
+    // });
 
     // setTimeout(() => {
     //     game = new Level(TUTORIALFENCE);
@@ -97,11 +116,11 @@ function setup() {
 }
 
 function draw() {
-    if (game) {
+    // if (game) {
         dt = deltaTime * 0.06;
         if (dt > 5) dt = 5;
-        game.update();
-    }
+        // game.update();
+    // }
 
     updateUI();
     drawUI();

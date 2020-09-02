@@ -44,15 +44,15 @@ class Entity {
 
         this.checkCollisions(grid, entities);
 
-        if (this.type == PLAYER && !this.bow) {
-            let cell = getCell(this.pos);
-            if (cell.x >= 0 && cell.y >= 0 && cell.x < grid.length && cell.y < grid[0].length) {
-                if (grid[cell.x][cell.y].type == BOW) {
-                    grid[cell.x][cell.y].type = EMPTY;
-                    this.bow = true;
-                }
-            }
-        }
+        // if (this.type == PLAYER && !this.bow) {
+        //     let cell = getCell(this.pos);
+        //     if (cell.x >= 0 && cell.y >= 0 && cell.x < grid.length && cell.y < grid[0].length) {
+        //         if (grid[cell.x][cell.y].type == BOW) {
+        //             grid[cell.x][cell.y].type = EMPTY;
+        //             this.bow = true;
+        //         }
+        //     }
+        // }
 
         this.updateAngle();
 

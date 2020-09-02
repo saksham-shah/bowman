@@ -1,5 +1,7 @@
 class Level {
-    constructor(data) {
+    constructor(level) {
+        this.level = level;
+        let data = levels[level];
         normaliseLevel(data);
 
         this.mousePos = { x: 0, y: 0 };
@@ -8,6 +10,11 @@ class Level {
         zoom = Math.min(1.5, xRatio, yRatio);
         cornerX = 800 - data.size.width * CELL / 2 * zoom;
         cornerY = 450 - data.size.height * CELL / 2 * zoom;
+
+        this.paused = false;
+        this.secret = false;
+        this.ended = -1;
+        this.arrows = 0;
 
         this.grid = [];
         for (let i = 0; i < data.size.width; i++) {
@@ -151,6 +158,18 @@ class Level {
         this.updateEntities();
         this.updateButtons();
         this.updatePickables();
+        this.checkPlayer();
+
+        if (this.ended != -1) {
+            this.ended--;
+
+            if (this.ended == 0) {
+                console.log('open game over screen');
+                this.paused = true;
+
+                openPopup('level end', this.result);
+            }
+        }
     }
 
     updateEntities() {
@@ -173,6 +192,12 @@ class Level {
                 this.entities.splice(i, 1);
 
                 this.pickupables.push(corpse);
+
+                if (entity.type == PLAYER) {
+                    if (this.pickedUpEntity) this.droppingEntity = true;
+
+                    this.endLevel(false);
+                }
             }
         }
     }
@@ -195,7 +220,7 @@ class Level {
 
                 switch(enemyType) {
                     case S_BOW: {
-                        console.log('Bow enemy spawning!');
+                        // console.log('Bow enemy spawning!');
                         this.entities.push(new Archer(cave.pos, this.player));
                         break;
                     }
@@ -253,6 +278,7 @@ class Level {
 
     updatePickables() {
         function entityClose(entity, player) {
+            if (player.hit) return;
             let distToPlayerSq = Math.pow(player.pos.x - entity.pos.x, 2) + Math.pow(player.pos.y - entity.pos.y, 2);
             return distToPlayerSq <= PICKUPSQ
         }
@@ -327,7 +353,22 @@ class Level {
         }
     }
 
+    checkPlayer() {
+        let cell = getCell(this.player.pos);
+        if (cell.x >= 0 && cell.y >= 0 && cell.x < this.grid.length && cell.y < this.grid[0].length) {
+            if (!this.player.bow && this.grid[cell.x][cell.y].type == BOW) {
+                this.grid[cell.x][cell.y].type = EMPTY;
+                this.player.bow = true;
+            }
+
+            if (this.ended == -1 && this.grid[cell.x][cell.y].type == END) {
+                this.endLevel(true);
+            }
+        }
+    }
+
     click(leftMouse) {
+        if (this.player.hit) return;
         if (this.pickedUpEntity) { // && SETTINGS.pickup == CLICK) {
             if (this.pickedUpEntity.canBePlaced) {
                 this.pickedUpEntity.vel.mult(0);
@@ -350,11 +391,13 @@ class Level {
                 }
             }
             // console.log(this.hoveredEntity);
-            this.pickedUpEntity = this.hoveredEntity;
-            this.hoveredEntity = null;
-
-            this.pickedUpEntity.pickedUp = true;
-            this.pickedUpEntity.canBePlaced = true;
+            if (this.hoveredEntity) {
+                this.pickedUpEntity = this.hoveredEntity;
+                this.hoveredEntity = null;
+    
+                this.pickedUpEntity.pickedUp = true;
+                this.pickedUpEntity.canBePlaced = true;
+            }
 
             // this.pickedUpEntity.vel.mult(0);
             // if (this.pickedUpEntity.type == ROCK) {
@@ -383,7 +426,7 @@ class Level {
             entities.push(entity.superToObject());
         }
 
-        entities.push(this.player.superToObject());
+        if (!this.player.hit) entities.push(this.player.superToObject());
 
         if (this.pickedUpEntity) {
             entities.push(this.pickedUpEntity.superToObject());
@@ -409,6 +452,31 @@ class Level {
             targets: this.targets,
             placePosition: this.placePosition
         }
+    }
+
+    endLevel(success) {
+        if (this.ended >= 0) return;
+        let stars = 0;
+        if (success) {
+            stars = 2;
+        }
+
+        updateStars({
+            level: this.level,
+            stars,
+            secret: this.secret
+        });
+
+        this.result = {
+            level: this.level,
+            stars,
+            secret: this.secret,
+            arrows: 1
+        }
+
+        this.ended = 60;
+
+        console.log('level ended', success ? 'well done' : 'bad')
     }
 }
 

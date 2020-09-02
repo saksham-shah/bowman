@@ -67,7 +67,7 @@ class Arrow {
 
                     let rotated = p5.Vector.fromAngle(relAngle - target.direction * Math.PI / 2, relMag);
 
-                    console.log(relPos.x, relPos.y, rotated.x, rotated.y);
+                    // console.log(relPos.x, relPos.y, rotated.x, rotated.y);
 
                     if (rotated.y >= CELL / 2 - MINSTEP && rotated.x >= -TARGETR / 2 && rotated.x <= TARGETR / 2) {
                         target.pressed = true;

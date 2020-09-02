@@ -39,7 +39,7 @@ class Player extends Entity {
                 let percent = this.pullback / PULLBACK;
                 let speed = MINSPEED + (MAXSPEED - MINSPEED) * percent * percent;
                 this.pullback = 0;
-                console.log(speed);
+                // console.log(speed);
                 return new Arrow(p5.Vector.fromAngle(this.mouseAngle, 30).add(this.pos), speed, this.mouseAngle, P_PLAYER);
             }
         }
@@ -83,6 +83,11 @@ class Player extends Entity {
     }
 
     updateAngle() { this.angle = this.mouseAngle }
+
+    damage() {
+        this.hit = true;
+        this.health = 0;
+    }
 
     toObject(obj) {
         // obj.angle = this.mouseAngle;
