@@ -24,7 +24,25 @@ let levels = [
                     }
                 ]
             }
-        ]
+        ],
+        meta: {
+            required: 0,
+            double: 0,
+            triple: 0,
+            secret: { x: 0, y: 0 },
+
+            text: {
+                default: [
+                    {
+                        text: 'Place the rock on the button to open the door.',
+                        position: NORTH
+                    }, {
+                        text: 'Right click to automatically pick up a nearby object.',
+                        position: SOUTH
+                    }
+                ]
+            }
+        }
     },
 
     // Level 2
@@ -63,7 +81,35 @@ let levels = [
                     pos: { x: 0, y: 5 }
                 }]
             }
-        ]
+        ],
+        meta: {
+            required: 3,
+            double: 4,
+            triple: 2,
+            secret: { x: 1, y: 2 },
+
+            text: {
+                default: [],
+                bow: [
+                    {
+                        text: 'A war horn? I guess there are enemies to kill.',
+                        position: NORTH
+                    }, {
+                        text: 'Left click to shoot an arrow - hold it longer for more damage!',
+                        position: SOUTH
+                    }
+                ],
+                kill: [
+                    {
+                        text: 'Perhaps the corpse will be of use to you...',
+                        position: NORTH
+                    }, {
+                        text: '',
+                        position: SOUTH
+                    }
+                ]
+            }
+        }
     },
 
     // Level 3
@@ -117,6 +163,12 @@ let levels = [
                     direction: EAST
                 }]
             }
-        ]
+        ],
+        meta: {
+            required: 5,
+            double: 6,
+            triple: 3,
+            secret: { x: 7, y: 6 }
+        }
     }
 ];

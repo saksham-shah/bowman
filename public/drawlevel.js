@@ -1,13 +1,47 @@
-let _grid;
+let star = {
+    pos: null,
+    time: 0
+};
+
+let texts = {};
+
+let textDisplayed = {
+    default: false,
+    cave: false,
+    kill: false,
+    bow: false
+}
+
+resetText();
+
+function resetText() {
+    texts[NORTH] = '';
+    texts[SOUTH] = '';
+    
+    textDisplayed = {
+        default: false,
+        kill: false,
+        bow: false
+    }
+}
+
+function displayText(meta, textType) {
+    if (textDisplayed[textType]) return;
+    textDisplayed[textType] = true;
+
+    if (!meta.text[textType]) return;
+
+    for (let t of meta.text[textType]) {
+        texts[t.position] = t.text;
+    }
+}
+
 function drawLevel(level) {
     let { entities, arrows, grid, interactables, buttons, targets } = level;
-
-    _grid = grid;
 
     push();
     translate(cornerX, cornerY);
     scale(zoom);
-
 
     drawGrid(grid, interactables, buttons, targets);
 
@@ -29,7 +63,30 @@ function drawLevel(level) {
         drawEntityArrows(entity);
     }
 
+    if (star.time > 0) {
+        let percent = (180 - star.time) / 180;
+        let size = 28 + 112 * percent;
+        tint(255, 255 - 255 * percent);
+        image(graphics.star.gold, star.pos.x - size / 2, star.pos.y - size / 2, size, size);
+        tint(255);
+
+        star.time -= dt;
+    }
+
     pop();
+
+    textAlign(CENTER);
+    textSize(30 * zoom);
+    fill(255);
+    noStroke();
+
+    if (texts[NORTH].length > 0) {
+        text(texts[NORTH], 800, (cornerY - CELL * zoom) / 2 + 15);
+    }
+
+    if (texts[SOUTH].length > 0) {
+        text(texts[SOUTH], 800, 900 - (cornerY - CELL * zoom) / 2 + 15);
+    }
 }
 
 function drawGrid(grid, interactables, buttons, targets) {

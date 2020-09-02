@@ -963,7 +963,7 @@ main.Button = class Button extends core_element {
 
         let t = this.text;
         if (t instanceof Function) t = t(this, this.target);
-        text(t, 0, this.tSize / 3);
+        text(t, 0, this.tSize * 5 / 18);
     }
 }
 

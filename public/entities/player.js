@@ -40,6 +40,7 @@ class Player extends Entity {
                 let speed = MINSPEED + (MAXSPEED - MINSPEED) * percent * percent;
                 this.pullback = 0;
                 // console.log(speed);
+                game.arrowsFired++;
                 return new Arrow(p5.Vector.fromAngle(this.mouseAngle, 30).add(this.pos), speed, this.mouseAngle, P_PLAYER);
             }
         }

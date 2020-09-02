@@ -12,8 +12,11 @@ let graphics = {
     targets: {},
     doors: {},
     rock: {},
-    projectiles: {}
+    projectiles: {},
+    star: {}
 };
+
+let font;
 
 function preload() {
     graphics.map.floor = loadImage(graphicsFolder + 'map/floor.png');
@@ -44,6 +47,12 @@ function preload() {
 
         graphics.doors[colour] = loadImage(graphicsFolder + `doors/door${colour}.png`);
     }
+
+    graphics.star.gold = loadImage(graphicsFolder + 'star/stargold.png');
+    graphics.star.grey = loadImage(graphicsFolder + 'star/stargrey.png');
+
+    // font = loadFont('/assets/font/PressStart2P-Regular.ttf');
+    font = loadFont('/assets/font/VT323-Regular.ttf');
 }
 
 function setup() {
@@ -78,11 +87,17 @@ function setup() {
     })
     .on('keyDown', e => {
         if (e.key == ' ' && game && !game.paused) return game.click(false);
-        if (e.key == 'p' && game) game.paused = !game.paused;
+
+        if ((e.key == 'p') && game && !game.paused && (game.ended == -1)) {
+            openPopup('pause', game.level);
+        }
     });
 
     setupLevelSelect();
     addLevelEndScreen();
+    addPauseScreen();
+    addLockedScreen();
+    addThanksScreen();
 
     addStyles();
 
@@ -93,7 +108,7 @@ function setup() {
         click: { play: () => {} },
     }
 
-    // setFont(font);
+    setFont(font);
     setSounds(sounds);
     // setCursors({
     //     game: 'assets/game.cur',
@@ -130,4 +145,56 @@ function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 
     resizeUI();
+}
+
+function wrapTextNoNewLines(txt, tSize, lineWidth) {
+    // Work out how much of the word can fit in one line
+    function resizeWord(word, lineWidth) {
+        if (textWidth(word) <= lineWidth) return [word, ''];
+    
+        // Keep adding characters until the word no longer fits
+        let i = 0, partialWord = '';
+        while (i < word.length && textWidth(partialWord + word[i]) <= lineWidth) {
+            partialWord += word[i];
+            i++;
+        }
+    
+        return [partialWord, word.substring(i)];
+    }
+    
+    push();
+    textSize(tSize);
+    let words = txt.split(' ');
+    let line = '', lines = [], testLine = '', testWidth;
+    while (words.length > 0) {
+        let word = words.splice(0, 1)[0];
+        testLine = line + word;
+        // If this isn't the last word, add a space
+        if (words.length > 0) testLine += ' ';
+        testWidth = textWidth(testLine);
+
+        // If this word can't fit on this line
+        if (testWidth > lineWidth) {
+            // If this is the first word on the line (i.e. the word is longer than the whole line)
+            if (line == '') {
+                // Work out how much of the word fits and add it
+                let [wordToAdd, remainingWord] = resizeWord(word, lineWidth);
+                lines.push(wordToAdd);
+                // Add the left over word back to the words array
+                if (remainingWord.length > 0) {
+                    words.unshift(remainingWord);
+                }
+            } else {
+                // Start a new line
+                lines.push(line);
+                line = '';
+                words.unshift(word);
+            }
+        } else {
+            line = testLine;
+        }
+    }
+    lines.push(line);
+    pop();
+    return lines;
 }

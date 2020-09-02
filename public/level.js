@@ -4,17 +4,29 @@ class Level {
         let data = levels[level];
         normaliseLevel(data);
 
+        this.levelMeta = data.meta;
+
+        resetText();
+
+        displayText(this.levelMeta, 'default');
+
         this.mousePos = { x: 0, y: 0 };
-        let xRatio = 1400 / data.size.width / CELL;
-        let yRatio = 700 / data.size.height / CELL;
-        zoom = Math.min(1.5, xRatio, yRatio);
+        let maxWidth = 1500, maxHeight = 800;
+        if (this.levelMeta.text.default) {
+            maxWidth = 1300;
+            maxHeight = 600;
+        }
+
+        let xRatio = maxWidth / (data.size.width + 2) / CELL;
+        let yRatio = maxHeight / (data.size.height + 2) / CELL;
+        zoom = Math.min(1.75, xRatio, yRatio);
         cornerX = 800 - data.size.width * CELL / 2 * zoom;
         cornerY = 450 - data.size.height * CELL / 2 * zoom;
 
         this.paused = false;
         this.secret = false;
         this.ended = -1;
-        this.arrows = 0;
+        this.arrowsFired = 0;
 
         this.grid = [];
         for (let i = 0; i < data.size.width; i++) {
@@ -197,6 +209,8 @@ class Level {
                     if (this.pickedUpEntity) this.droppingEntity = true;
 
                     this.endLevel(false);
+                } else {
+                    displayText(this.levelMeta, 'kill');
                 }
             }
         }
@@ -359,10 +373,23 @@ class Level {
             if (!this.player.bow && this.grid[cell.x][cell.y].type == BOW) {
                 this.grid[cell.x][cell.y].type = EMPTY;
                 this.player.bow = true;
+
+                displayText(this.levelMeta, 'bow');
             }
 
             if (this.ended == -1 && this.grid[cell.x][cell.y].type == END) {
                 this.endLevel(true);
+            }
+
+            if (!this.secret && cell.x == this.levelMeta.secret.x && cell.y == this.levelMeta.secret.y) {
+                this.secret = true;
+                console.log('Secret star found!');
+
+                star.time = 180;
+                star.pos = {
+                    x: cell.x * CELL + CELL / 2,
+                    y: cell.y * CELL + CELL / 2
+                }
             }
         }
     }
@@ -456,9 +483,17 @@ class Level {
 
     endLevel(success) {
         if (this.ended >= 0) return;
-        let stars = 0;
+        let stars = 0, arrows = 0;
         if (success) {
-            stars = 2;
+            if (this.arrowsFired <= this.levelMeta.triple) {
+                stars = 3;
+            } else if (this.arrowsFired <= this.levelMeta.double) {
+                stars = 2;
+                arrows = this.arrowsFired - this.levelMeta.triple;
+            } else {
+                stars = 1;
+                arrows = this.arrowsFired - this.levelMeta.double;
+            }
         }
 
         updateStars({
@@ -471,7 +506,7 @@ class Level {
             level: this.level,
             stars,
             secret: this.secret,
-            arrows: 1
+            arrows
         }
 
         this.ended = 60;
@@ -495,6 +530,8 @@ function normaliseLevel(data) {
     if (typeof data.entities == 'undefined') data.entities = {};
     if (typeof data.entities.rocks == 'undefined') data.entities.rocks = [];
     if (typeof data.entities.spikes == 'undefined') data.entities.spikes = [];
+
+    if (typeof data.meta.text == 'undefined') data.meta.text = {};
 }
 
 /*

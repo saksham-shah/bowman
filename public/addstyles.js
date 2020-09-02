@@ -2,11 +2,11 @@ function addStyles() {
     addTheme('default', {
         button: {
             default: {
-                fill: 75,
-                stroke: 45,
+                fill: '#6d3e0a',
+                stroke: '#4e2d05',
                 text: 255,
                 hover: {
-                    fill: 100
+                    fill: '#8d5010'
                 }
             },
             game: {
@@ -90,9 +90,9 @@ function addStyles() {
         },
         screen: {
             default: {
-                background: '#fdcd92',
-                outer: '#fdc076',
-                stroke: '#fdb159',
+                background: '#fdc076',
+                outer: '#fdb159',
+                // stroke: '#fdb159',
                 tooltip: {
                     fill: 200,
                     stroke: 50,
@@ -100,9 +100,9 @@ function addStyles() {
                 }
             },
             game: {
-                // background: [0, 0, 30],
-                outer: [0, 0, 50],
-                stroke: [0, 0, 100],
+                background: '#fdcd92',
+                outer: '#fdc076',
+                // stroke: '#fdb159',
                 tooltip: {
                     fill: 200,
                     stroke: 50,
