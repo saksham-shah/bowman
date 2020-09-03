@@ -3,7 +3,7 @@ let dt;
 
 let cornerX, cornerY, zoom;
 
-let graphicsFolder = '/assets/graphics/';
+let graphicsFolder = 'assets/graphics/';
 
 let graphics = {
     map: {},
@@ -71,7 +71,7 @@ function preload() {
     graphics.star.grey = loadImage(graphicsFolder + 'star/stargrey.png');
 
     // font = loadFont('/assets/font/PressStart2P-Regular.ttf');
-    font = loadFont('/assets/font/VT323-Regular.ttf');
+    font = loadFont('assets/font/VT323-Regular.ttf');
 }
 
 function setup() {
