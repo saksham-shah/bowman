@@ -1,6 +1,6 @@
 function addPauseScreen() {
     let level;
-    let w = 600, h = 425;
+    let w = 600, h = 500;
 
     addPopup('pause', {
         width: w,
@@ -46,6 +46,17 @@ function addPauseScreen() {
         width: 250,
         height: 50,
         textSize: 45,
+        text: 'Restart',
+        onClick: () => {
+            closePopup();
+            game = new Level(level);
+        }
+    })
+    .addButton({
+        position: { x: w / 2, y: 350 },
+        width: 250,
+        height: 50,
+        textSize: 45,
         text: 'Next level',
         onClick: () => {
             closePopup();
@@ -66,7 +77,7 @@ function addPauseScreen() {
         }
     })
     .addButton({
-        position: { x: w / 2, y: 350 },
+        position: { x: w / 2, y: 425 },
         width: 250,
         height: 50,
         textSize: 45,

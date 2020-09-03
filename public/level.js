@@ -11,14 +11,14 @@ class Level {
         displayText(this.levelMeta, 'default');
 
         this.mousePos = { x: 0, y: 0 };
-        let maxWidth = 1500, maxHeight = 800;
-        if (this.levelMeta.text.default) {
-            maxWidth = 1300;
-            maxHeight = 600;
-        }
+        // let maxWidth = 1500, maxHeight = 800;
+        // if (this.levelMeta.text.default) {
+        //     maxWidth = 1300;
+        //     maxHeight = 600;
+        // }
 
-        let xRatio = maxWidth / (data.size.width + 2) / CELL;
-        let yRatio = maxHeight / (data.size.height + 2) / CELL;
+        let xRatio = data.meta.maxWidth / (data.size.width + 2) / CELL;
+        let yRatio = data.meta.maxHeight / (data.size.height + 2) / CELL;
         zoom = Math.min(1.75, xRatio, yRatio);
         cornerX = 800 - data.size.width * CELL / 2 * zoom;
         cornerY = 450 - data.size.height * CELL / 2 * zoom;
@@ -176,7 +176,6 @@ class Level {
             this.ended--;
 
             if (this.ended == 0) {
-                console.log('open game over screen');
                 this.paused = true;
 
                 openPopup('level end', this.result);
@@ -193,7 +192,7 @@ class Level {
         }
 
         for (let arrow of this.arrows) {
-            if (arrow.hit === null) arrow.update(this.grid, this.entities, this.targets);
+            if (arrow.hit === null) arrow.update(this.grid, this.entities, this.targets, this.interactables);
         }
 
         for (let i = this.entities.length - 1; i >= 0; i--) {
@@ -390,6 +389,13 @@ class Level {
                     x: cell.x * CELL + CELL / 2,
                     y: cell.y * CELL + CELL / 2
                 }
+
+                if (!stats.secret) {
+                    star.text = true;
+                    star.max = 300;
+                    star.time = 300;
+                    stats.secret = true;
+                }
             }
         }
     }
@@ -477,7 +483,8 @@ class Level {
             interactables: this.interactables,
             buttons: this.buttons,
             targets: this.targets,
-            placePosition: this.placePosition
+            placePosition: this.placePosition,
+            power: this.player.bow ? this.player.pullback / PULLBACK : -1
         }
     }
 
@@ -510,8 +517,6 @@ class Level {
         }
 
         this.ended = 60;
-
-        console.log('level ended', success ? 'well done' : 'bad')
     }
 }
 
@@ -532,6 +537,8 @@ function normaliseLevel(data) {
     if (typeof data.entities.spikes == 'undefined') data.entities.spikes = [];
 
     if (typeof data.meta.text == 'undefined') data.meta.text = {};
+    if (typeof data.meta.maxWidth != 'number') data.meta.maxWidth = 1500;
+    if (typeof data.meta.maxHeight != 'number') data.meta.maxHeight = 800;
 }
 
 /*

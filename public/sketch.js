@@ -90,6 +90,8 @@ function setup() {
 
         if ((e.key == 'p') && game && !game.paused && (game.ended == -1)) {
             openPopup('pause', game.level);
+        } else if (e.key == 'r' && game && !game.paused && (game.ended == -1)) {
+            game = new Level(game.level);
         }
     });
 

@@ -14,7 +14,7 @@ class Arrow {
         this.previousCell = { x: -1, y: -1 };
     }
 
-    update(grid, entities, targets) {
+    update(grid, entities, targets, interactables) {
 
         if (this.time > 20) {
             this.hit = P_GROUND;
@@ -33,7 +33,7 @@ class Arrow {
             this.pos.x += step * Math.cos(this.angle);
             this.pos.y += step * Math.sin(this.angle);
             distanceMoved += step;
-            collide = this.checkCollisions(grid, entities, targets);
+            collide = this.checkCollisions(grid, entities, targets, interactables);
             numSteps++;
         }
         
@@ -46,7 +46,7 @@ class Arrow {
         return collide;
     }
 
-    checkCollisions(grid, entities, targets) {
+    checkCollisions(grid, entities, targets, interactables) {
         let cell = getCell(this.pos);
 
         if (projectileCollides(cell.x, cell.y, grid)) {
@@ -61,16 +61,39 @@ class Arrow {
                 if (target.pressed) continue;
                 // Optimisation
                 if (Math.abs(cell.x - target.pos.x) + Math.abs(cell.y - target.pos.y) == 1) {
-                    let relPos = createVector(this.pos.x % CELL - CELL / 2, this.pos.y % CELL - CELL / 2);
+                    let modX = this.pos.x % CELL;
+                    let modY = this.pos.y % CELL;
+                    if (modX < 0) modX += CELL;
+                    if (modY < 0) modY += CELL;
+                    let relPos = createVector(modX - CELL / 2, modY - CELL / 2);
                     let relAngle = Math.atan2(relPos.y, relPos.x);
                     let relMag = relPos.mag();
 
                     let rotated = p5.Vector.fromAngle(relAngle - target.direction * Math.PI / 2, relMag);
 
-                    // console.log(relPos.x, relPos.y, rotated.x, rotated.y);
+                    console.log(relPos.x, relPos.y, rotated.x, rotated.y);
 
                     if (rotated.y >= CELL / 2 - MINSTEP && rotated.x >= -TARGETR / 2 && rotated.x <= TARGETR / 2) {
                         target.pressed = true;
+
+                        let interactable = interactables[target.interactID]
+
+                        let activate = true;
+                        for (let trigger of interactable.triggers) {
+                            if (!trigger.pressed) activate = false;
+                        }
+    
+                        if (activate) {
+                            interactable.activated = true;
+    
+                            for (let door of interactable.doors) {
+                                grid[door.x][door.y].type = EMPTY;
+    
+                                for (let arrow of grid[door.x][door.y].arrows) {
+                                    arrow.remove = true;
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -1,6 +1,8 @@
 let star = {
     pos: null,
-    time: 0
+    time: 0,
+    max: 180,
+    text: false
 };
 
 let texts = {};
@@ -15,8 +17,15 @@ let textDisplayed = {
 resetText();
 
 function resetText() {
-    texts[NORTH] = '';
-    texts[SOUTH] = '';
+    star = {
+        pos: null,
+        time: 0,
+        max: 180,
+        text: false
+    }
+
+    texts[NORTH] = [];
+    texts[SOUTH] = [];
     
     textDisplayed = {
         default: false,
@@ -37,7 +46,7 @@ function displayText(meta, textType) {
 }
 
 function drawLevel(level) {
-    let { entities, arrows, grid, interactables, buttons, targets } = level;
+    let { entities, arrows, grid, interactables, buttons, targets, power } = level;
 
     push();
     translate(cornerX, cornerY);
@@ -64,11 +73,19 @@ function drawLevel(level) {
     }
 
     if (star.time > 0) {
-        let percent = (180 - star.time) / 180;
+        let percent = (star.max - star.time) / star.max;
         let size = 28 + 112 * percent;
         tint(255, 255 - 255 * percent);
         image(graphics.star.gold, star.pos.x - size / 2, star.pos.y - size / 2, size, size);
         tint(255);
+
+        if (star.text) {
+            textAlign(CENTER);
+            textSize(20 + 20 * percent);
+            noStroke();
+            fill(255, 225, 0, 255 - 255 * percent);
+            text('You found a hidden star!', star.pos.x, star.pos.y - size);
+        }
 
         star.time -= dt;
     }
@@ -81,12 +98,40 @@ function drawLevel(level) {
     noStroke();
 
     if (texts[NORTH].length > 0) {
-        text(texts[NORTH], 800, (cornerY - CELL * zoom) / 2 + 15);
+        let baseY = (cornerY - CELL * zoom) / 2 + 25 * zoom / 3 - 20 * zoom * (texts[NORTH].length - 1);
+        for (let i = 0; i < texts[NORTH].length; i++) {
+            text(texts[NORTH][i], 800, baseY + 40 * zoom * i);
+        }
     }
 
     if (texts[SOUTH].length > 0) {
-        text(texts[SOUTH], 800, 900 - (cornerY - CELL * zoom) / 2 + 15);
+        let baseY = 900 - (cornerY - CELL * zoom) / 2 + 25 * zoom / 3 - 20 * zoom * (texts[SOUTH].length - 1)
+        for (let i = 0; i < texts[SOUTH].length; i++) {
+            text(texts[SOUTH][i], 800, baseY + 40 * zoom * i);
+        }
     }
+
+    // Power meter
+    if (power >= 0) {
+        if (power > 1) power = 1;
+        if (power < 1) {
+            stroke('#fca440');
+        } else {
+            stroke('#a4fc40');
+        }
+        strokeWeight(3);
+        fill('#fdead2');
+        rect((cornerX - CELL * zoom) / 2, 450, 50, 300);
+        if (power < 1) {
+            fill('#fedcb3');
+        } else {
+            fill('#dcfeb3');
+        }
+        rect((cornerX - CELL * zoom) / 2, 600 - 150 * power, 50, 300 * power);
+        line((cornerX - CELL * zoom) / 2 - 50, 600 - 300 * power, (cornerX - CELL * zoom) / 2 + 50, 600 - 300 * power);
+    }
+    // noStroke();
+    // ellipse((cornerX - CELL * zoom) / 2, 450 - zoom * 100 * (-0.5 + power), 20);
 }
 
 function drawGrid(grid, interactables, buttons, targets) {

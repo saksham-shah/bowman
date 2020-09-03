@@ -2,7 +2,8 @@ let stats = {
     levelData: [],
     gainedStars: 0,
     freeStars: 0,
-    totalStars: 0
+    totalStars: 0,
+    secret: false
 }
 
 function setupLevelSelect() {
@@ -106,6 +107,7 @@ function setupLevelSelect() {
                         } else {
                             fill(255);
                         }
+                        textSize(72);
                         text(i + 1, x + 50, y + 50);
     
                         // Stars
@@ -127,7 +129,14 @@ function setupLevelSelect() {
                     } else {
                         noStroke();
                         fill(255);
-                        text(levels[i].meta.required - stats.totalStars, x + 30, y + 70);
+                        let size, needed = levels[i].meta.required - stats.totalStars;
+                        if (needed < 10) {
+                            textSize(72)
+                            text(needed, x + 30, y + 70);
+                        } else {
+                            textSize(54)
+                            text(needed, x + 30, y + 65);
+                        }
 
                         // fill(255);
                         // stroke(100);
