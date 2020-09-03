@@ -26,6 +26,7 @@ class Level {
         this.paused = false;
         this.secret = false;
         this.ended = -1;
+        this.reached = false;
         this.arrowsFired = 0;
 
         this.grid = [];
@@ -378,6 +379,7 @@ class Level {
 
             if (this.ended == -1 && this.grid[cell.x][cell.y].type == END) {
                 this.endLevel(true);
+                this.reached = true;
             }
 
             if (!this.secret && cell.x == this.levelMeta.secret.x && cell.y == this.levelMeta.secret.y) {
@@ -395,6 +397,8 @@ class Level {
                     star.max = 300;
                     star.time = 300;
                     stats.secret = true;
+
+                    localStorage.setItem('bowman stats', JSON.stringify(stats));
                 }
             }
         }
@@ -484,7 +488,8 @@ class Level {
             buttons: this.buttons,
             targets: this.targets,
             placePosition: this.placePosition,
-            power: this.player.bow ? this.player.pullback / PULLBACK : -1
+            power: this.player.bow ? this.player.pullback / PULLBACK : -1,
+            reached: this.reached
         }
     }
 

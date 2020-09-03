@@ -1,3 +1,4 @@
+let time = 0;
 let star = {
     pos: null,
     time: 0,
@@ -17,6 +18,8 @@ let textDisplayed = {
 resetText();
 
 function resetText() {
+    time = 0;
+
     star = {
         pos: null,
         time: 0,
@@ -46,13 +49,13 @@ function displayText(meta, textType) {
 }
 
 function drawLevel(level) {
-    let { entities, arrows, grid, interactables, buttons, targets, power } = level;
+    let { entities, arrows, grid, interactables, buttons, targets, power, reached } = level;
 
     push();
     translate(cornerX, cornerY);
     scale(zoom);
 
-    drawGrid(grid, interactables, buttons, targets);
+    drawGrid(grid, interactables, buttons, targets, reached);
 
     for (let arrow of arrows) {
         // if (!arrow.grounded) continue;
@@ -130,11 +133,13 @@ function drawLevel(level) {
         rect((cornerX - CELL * zoom) / 2, 600 - 150 * power, 50, 300 * power);
         line((cornerX - CELL * zoom) / 2 - 50, 600 - 300 * power, (cornerX - CELL * zoom) / 2 + 50, 600 - 300 * power);
     }
+
+    time += dt;
     // noStroke();
     // ellipse((cornerX - CELL * zoom) / 2, 450 - zoom * 100 * (-0.5 + power), 20);
 }
 
-function drawGrid(grid, interactables, buttons, targets) {
+function drawGrid(grid, interactables, buttons, targets, reached) {
     noStroke();
     for (let x = -1; x <= grid.length; x++) {
         image(graphics.map.wall, x * CELL, -CELL);
@@ -171,12 +176,18 @@ function drawGrid(grid, interactables, buttons, targets) {
                     image(graphics.map.bow, x * CELL, y * CELL);
                     break;
                 case END:
-                    fill(0, 255, 0);
-                    rect(x * CELL + CELL / 2, y * CELL + CELL / 2, CELL, CELL);
+                    image(graphics.map.floor, x * CELL, y * CELL);
+                    if (!reached) {
+                        let size = 37.5 + 2.5 * Math.sin(time * Math.PI / 60)
+                        image(graphics.goal.gold, x * CELL + (CELL - size) / 2, y * CELL + (CELL - size) / 2, size, size);    
+                    }
+                    // fill(0, 255, 0);
+                    // rect(x * CELL + CELL / 2, y * CELL + CELL / 2, CELL, CELL);
                     break;
                 case CAVE:
-                    fill(0);
-                    rect(x * CELL + CELL / 2, y * CELL + CELL / 2, CELL, CELL);
+                    // fill(0);
+                    // rect(x * CELL + CELL / 2, y * CELL + CELL / 2, CELL, CELL);
+                    image(graphics.map.cave, x * CELL, y * CELL);
                     break;
                 default:
                     // draw = false;
@@ -202,17 +213,17 @@ function drawGrid(grid, interactables, buttons, targets) {
 function drawEntity(entity) {
     push();
     translate(entity.pos);
-    rotate(entity.angle);
+    rotate(entity.angle + Math.PI / 2);
     strokeWeight(2);
 
-    let img;
+    let img, frame;
     switch (entity.type) {
         case PLAYER:
             push();
-            rotate(Math.PI / 2);
-            let frame = 0;
+            // rotate(Math.PI / 2);
+            frame = 0;
             if (entity.bow) {
-                frame = Math.min(3, Math.ceil(entity.pullback / 20));
+                frame = Math.min(3, Math.ceil(entity.pullback / PULLBACK * 3));
                 img = graphics.player.bow[frame];
             } else {
                 img = graphics.player.base;
@@ -221,7 +232,7 @@ function drawEntity(entity) {
             pop();
 
             if (entity.bow && (entity.cooldown <= 0 || frame > 0)) {
-                rotate()
+                rotate(-Math.PI / 2);
                 drawArrow({
                     pos: createVector(30 - frame * 3, 0),
                     angle: 0
@@ -249,24 +260,50 @@ function drawEntity(entity) {
             image(img, -CELL / 2, -CELL / 2);
             break;
         case ARCHER:
+            push();
+            // rotate(Math.PI / 2);
+            frame = Math.min(3, Math.ceil(entity.pullback / PULLBACK * 3));
+            img = graphics.enemies.archer[frame];
+            image(img, -CELL / 2, -CELL * 11 / 16);
+            pop();
+
             fill(150, 0, 0);
             stroke(200);
-            ellipse(0, 0, entity.r * 2);
-            line(0, 0, entity.r, 0);
-
-            rotate(-entity.angle);
+            rotate(-entity.angle - Math.PI / 2);
             rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
             fill(0, 150, 0);
             rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)
             break;
         case CORPSE:
-            fill(150);
-            stroke(200);
-            ellipse(0, 0, entity.r * 2);
-            line(0, 0, entity.r, 0);
+            if (entity.body == PLAYER) {
+                // fill(150);
+                // stroke(200);
+                // ellipse(0, 0, entity.r * 2);
+                // line(0, 0, entity.r, 0);
+                image(graphics.corpses.player, -CELL / 2, -CELL * 3 / 4);
+            } else if (entity.body == ARCHER) {
+                // rotate(Math.PI / 2)
+                img = graphics.corpses.archer.base;
+                if (entity.pickedUp) {
+                    if (entity.canBePlaced) {
+                        tint(255, 150);
+                    } else {
+                        tint(255, 0, 0, 150);
+                    }
+                
+                } else {
+                    if (entity.hovered) {
+                        img = graphics.corpses.archer.hover;
+                    } else if (entity.closeToPlayer) {
+                        img = graphics.corpses.archer.close;
+                    }
+                }
+
+                image(img, -CELL / 2, -CELL / 2);
+            }
 
             if (entity.healthPercent > 0) {
-                rotate(-entity.angle);
+                rotate(-entity.angle - Math.PI / 2);
                 fill(150, 0, 0);
                 rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
                 fill(0, 150, 0);

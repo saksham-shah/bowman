@@ -94,4 +94,8 @@ class Archer extends Enemy {
     }
 
     updateAngle() { this.angle = this.fireAngle }
+
+    subToObject(obj) {
+        obj.pullback = this.pullback;
+    }
 }

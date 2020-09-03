@@ -188,10 +188,6 @@ let levels = [
             fences: [{ x: 0, y: 3 }, { x: 1, y: 3 }, { x: 2, y: 3 }, { x: 3, y: 3 }, { x: 4, y: 3 }, { x: 5, y: 3 }, { x: 6, y: 3 }, { x: 7, y: 3 }]
         },
 
-        // entities: {
-        //     rocks: [{ x: 2, y: 2 }, { x: 6, y: 2 }]
-        // },
-
         interactables: [
             {
                 colour: RED,

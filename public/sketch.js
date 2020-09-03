@@ -13,7 +13,10 @@ let graphics = {
     doors: {},
     rock: {},
     projectiles: {},
-    star: {}
+    star: {},
+    enemies: {},
+    corpses: {},
+    goal: {}
 };
 
 let font;
@@ -23,6 +26,7 @@ function preload() {
     graphics.map.wall = loadImage(graphicsFolder + 'map/wall.png');
     graphics.map.fence = loadImage(graphicsFolder + 'map/fence.png');
     graphics.map.bow = loadImage(graphicsFolder + 'map/bow.png');
+    graphics.map.cave = loadImage(graphicsFolder + 'map/hole.png');
 
     graphics.player.base = loadImage(graphicsFolder + 'player/playerbase.png');
     graphics.player.bow = [];
@@ -33,6 +37,18 @@ function preload() {
     graphics.rock.base = loadImage(graphicsFolder + 'rock/rock.png');
     graphics.rock.close = loadImage(graphicsFolder + 'rock/rockclose.png');
     graphics.rock.hover = loadImage(graphicsFolder + 'rock/rockhover.png');
+
+    graphics.enemies.archer = [];
+    for (let i = 0; i < 4; i++) {
+        graphics.enemies.archer.push(loadImage(graphicsFolder + `enemies/archer${i}.png`));
+    }
+
+    graphics.corpses.player = loadImage(graphicsFolder + 'corpses/playercorpse.png');
+
+    graphics.corpses.archer = {};
+    graphics.corpses.archer.base = loadImage(graphicsFolder + 'corpses/archer.png');
+    graphics.corpses.archer.close = loadImage(graphicsFolder + 'corpses/archerclose.png');
+    graphics.corpses.archer.hover = loadImage(graphicsFolder + 'corpses/archerhover.png');
 
     graphics.projectiles.arrow = loadImage(graphicsFolder + 'projectiles/arrow.png');
 
@@ -47,6 +63,9 @@ function preload() {
 
         graphics.doors[colour] = loadImage(graphicsFolder + `doors/door${colour}.png`);
     }
+
+    graphics.goal.gold = loadImage(graphicsFolder + 'goal/goalgold.png');
+    graphics.goal.grey = loadImage(graphicsFolder + 'goal/goalgrey.png');
 
     graphics.star.gold = loadImage(graphicsFolder + 'star/stargold.png');
     graphics.star.grey = loadImage(graphicsFolder + 'star/stargrey.png');
@@ -118,6 +137,15 @@ function setup() {
     // });
 
     setScreen('levels');
+
+    let version = localStorage.getItem('bowman version');
+
+    if (version == '1') {
+        stats = JSON.parse(localStorage.getItem('bowman stats'));
+    } else {
+        localStorage.setItem('bowman version', '1');
+        localStorage.setItem('bowman stats', JSON.stringify(stats));
+    }
 
     // openPopup('level end', {
     //     level: 1,

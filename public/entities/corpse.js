@@ -1,5 +1,5 @@
 class Corpse extends Entity {
-    constructor(pos, vel, angle, arrows, enemy, shownHealth, maxHealth) {
+    constructor(pos, vel, angle, arrows, body, shownHealth, maxHealth) {
         super({ x: 0, y: 0 }, 15, 1, CORPSE);
 
         this.angle = angle;
@@ -8,7 +8,7 @@ class Corpse extends Entity {
 
         this.pos = pos;
         this.vel = vel;
-        this.enemy = enemy;
+        this.body = body;
         this.arrows = arrows;
 
         this.shownHealth = shownHealth;
@@ -35,7 +35,7 @@ class Corpse extends Entity {
     }
 
     toObject(obj) {
-        obj.enemy = this.enemy;
+        obj.body = this.body;
         obj.healthPercent = this.shownHealth / this.maxHealth;
     }
 }

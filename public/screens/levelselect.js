@@ -64,7 +64,8 @@ function setupLevelSelect() {
             text('Free stars', 550, 370);
 
             textSize(150);
-            text(`${stats.gainedStars}/${4 * levels.length}`, 250, 500);
+            text(stats.gainedStars, 250, 500);
+            // text(`${stats.gainedStars}/${4 * levels.length}`, 250, 500);
             text(stats.freeStars, 550, 500);
 
             textSize(35);
@@ -172,6 +173,8 @@ function setupLevelSelect() {
             if (stats.totalStars < 4 * levels.length) {
                 stats.totalStars++;
                 stats.freeStars++;
+
+                localStorage.setItem('bowman stats', JSON.stringify(stats));
             }
         }
     })
@@ -203,6 +206,8 @@ function updateStars(result) {
         stats.freeStars = 4 * levels.length - stats.gainedStars;
         stats.totalStars = 4 * levels.length;
     }
+
+    localStorage.setItem('bowman stats', JSON.stringify(stats));
 
     // openPopup('level end', {
     //     level: result.level,
