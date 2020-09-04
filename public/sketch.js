@@ -42,6 +42,9 @@ const soundsToLoad = [
         name: 'entitydie',
         file: 'entitydie.wav'
     }, {
+        name: 'playerdie',
+        file: 'playerdie.wav'
+    }, {
         name: 'bowpickup',
         file: 'bowpickup.wav'
     }, {
@@ -50,6 +53,15 @@ const soundsToLoad = [
     }, {
         name: 'winlevel',
         file: 'winlevel.wav'
+    }, {
+        name: 'winsecret',
+        file: 'winsecret.wav'
+    }, {
+        name: 'dooropen',
+        file: 'dooropen.wav'
+    }, {
+        name: 'doorclose',
+        file: 'doorclose.wav'
     },
 ];
 
@@ -59,7 +71,9 @@ const volumes = {
     arrowwall: 0.5,
     arrowentity: 5,
     arrowfire: 0.25,
-    entitydie: 1.5
+    entitydie: 1.5,
+    dooropen: 2,
+    doorclose: 2
 }
 
 let font, sounds = {};
@@ -76,7 +90,7 @@ function preload() {
     for (let i = 0; i < 4; i++) {
         graphics.player.bow.push(loadImage(graphicsFolder + `player/playerbow${i}.png`));
     }
-    graphics.player.foot = loadImage(graphicsFolder + 'player/rightfoot.png');
+    // graphics.player.foot = loadImage(graphicsFolder + 'player/rightfoot.png');
 
     graphics.rock.base = loadImage(graphicsFolder + 'rock/rock.png');
     graphics.rock.close = loadImage(graphicsFolder + 'rock/rockclose.png');

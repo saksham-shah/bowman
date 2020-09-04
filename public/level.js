@@ -191,6 +191,15 @@ class Level {
 
     updateEntities() {
         for (let entity of this.entities) {
+            if (entity.type == CORPSE) {
+                if (entity.shownHealth > 0) {
+                    entity.shownHealth *= 0.9;
+        
+                    if (entity.shownHealth <= 1) {
+                        entity.shownHealth = 0;
+                    }
+                }
+            }
             if (entity.pickedUp) continue;
 
             let projectile = entity.superUpdate(this.grid, this.entities);
@@ -313,6 +322,9 @@ class Level {
                         for (let door of interactable.doors) {
                             this.grid[door.x][door.y].type = EMPTY;
 
+                            sounds.doorclose.stop();
+                            sounds.dooropen.play();
+
                             this.particle({
                                 pos: createVector(door.x * CELL + CELL / 2, door.y * CELL + CELL / 2),
                                 speed: 3,
@@ -335,6 +347,9 @@ class Level {
             } else {
                 if (interactable.activated) {
                     interactable.activated = false;
+
+                    sounds.dooropen.stop();
+                    sounds.doorclose.play();
 
                     for (let door of interactable.doors) {
                         this.grid[door.x][door.y].type = DOOR;
@@ -463,16 +478,16 @@ class Level {
                     y: cell.y * CELL + CELL / 2
                 }
 
-                if (!stats.secret) {
+                if (!secret) {
                     star.text = true;
                     star.max = 300;
                     star.time = 300;
-                    stats.secret = true;
+                    secret = true;
 
-                    localStorage.setItem('bowman stats', JSON.stringify(stats));
+                    // localStorage.setItem('bowman stats', JSON.stringify(stats));
                 }
 
-                sounds.winlevel.play();
+                sounds.winsecret.play();
             }
         }
     }
@@ -567,35 +582,35 @@ class Level {
             }
         }
 
-        if (this.lastFootprint > 0) {
-            this.lastFootprint -= dt;
-        } else {
-            let vel = this.player.vel;
-            if (vel.magSq() > 5) {
-                let angle = Math.atan2(vel.y, vel.x) + Math.PI / 2;
-                let offset = p5.Vector.fromAngle(angle, this.rightFootprint ? 5 : -5);
-                offset.add(this.player.pos);
+        // if (this.lastFootprint > 0) {
+        //     this.lastFootprint -= dt;
+        // } else {
+        //     let vel = this.player.vel;
+        //     if (vel.magSq() > 5) {
+        //         let angle = Math.atan2(vel.y, vel.x) + Math.PI / 2;
+        //         let offset = p5.Vector.fromAngle(angle, this.rightFootprint ? 5 : -5);
+        //         offset.add(this.player.pos);
 
-                let footprint = {
-                    pos: offset,
-                    angle,
-                    right: this.rightFootprint,
-                    time: 120
-                }
+        //         let footprint = {
+        //             pos: offset,
+        //             angle,
+        //             right: this.rightFootprint,
+        //             time: 120
+        //         }
 
-                this.footprints.push(footprint);
-                this.lastFootprint = 10;
-                this.rightFootprint = !this.rightFootprint;
-            }
-        }
+        //         this.footprints.push(footprint);
+        //         this.lastFootprint = 10;
+        //         this.rightFootprint = !this.rightFootprint;
+        //     }
+        // }
 
-        for (let i = this.footprints.length - 1; i >= 0; i--) {
-            this.footprints[i].time -= dt;
+        // for (let i = this.footprints.length - 1; i >= 0; i--) {
+        //     this.footprints[i].time -= dt;
 
-            if (this.footprints[i].time < 0) {
-                this.footprints.splice(i, 1);
-            }
-        }
+        //     if (this.footprints[i].time < 0) {
+        //         this.footprints.splice(i, 1);
+        //     }
+        // }
 
         return {
             entities, arrows, particles,
@@ -606,7 +621,7 @@ class Level {
             placePosition: this.placePosition,
             power: this.player.bow ? this.player.pullback / PULLBACK : -1,
             reached: this.reached,
-            footprints: this.footprints
+            // footprints: this.footprints
         }
     }
 

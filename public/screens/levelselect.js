@@ -3,8 +3,10 @@ let stats = {
     gainedStars: 0,
     freeStars: 0,
     totalStars: 0,
-    secret: false
+    // secret: false
 }
+
+let secret = false;
 
 function setupLevelSelect() {
     for (let i = 0; i < levels.length; i++) {

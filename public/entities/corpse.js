@@ -16,13 +16,13 @@ class Corpse extends Entity {
     }
 
     update() {
-        if (this.shownHealth > 0) {
-            this.shownHealth -= this.shownHealth * 0.1;
+        // if (this.shownHealth > 0) {
+        //     this.shownHealth -= this.shownHealth * 0.1;
 
-            if (this.shownHealth <= 1) {
-                this.shownHealth = this.health;
-            }
-        }
+        //     if (this.shownHealth <= 1) {
+        //         this.shownHealth = 0;
+        //     }
+        // }
 
         this.vel = p5.Vector.mult(this.vel, Math.pow(0.95, dt));
 

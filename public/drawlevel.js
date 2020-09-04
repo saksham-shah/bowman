@@ -49,7 +49,7 @@ function displayText(meta, textType) {
 }
 
 function drawLevel(level) {
-    let { entities, arrows, grid, interactables, buttons, targets, power, reached, particles, footprints } = level;
+    let { entities, arrows, grid, interactables, buttons, targets, power, reached, particles } = level;
 
     push();
     translate(cornerX, cornerY);
@@ -57,9 +57,9 @@ function drawLevel(level) {
 
     drawGrid(grid, interactables, buttons, targets, reached);
 
-    for (let footprint of footprints) {
+    // for (let footprint of footprints) {
         // drawFootprint(footprint);
-    }
+    // }
 
     for (let arrow of arrows) {
         // if (!arrow.grounded) continue;
@@ -94,7 +94,7 @@ function drawLevel(level) {
             textAlign(CENTER);
             textSize(20 + 20 * percent);
             noStroke();
-            fill(255, 225, 0, 255 - 255 * percent);
+            fill(255, 255 - 255 * percent);
             text('You found a hidden star!', star.pos.x, star.pos.y - size);
         }
 
@@ -319,6 +319,7 @@ function drawEntity(entity) {
             if (entity.healthPercent > 0) {
                 rotate(-entity.angle - Math.PI / 2);
                 fill(150, 0, 0);
+                stroke(200);
                 rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
                 fill(0, 150, 0);
                 rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)

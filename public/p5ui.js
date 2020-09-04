@@ -180,13 +180,8 @@ class P5UI {
         }
         
         window.keyPressed = e => {
-            if (e.key == 'Escape' && this.popups.length > 0) {
-                this.closePopup();
-                                
-            } else {
-                self.getActiveScreen().emit('keyDown', e);
-                self.cursor.showTooltip = false;
-            }
+            self.getActiveScreen().emit('keyDown', e);
+            self.cursor.showTooltip = false;
         }
         
         window.keyReleased = e => {

@@ -210,7 +210,7 @@ let levels = [
             required: 7,
             double: 6,
             triple: 1,
-            secret: { x: 4, y: 0 },
+            secret: { x: 0, y: 0 },
 
             text: {
                 default: [{
@@ -218,7 +218,7 @@ let levels = [
                     position: NORTH
                 }],
                 kill: [{
-                    text: ['Shoot the corpse onto the button to activate it.'],
+                    text: ['Shoot the corpse onto the red button to activate it.'],
                     position: NORTH
                 }, {
                     text: ['Press R to restart (and P to pause).'],

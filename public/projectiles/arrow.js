@@ -116,6 +116,9 @@ class Arrow {
     
                         if (activate) {
                             interactable.activated = true;
+
+                            sounds.doorclose.stop();
+                            sounds.dooropen.play();
     
                             for (let door of interactable.doors) {
                                 grid[door.x][door.y].type = EMPTY;

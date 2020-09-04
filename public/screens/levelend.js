@@ -13,6 +13,10 @@ function addLevelEndScreen() {
             time = 0;
 
             starsDrawn = [false, false, false];
+
+            if (result.stars == 0) {
+                sounds.playerdie.play();
+            }
         },
         draw: () => {
             time += dt;
