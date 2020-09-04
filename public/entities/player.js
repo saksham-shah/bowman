@@ -38,12 +38,16 @@ class Player extends Entity {
                 if (this.pullback > PULLBACK) this.pullback = PULLBACK;
                 let percent = this.pullback / PULLBACK;
                 let speed = MINSPEED + (MAXSPEED - MINSPEED) * percent * percent;
-                this.pullback = 0;
+                // this.pullback = 0;
                 // console.log(speed);
                 game.arrowsFired++;
                 return new Arrow(p5.Vector.fromAngle(this.mouseAngle, 30).add(this.pos), speed, this.mouseAngle, P_PLAYER);
             }
         }
+    } else if (this.pullback > 0) {
+        this.pullback -= 15 * dt;
+
+        if (this.pullback < 0) this.pullback = 0;
     }
 
         return null;

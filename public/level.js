@@ -153,6 +153,11 @@ class Level {
             this.pickupables.push(rockEntity);
         }
 
+        this.particles = [];
+        this.footprints = [];
+        this.lastFootprint = 0;
+        this.rightFootprint = true;
+
         this.pickedUpEntity = null;
         this.placePosition = null;
         this.hoveredEntity = null;
@@ -212,6 +217,19 @@ class Level {
                 } else {
                     displayText(this.levelMeta, 'kill');
                 }
+
+                this.particle({
+                    pos: entity.pos.copy(),
+                    speed: 3,
+                    speedErr: 1.5,
+                    angle: 0,
+                    angleErr: Math.PI * 2,
+                    r: 7,
+                    life: 30,
+                    lifeErr: 15,
+                    col: [150, 0, 0],
+                    num: 20
+                });
             }
         }
     }
@@ -232,12 +250,31 @@ class Level {
 
                 enemyType = parseInt(enemyType);
 
+                let spawn = false;
+
                 switch(enemyType) {
                     case S_BOW: {
                         // console.log('Bow enemy spawning!');
                         this.entities.push(new Archer(cave.pos, this.player));
+
+                        spawn = true;
                         break;
                     }
+                }
+
+                if (spawn) {
+                    this.particle({
+                        pos: createVector(cave.pos.x * CELL + CELL / 2, cave.pos.y * CELL + CELL / 2),
+                        speed: 3,
+                        speedErr: 1.5,
+                        angle: 0,
+                        angleErr: Math.PI * 2,
+                        r: 7,
+                        life: 30,
+                        lifeErr: 15,
+                        col: '#6d3e0a',
+                        num: 15
+                    });
                 }
 
                 cave.counter++;
@@ -271,6 +308,19 @@ class Level {
 
                         for (let door of interactable.doors) {
                             this.grid[door.x][door.y].type = EMPTY;
+
+                            this.particle({
+                                pos: createVector(door.x * CELL + CELL / 2, door.y * CELL + CELL / 2),
+                                speed: 3,
+                                speedErr: 1.5,
+                                angle: 0,
+                                angleErr: Math.PI * 2,
+                                r: 7,
+                                life: 30,
+                                lifeErr: 15,
+                                col: COLOURCODES[interactable.colour],
+                                num: 15
+                            });
 
                             for (let arrow of this.grid[door.x][door.y].arrows) {
                                 arrow.remove = true;
@@ -380,6 +430,19 @@ class Level {
             if (this.ended == -1 && this.grid[cell.x][cell.y].type == END) {
                 this.endLevel(true);
                 this.reached = true;
+
+                this.particle({
+                    pos: createVector(cell.x * CELL + CELL / 2, cell.y * CELL + CELL / 2),
+                    speed: 3,
+                    speedErr: 1.5,
+                    angle: 0,
+                    angleErr: Math.PI * 2,
+                    r: 7,
+                    life: 60,
+                    lifeErr: 30,
+                    col: [255, 225, 0],
+                    num: 40
+                });
             }
 
             if (!this.secret && cell.x == this.levelMeta.secret.x && cell.y == this.levelMeta.secret.y) {
@@ -450,6 +513,7 @@ class Level {
                 // pull back bow
                 this.player.pullingBack = true;
                 this.player.cooldown = this.player.fireRate;
+                this.player.pullback = 0;
             }
         }
     }
@@ -481,15 +545,55 @@ class Level {
             }
         }
 
+        let particles = [];
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+            if (this.particles[i].update()) {
+                this.particles.splice(i, 1);
+            } else {
+                particles.push(this.particles[i].toObject());
+            }
+        }
+
+        if (this.lastFootprint > 0) {
+            this.lastFootprint -= dt;
+        } else {
+            let vel = this.player.vel;
+            if (vel.magSq() > 5) {
+                let angle = Math.atan2(vel.y, vel.x) + Math.PI / 2;
+                let offset = p5.Vector.fromAngle(angle, this.rightFootprint ? 5 : -5);
+                offset.add(this.player.pos);
+
+                let footprint = {
+                    pos: offset,
+                    angle,
+                    right: this.rightFootprint,
+                    time: 120
+                }
+
+                this.footprints.push(footprint);
+                this.lastFootprint = 10;
+                this.rightFootprint = !this.rightFootprint;
+            }
+        }
+
+        for (let i = this.footprints.length - 1; i >= 0; i--) {
+            this.footprints[i].time -= dt;
+
+            if (this.footprints[i].time < 0) {
+                this.footprints.splice(i, 1);
+            }
+        }
+
         return {
-            entities, arrows,
+            entities, arrows, particles,
             grid: this.grid,
             interactables: this.interactables,
             buttons: this.buttons,
             targets: this.targets,
             placePosition: this.placePosition,
             power: this.player.bow ? this.player.pullback / PULLBACK : -1,
-            reached: this.reached
+            reached: this.reached,
+            footprints: this.footprints
         }
     }
 

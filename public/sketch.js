@@ -33,6 +33,7 @@ function preload() {
     for (let i = 0; i < 4; i++) {
         graphics.player.bow.push(loadImage(graphicsFolder + `player/playerbow${i}.png`));
     }
+    graphics.player.foot = loadImage(graphicsFolder + 'player/rightfoot.png');
 
     graphics.rock.base = loadImage(graphicsFolder + 'rock/rock.png');
     graphics.rock.close = loadImage(graphicsFolder + 'rock/rockclose.png');

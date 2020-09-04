@@ -49,13 +49,17 @@ function displayText(meta, textType) {
 }
 
 function drawLevel(level) {
-    let { entities, arrows, grid, interactables, buttons, targets, power, reached } = level;
+    let { entities, arrows, grid, interactables, buttons, targets, power, reached, particles, footprints } = level;
 
     push();
     translate(cornerX, cornerY);
     scale(zoom);
 
     drawGrid(grid, interactables, buttons, targets, reached);
+
+    for (let footprint of footprints) {
+        drawFootprint(footprint);
+    }
 
     for (let arrow of arrows) {
         // if (!arrow.grounded) continue;
@@ -73,6 +77,10 @@ function drawLevel(level) {
 
     for (let entity of entities) {
         drawEntityArrows(entity);
+    }
+
+    for (let particle of particles) {
+        drawParticle(particle);
     }
 
     if (star.time > 0) {
@@ -260,11 +268,17 @@ function drawEntity(entity) {
             image(img, -CELL / 2, -CELL / 2);
             break;
         case ARCHER:
-            push();
             // rotate(Math.PI / 2);
             frame = Math.min(3, Math.ceil(entity.pullback / PULLBACK * 3));
             img = graphics.enemies.archer[frame];
             image(img, -CELL / 2, -CELL * 11 / 16);
+
+            push();
+            rotate(-Math.PI / 2);
+            drawArrow({
+                pos: createVector(30 - frame * 3, 0),
+                angle: 0
+            });
             pop();
 
             fill(150, 0, 0);
@@ -348,6 +362,24 @@ function drawArrow(arrow) {
     // strokeWeight(2);
     // // ellipse(0, 0, 10);
     // line(0, 0, -10, 0)
+
+    pop();
+}
+
+function drawParticle(particle) {
+    fill(particle.colour);
+    noStroke();
+    rect(particle.pos.x, particle.pos.y, particle.r, particle.r);
+}
+
+function drawFootprint(footprint) {
+    push();
+    translate(footprint.pos);
+    rotate(footprint.angle);
+    if (!footprint.right) scale(-1, 1);
+
+    tint(255, 255 * footprint.time / 120);
+    image(graphics.player.foot, -4.5, -7.5);
 
     pop();
 }

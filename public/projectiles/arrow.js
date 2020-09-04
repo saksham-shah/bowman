@@ -12,6 +12,19 @@ class Arrow {
         this.time = 0;
 
         this.previousCell = { x: -1, y: -1 };
+
+        game.particle({
+            pos: this.pos.copy(),
+            speed: 3,
+            speedErr: 1.5,
+            angle: this.angle,
+            angleErr: Math.PI * 0.25,
+            r: 7,
+            life: 15,
+            lifeErr: 7,
+            col: '#6d3e0a',
+            num: 15
+        });
     }
 
     update(grid, entities, targets, interactables) {
@@ -71,7 +84,7 @@ class Arrow {
 
                     let rotated = p5.Vector.fromAngle(relAngle - target.direction * Math.PI / 2, relMag);
 
-                    console.log(relPos.x, relPos.y, rotated.x, rotated.y);
+                    // console.log(relPos.x, relPos.y, rotated.x, rotated.y);
 
                     if (rotated.y >= CELL / 2 - MINSTEP && rotated.x >= -TARGETR / 2 && rotated.x <= TARGETR / 2) {
                         target.pressed = true;
@@ -88,6 +101,19 @@ class Arrow {
     
                             for (let door of interactable.doors) {
                                 grid[door.x][door.y].type = EMPTY;
+
+                                game.particle({
+                                    pos: createVector(door.x * CELL + CELL / 2, door.y * CELL + CELL / 2),
+                                    speed: 3,
+                                    speedErr: 1.5,
+                                    angle: 0,
+                                    angleErr: Math.PI * 2,
+                                    r: 7,
+                                    life: 30,
+                                    lifeErr: 15,
+                                    col: COLOURCODES[interactable.colour],
+                                    num: 15
+                                });
     
                                 for (let arrow of grid[door.x][door.y].arrows) {
                                     arrow.remove = true;
@@ -97,6 +123,19 @@ class Arrow {
                     }
                 }
             }
+
+            game.particle({
+                pos: this.pos.copy(),
+                speed: 3,
+                speedErr: 1.5,
+                angle: this.angle,
+                angleErr: Math.PI * 0.25,
+                r: 7,
+                life: 15,
+                lifeErr: 7,
+                col: '#6d3e0a',
+                num: 15
+            });
             
             return true;
         }
@@ -128,9 +167,25 @@ class Arrow {
                     entity.angularVel += 0.2 * FORCE * Math.sin(this.angle - relAngle);
                 }
 
+                let bleed = 100;
                 if (typeof entity.damage == 'function') {
                     entity.damage(this.speed);
+
+                    bleed = [150, 0, 0]
                 }
+
+                game.particle({
+                    pos: this.pos.copy(),
+                    speed: 3,
+                    speedErr: 1.5,
+                    angle: this.angle,
+                    angleErr: Math.PI * 0.25,
+                    r: 7,
+                    life: 30,
+                    lifeErr: 15,
+                    col: bleed,
+                    num: 15
+                });
 
                 // console.log(entity);
                 return true;

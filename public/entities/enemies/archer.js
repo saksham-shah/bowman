@@ -39,10 +39,14 @@ class Archer extends Enemy {
             } else {
                 this.moving = true;
                 this.pullingBack = false;
-                this.pullback = 0;
+                // this.pullback = 0;
                 let angle = this.fireAngle;// + Math.random() * ARCHERERROR * 2 - ARCHERERROR;
                 return new Arrow(p5.Vector.fromAngle(angle, 30).add(this.pos), MAXSPEED, angle, P_ENEMY);
             }
+        } else if (this.pullback > 0) {
+            this.pullback -= 15 * dt;
+    
+            if (this.pullback < 0) this.pullback = 0;
         }
 
         return null;
