@@ -230,6 +230,8 @@ class Level {
                     col: [150, 0, 0],
                     num: 20
                 });
+
+                sounds.entitydie.play();
             }
         }
     }
@@ -275,6 +277,8 @@ class Level {
                         col: '#6d3e0a',
                         num: 15
                     });
+
+                    sounds.enemyspawn.play();
                 }
 
                 cave.counter++;
@@ -425,6 +429,8 @@ class Level {
                 this.player.bow = true;
 
                 displayText(this.levelMeta, 'bow');
+
+                sounds.bowpickup.play();
             }
 
             if (this.ended == -1 && this.grid[cell.x][cell.y].type == END) {
@@ -443,6 +449,8 @@ class Level {
                     col: [255, 225, 0],
                     num: 40
                 });
+
+                sounds.winlevel.play();
             }
 
             if (!this.secret && cell.x == this.levelMeta.secret.x && cell.y == this.levelMeta.secret.y) {
@@ -463,6 +471,8 @@ class Level {
 
                     localStorage.setItem('bowman stats', JSON.stringify(stats));
                 }
+
+                sounds.winlevel.play();
             }
         }
     }
@@ -512,8 +522,11 @@ class Level {
             if (this.player.bow && this.player.cooldown <= 0) {
                 // pull back bow
                 this.player.pullingBack = true;
+                
                 this.player.cooldown = this.player.fireRate;
                 this.player.pullback = 0;
+
+                sounds.arrowpull.play();
             }
         }
     }

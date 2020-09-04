@@ -58,7 +58,7 @@ function drawLevel(level) {
     drawGrid(grid, interactables, buttons, targets, reached);
 
     for (let footprint of footprints) {
-        drawFootprint(footprint);
+        // drawFootprint(footprint);
     }
 
     for (let arrow of arrows) {

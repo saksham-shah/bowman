@@ -150,7 +150,7 @@ let levels = [
                 default: [],
                 bow: [
                     {
-                        text: ['Oh no! There are enemies to kill!', 'Left click to shoot an arrow - hold it longer for more damage!'],
+                        text: ['Wait what? Enemies? Isn\'t this a puzzle game?', 'Left click to shoot an arrow - hold it longer for more damage!'],
                         position: NORTH
                     }, {
                         text: ['Use the power meter on the left to time your shots.', 'You cannot shoot arrows while holding objects.'],
@@ -207,7 +207,7 @@ let levels = [
         ],
 
         meta: {
-            required: 8,
+            required: 7,
             double: 6,
             triple: 1,
             secret: { x: 4, y: 0 },
@@ -268,7 +268,7 @@ let levels = [
         ],
 
         meta: {
-            required: 10,
+            required: 8,
             double: 8,
             triple: 4,
             secret: { x: 6, y: 2 },
@@ -336,8 +336,8 @@ let levels = [
             }
         ],
         meta: {
-            required: 12,
-            double: 6,
+            required: 10,
+            double: 8,
             triple: 3,
             secret: { x: 7, y: 6 }
         }
@@ -352,10 +352,10 @@ let levels = [
     
         caves: [{
             pos: { x: 0, y: 3 },
-            enemies: '1000000000*'
+            enemies: '1000000000100000000010000000001000000000'
         }, {
             pos: { x: 8, y: 3 },
-            enemies: '0000010000*'
+            enemies: '0000010000000001000000000100000000010000'
         }],
     
         map: {
@@ -396,18 +396,15 @@ let levels = [
             }
         ],
         meta: {
-            required: 14,
+            required: 12,
             double: 18,
             triple: 8,
             secret: { x: 7, y: 3 },
 
             text: {
                 default: [{
-                    text: ['The enemies will keep coming.'],
+                    text: ['Kill enough enemies to activate the buttons.'],
                     position: NORTH
-                }, {
-                    text: ['Kill enough of them to activate the buttons.'],
-                    position: SOUTH
                 }]
             },
             maxHeight: 700

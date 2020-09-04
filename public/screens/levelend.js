@@ -1,6 +1,7 @@
 function addLevelEndScreen() {
     let result;
     let time = 0;
+    let starsDrawn;
 
     let w = 600, h = 700;
 
@@ -10,6 +11,8 @@ function addLevelEndScreen() {
         onDisplay: _result => {
             result = _result;
             time = 0;
+
+            starsDrawn = [false, false, false];
         },
         draw: () => {
             time += dt;
@@ -54,7 +57,12 @@ function addLevelEndScreen() {
                         } else {
                             tint(255);
                         }
-                        image(graphics.star.gold, w / 2 - 245 + 175 * i, 170)
+                        image(graphics.star.gold, w / 2 - 245 + 175 * i, 170);
+
+                        if (!starsDrawn[i]) {
+                            starsDrawn[i] = true;
+                            sounds.winstars[i].play();
+                        }
                     }
                 }
             }

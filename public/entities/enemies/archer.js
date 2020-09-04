@@ -24,6 +24,7 @@ class Archer extends Enemy {
         } else if (!this.pullingBack) {
             if (this.clearLineOfSight(grid)) {
                 this.pullingBack = true;
+                sounds.arrowpull2.play();
                 this.moving = false;
                 this.firingAt = { x: this.target.pos.x, y: this.target.pos.y };
                 this.cooldown = this.fireRate;

@@ -25,12 +25,30 @@ class Arrow {
             col: '#6d3e0a',
             num: 15
         });
+
+        sounds.arrowfire.play();
     }
 
     update(grid, entities, targets, interactables) {
 
         if (this.time > 20) {
             this.hit = P_GROUND;
+
+            game.particle({
+                pos: this.pos.copy(),
+                speed: 3,
+                speedErr: 1.5,
+                angle: this.angle,
+                angleErr: Math.PI * 0.25,
+                r: 7,
+                life: 15,
+                lifeErr: 7,
+                col: '#6d3e0a',
+                num: 10
+            });
+
+            sounds.arrowfloor.play();
+
             return true;
         }
 
@@ -136,6 +154,8 @@ class Arrow {
                 col: '#6d3e0a',
                 num: 15
             });
+
+            sounds.arrowwall.play();
             
             return true;
         }
@@ -171,7 +191,11 @@ class Arrow {
                 if (typeof entity.damage == 'function') {
                     entity.damage(this.speed);
 
-                    bleed = [150, 0, 0]
+                    bleed = [150, 0, 0];
+
+                    sounds.arrowentity.play();
+                } else {
+                    sounds.arrowwall.play();
                 }
 
                 game.particle({

@@ -19,7 +19,50 @@ let graphics = {
     goal: {}
 };
 
-let font;
+const soundsToLoad = [
+    {
+        name: 'arrowpull',
+        file: 'arrowpull.wav'
+    }, {
+        name: 'arrowpull2',
+        file: 'arrowpull.wav'
+    }, {
+        name: 'arrowwall',
+        file: 'arrowwall.wav'
+    }, {
+        name: 'arrowfloor',
+        file: 'arrowfloor.wav'
+    }, {
+        name: 'arrowentity',
+        file: 'arrowentity.wav'
+    }, {
+        name: 'arrowfire',
+        file: 'arrowfire.wav'
+    }, {
+        name: 'entitydie',
+        file: 'entitydie.wav'
+    }, {
+        name: 'bowpickup',
+        file: 'bowpickup.wav'
+    }, {
+        name: 'enemyspawn',
+        file: 'enemyspawn.wav'
+    }, {
+        name: 'winlevel',
+        file: 'winlevel.wav'
+    },
+];
+
+const volumes = {
+    arrowpull: 0.5,
+    arrowpull2: 0.5,
+    arrowwall: 0.5,
+    arrowentity: 5,
+    arrowfire: 0.25,
+    entitydie: 1.5
+}
+
+let font, sounds = {};
 
 function preload() {
     graphics.map.floor = loadImage(graphicsFolder + 'map/floor.png');
@@ -70,6 +113,20 @@ function preload() {
 
     graphics.star.gold = loadImage(graphicsFolder + 'star/stargold.png');
     graphics.star.grey = loadImage(graphicsFolder + 'star/stargrey.png');
+
+    for (let sound of soundsToLoad) {
+        let p5sound = loadSound('assets/sound/' + sound.file);
+        let vol = volumes[sound.name];
+        if (vol == undefined) vol = 1;
+        p5sound.setVolume(vol);
+
+        sounds[sound.name] = p5sound;
+    }
+
+    sounds.winstars = [];
+    for (let i = 0; i < 3; i++) {
+        sounds.winstars.push(loadSound(`assets/sound/win${i}.wav`));
+    }
 
     // font = loadFont('/assets/font/PressStart2P-Regular.ttf');
     font = loadFont('assets/font/VT323-Regular.ttf');
