@@ -150,7 +150,7 @@ let levels = [
                 default: [],
                 bow: [
                     {
-                        text: ['Wait what? Enemies? Isn\'t this a puzzle game?', 'Left click to shoot an arrow - hold it longer for more damage!'],
+                        text: ['Is that an enemy? Isn\'t this a puzzle game?', 'Left click to shoot an arrow - hold it longer for more damage!'],
                         position: NORTH
                     }, {
                         text: ['Use the power meter on the left to time your shots.', 'You cannot shoot arrows while holding objects.'],
@@ -407,7 +407,291 @@ let levels = [
                     position: NORTH
                 }]
             },
-            maxHeight: 700
+            maxHeight: 750
         }
-    }
+    },
+
+    // Level 8 - Do it fast
+    {
+        size: { width: 9, height: 9 },
+        start: { x: 0, y: 8 },
+        end: { x: 0, y: 0 },
+        bow: { x: 3, y: 2 },
+
+        caves: [{
+            pos: { x: 8, y: 0 },
+            enemies: '100100100100100100100'
+        }, {
+            pos: { x: 8, y: 4 },
+            enemies: '010010010010010010010'
+        }, {
+            pos: { x: 8, y: 8 },
+            enemies: '001001001001001001001'
+        }, {
+            pos: { x: 4, y: 2 },
+            enemies: '111'
+        }],
+
+        caveInterval: 300,
+    
+        map: {
+            walls: [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 1 },
+                { x: 5, y: 0 }, { x: 5, y: 1 }, { x: 5, y: 2 }, { x: 5, y: 4 }, { x: 5, y: 6 }, { x: 5, y: 8 }]
+        },
+    
+        entities: {
+            rocks: [{ x: 4, y: 0 }]
+        },
+    
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 2, y: 1 }],
+                triggers: [
+                    {
+                        type: I_TARGET,
+                        pos: { x: 0, y: 5 },
+                        direction: WEST
+                    }
+                ]
+            }, {
+                colour: BLUE,
+                doors: [{ x: 5, y: 3 }, { x: 5, y: 5 }, { x: 5, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 2 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 4, y: 8 }
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 2, y: 8 },
+                        direction: SOUTH
+                    }
+                ]
+            }, {
+                colour: GREEN,
+                doors: [{ x: 0, y: 1 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 8, y: 2 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 8, y: 6 }
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 7, y: 8 },
+                        direction: SOUTH
+                    }
+                ]
+            }
+        ],
+        meta: {
+            required: 0,
+            double: 12,
+            triple: 6,
+            secret: { x: 6, y: 0 },
+
+            text: {
+                bow: [{
+                    text: ['Don\'t take too long. They\'ll build up.'],
+                    position: NORTH
+                }]
+            },
+            maxHeight: 750
+        }
+    },
+
+    // Level 9 - Rock maze
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 5, y: 10 },
+        end: { x: 10, y: 6 },
+        // bow: { x: 5, y: 9 },
+
+        // caves: [{
+        //     pos: { x: 3, y: 10 },
+        //     enemies: '1'
+        // }, {
+        //     pos: { x: 7, y: 10 },
+        //     enemies: '1'
+        // }],
+    
+        map: {
+            fences: [
+                { x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 1 }, { x: 5, y: 1 }, { x: 6, y: 1 }, { x: 7, y: 1 }, { x: 8, y: 1 }, { x: 9, y: 1 },
+                { x: 1, y: 9 }, { x: 2, y: 9 }, { x: 3, y: 9 }, { x: 4, y: 9 }, { x: 5, y: 9 }, { x: 6, y: 9 }, { x: 7, y: 9 }, { x: 8, y: 9 }, { x: 9, y: 9 },
+                { x: 9, y: 2 }, { x: 9, y: 3 }, { x: 9, y: 4 }, { x: 9, y: 5 }, { x: 9, y: 6 }, { x: 9, y: 7 }, { x: 9, y: 8 },
+                { x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 }, { x: 1, y: 5 }, { x: 1, y: 6 }, { x: 1, y: 7 }, { x: 1, y: 8 },
+            ]
+        },
+    
+        // entities: {
+        //     rocks: [{ x: 2, y: 8 }, { x: 3, y: 8 }]
+        // },
+    
+        interactables: [
+            // {
+            //     colour: RED,
+            //     doors: [{ x: 8, y: 10 }, { x: 8, y: 7 }],
+            //     triggers: [
+            //         {
+            //             type: I_BUTTON,
+            //             pos: { x: 0, y: 8 }
+            //         }
+            //     ]
+            // }, {
+            //     colour: BLUE,
+            //     doors: [{ x: 0, y: 7 }],
+            //     triggers: [
+            //         {
+            //             type: I_BUTTON,
+            //             pos: { x: 10, y: 8 }
+            //         }
+            //     ]
+            // }, {
+            //     colour: GREEN,
+            //     doors: [{ x: 10, y: 7 }, { x: 2, y: 5 }],
+            //     triggers: [
+            //         {
+            //             type: I_BUTTON,
+            //             pos: { x: 0, y: 3 }
+            //         }
+            //     ]
+            // }, {
+            //     colour: YELLOW,
+            //     doors: [{ x: 0, y: 2 }],
+            //     triggers: [
+            //         {
+            //             type: I_BUTTON,
+            //             pos: { x: 10, y: 3 }
+            //         }
+            //     ]
+            // }, {
+            //     colour: CYAN,
+            //     doors: [{ x: 10, y: 2 }, { x: 8, y: 3 }],
+            //     triggers: [
+            //         {
+            //             type: I_BUTTON,
+            //             pos: { x: 2, y: 0 }
+            //         }
+            //     ]
+            // }, {
+            //     colour: MAGENTA,
+            //     doors: [{ x: 3, y: 0 }],
+            //     triggers: [
+            //         {
+            //             type: I_BUTTON,
+            //             pos: { x: 8, y: 0 }
+            //         }
+            //     ]
+            // }
+        ],
+        meta: {
+            required: 0,
+            double: 2,
+            triple: 0,
+            secret: { x: 0, y: 6 },
+        }
+    },
+
+    // Level 10 - needs to be a later level - maybe 15?
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 5, y: 10 },
+        end: { x: 10, y: 6 },
+        bow: { x: 5, y: 9 },
+
+        caves: [{
+            pos: { x: 3, y: 10 },
+            enemies: '1'
+        }, {
+            pos: { x: 7, y: 10 },
+            enemies: '1'
+        }],
+    
+        map: {
+            fences: [{ x: 6, y: 10 }, { x: 4, y: 10 },
+                { x: 6, y: 9 }, { x: 7, y: 9 }, { x: 8, y: 9 }, { x: 9, y: 9 },
+                { x: 6, y: 1 }, { x: 7, y: 1 }, { x: 8, y: 1 }, { x: 9, y: 1 },
+                { x: 4, y: 9 }, { x: 3, y: 9 }, { x: 2, y: 9 }, { x: 1, y: 9 },
+                { x: 4, y: 1 }, { x: 3, y: 1 }, { x: 2, y: 1 }, { x: 1, y: 1 },
+                { x: 9, y: 1 }, { x: 9, y: 2 }, { x: 9, y: 3 }, { x: 9, y: 4 }, { x: 9, y: 5 }, { x: 9, y: 6 }, { x: 9, y: 7 }, { x: 9, y: 8 },
+                { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 }, { x: 1, y: 5 }, { x: 1, y: 6 }, { x: 1, y: 7 }, { x: 1, y: 8 },
+                { x: 2, y: 7 }, { x: 3, y: 7 }, { x: 4, y: 7 }, { x: 5, y: 7 }, { x: 6, y: 7 }, { x: 7, y: 7 }, 
+                { x: 3, y: 5 }, { x: 4, y: 5 }, { x: 5, y: 5 }, { x: 6, y: 5 }, { x: 7, y: 5 }, { x: 8, y: 5 }, 
+                { x: 2, y: 3 }, { x: 3, y: 3 }, { x: 4, y: 3 }, { x: 5, y: 3 }, { x: 6, y: 3 }, { x: 7, y: 3 }, 
+            ]
+        },
+    
+        entities: {
+            rocks: [{ x: 2, y: 8 }, { x: 3, y: 8 }]
+        },
+    
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 8, y: 10 }, { x: 8, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 8 }
+                    }
+                ]
+            }, {
+                colour: BLUE,
+                doors: [{ x: 0, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 8 }
+                    }
+                ]
+            }, {
+                colour: GREEN,
+                doors: [{ x: 10, y: 7 }, { x: 2, y: 5 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 3 }
+                    }
+                ]
+            }, {
+                colour: YELLOW,
+                doors: [{ x: 0, y: 2 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 3 }
+                    }
+                ]
+            }, {
+                colour: CYAN,
+                doors: [{ x: 10, y: 2 }, { x: 8, y: 3 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 0 }
+                    }
+                ]
+            }, {
+                colour: MAGENTA,
+                doors: [{ x: 3, y: 0 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 8, y: 0 }
+                    }
+                ]
+            }, 
+        ],
+        meta: {
+            required: 0,
+            double: 2,
+            triple: 0,
+            secret: { x: 0, y: 6 },
+        }
+    },
 ];

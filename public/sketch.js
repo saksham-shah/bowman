@@ -214,6 +214,14 @@ function setup() {
 
     if (version == '1') {
         stats = JSON.parse(localStorage.getItem('bowman stats'));
+
+        for (let i = stats.levelData.length; i < levels.length; i++) {
+            stats.levelData.push({
+                stars: 0,
+                secret: false
+            });
+        }
+        localStorage.setItem('bowman stats', JSON.stringify(stats));
     } else {
         localStorage.setItem('bowman version', '1');
         localStorage.setItem('bowman stats', JSON.stringify(stats));
