@@ -29,6 +29,8 @@ function setupLevelSelect() {
                 y: mousePos.y - 100
             }
 
+            let oldHovered = hovered;
+
             hovered = -1;
 
             if (mousePos.x < 0 || mousePos.y < 0 || mousePos.x >= 750 || mousePos.y >= 750) return;
@@ -48,6 +50,9 @@ function setupLevelSelect() {
 
                 if (hovered >= levels.length || stats.totalStars < levels[hovered].meta.required) {
                     hovered = -1;
+
+                } else if (hovered != oldHovered) {
+                    sounds.buttonhover.play();
                 }
             }
 
@@ -163,6 +168,8 @@ function setupLevelSelect() {
             setScreen('game');
 
             game = new Level(hovered);
+
+            sounds.buttonclick.play();
         }
     })
     .addButton({

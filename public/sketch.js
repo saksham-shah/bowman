@@ -21,6 +21,12 @@ let graphics = {
 
 const soundsToLoad = [
     {
+        name: 'buttonclick',
+        file: 'buttonclick.wav'
+    }, {
+        name: 'buttonhover',
+        file: 'buttonhover.wav'
+    }, {
         name: 'music',
         file: 'music.mp3'
     }, {
@@ -200,13 +206,11 @@ function setup() {
 
     setupUI();
 
-    let soundsFake = {
-        hover: { play: () => {} },
-        click: { play: () => {} },
-    }
-
     setFont(font);
-    setSounds(soundsFake);
+    setSounds({
+        hover: sounds.buttonhover,
+        click: sounds.buttonclick
+    });
     // setCursors({
     //     game: 'assets/game.cur',
     //     ghost: 'assets/ghost.cur'

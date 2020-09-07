@@ -625,7 +625,7 @@ let levels = [
             }, 
         ],
 
-        caveInterval: 480,
+        caveInterval: 360,
 
         map: {
             walls: [{ x: 3, y: 3 }, { x: 5, y: 3 }, { x: 7, y: 3 },
