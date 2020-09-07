@@ -411,7 +411,111 @@ let levels = [
         }
     },
 
-    // Level 8 - Do it fast
+    // Level 8 - Archer in the middle shooting your rocks away
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 0, y: 10 },
+        end: { x: 8, y: 0 },
+        bow: { x: 2, y: 9 },
+
+        caves: [
+            {
+                pos: { x: 5, y: 5 },
+                enemies: '1'
+            }, {
+                pos: { x: 2, y: 0 },
+                enemies: '1111'
+            }, 
+        ],
+
+        caveInterval: 360,
+
+        map: {
+            walls: [
+                { x: 1, y: 2 }, { x: 2, y: 2 }, { x: 3, y: 2 }, { x: 3, y: 1 }, { x: 3, y: 0 },
+                { x: 9, y: 2 }, { x: 8, y: 2 }, { x: 7, y: 2 }, { x: 7, y: 1 }, { x: 7, y: 0 }],
+            fences: [{ x: 4, y: 4 }, { x: 5, y: 4 }, { x: 6, y: 4 }, { x: 6, y: 5 }, { x: 6, y: 6 }, { x: 5, y: 6 }, { x: 4, y: 6 }, { x: 4, y: 5 },
+                { x: 0, y: 8 }, { x: 1, y: 8 }, { x: 3, y: 8 }, { x: 3, y: 9 }, { x: 3, y: 10 },
+                { x: 10, y: 8 }, { x: 9, y: 8 }, { x: 7, y: 8 }, { x: 7, y: 9 }, { x: 7, y: 10 }],
+        },
+
+        entities: {
+            rocks: [{ x: 9, y: 9 }, { x: 10, y: 9 }],
+        },
+
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 2, y: 8 }],
+                triggers: [
+                    {
+                        type: I_TARGET,
+                        pos: { x: 0, y: 10 },
+                        direction: SOUTH
+                    }
+                ]
+            }, {
+                colour: BLUE,
+                doors: [{ x: 0, y: 2 }],
+                triggers: [
+                    {
+                        type: I_TARGET,
+                        pos: { x: 10, y: 10 },
+                        direction: EAST
+                    }
+                ]
+            }, {
+                colour: GREEN,
+                doors: [{ x: 10, y: 2 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 5, y: 3 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 5, y: 7 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 3, y: 5 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 7, y: 5 }
+                    }
+                ]
+            }, {
+                colour: YELLOW,
+                doors: [{ x: 8, y: 8 }],
+                triggers: [
+                    {
+                        type: I_TARGET,
+                        pos: { x: 5, y: 0 },
+                        direction: NORTH
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 10, y: 5 },
+                        direction: EAST
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 5, y: 10 },
+                        direction: SOUTH
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 0, y: 5 },
+                        direction: WEST
+                    }
+                ]
+            }
+        ],
+        
+        meta: {
+            required: 0,
+            double: 9,
+            triple: 5,
+            secret: { x: 2, y: 1 },
+        }
+    },
+
+    // Level 9 - Do it fast
     {
         size: { width: 9, height: 9 },
         start: { x: 0, y: 8 },
@@ -504,100 +608,215 @@ let levels = [
         }
     },
 
-    // Level 9 - Rock maze
+    // Level 10 - Kill enemies in a grid
     {
         size: { width: 11, height: 11 },
-        start: { x: 5, y: 10 },
-        end: { x: 10, y: 6 },
-        // bow: { x: 5, y: 9 },
+        start: { x: 0, y: 10 },
+        end: { x: 10, y: 0 },
+        bow: { x: 0, y: 0 },
 
-        // caves: [{
-        //     pos: { x: 3, y: 10 },
-        //     enemies: '1'
-        // }, {
-        //     pos: { x: 7, y: 10 },
-        //     enemies: '1'
-        // }],
-    
+        caves: [],
+
         map: {
-            fences: [
-                { x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 1 }, { x: 5, y: 1 }, { x: 6, y: 1 }, { x: 7, y: 1 }, { x: 8, y: 1 }, { x: 9, y: 1 },
-                { x: 1, y: 9 }, { x: 2, y: 9 }, { x: 3, y: 9 }, { x: 4, y: 9 }, { x: 5, y: 9 }, { x: 6, y: 9 }, { x: 7, y: 9 }, { x: 8, y: 9 }, { x: 9, y: 9 },
-                { x: 9, y: 2 }, { x: 9, y: 3 }, { x: 9, y: 4 }, { x: 9, y: 5 }, { x: 9, y: 6 }, { x: 9, y: 7 }, { x: 9, y: 8 },
-                { x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 }, { x: 1, y: 5 }, { x: 1, y: 6 }, { x: 1, y: 7 }, { x: 1, y: 8 },
-            ]
+            walls: [],
+            fences: [],
         },
-    
-        // entities: {
-        //     rocks: [{ x: 2, y: 8 }, { x: 3, y: 8 }]
-        // },
-    
+
+        entities: {
+            rocks: [],
+        },
+
         interactables: [
-            // {
-            //     colour: RED,
-            //     doors: [{ x: 8, y: 10 }, { x: 8, y: 7 }],
-            //     triggers: [
-            //         {
-            //             type: I_BUTTON,
-            //             pos: { x: 0, y: 8 }
-            //         }
-            //     ]
-            // }, {
-            //     colour: BLUE,
-            //     doors: [{ x: 0, y: 7 }],
-            //     triggers: [
-            //         {
-            //             type: I_BUTTON,
-            //             pos: { x: 10, y: 8 }
-            //         }
-            //     ]
-            // }, {
-            //     colour: GREEN,
-            //     doors: [{ x: 10, y: 7 }, { x: 2, y: 5 }],
-            //     triggers: [
-            //         {
-            //             type: I_BUTTON,
-            //             pos: { x: 0, y: 3 }
-            //         }
-            //     ]
-            // }, {
-            //     colour: YELLOW,
-            //     doors: [{ x: 0, y: 2 }],
-            //     triggers: [
-            //         {
-            //             type: I_BUTTON,
-            //             pos: { x: 10, y: 3 }
-            //         }
-            //     ]
-            // }, {
-            //     colour: CYAN,
-            //     doors: [{ x: 10, y: 2 }, { x: 8, y: 3 }],
-            //     triggers: [
-            //         {
-            //             type: I_BUTTON,
-            //             pos: { x: 2, y: 0 }
-            //         }
-            //     ]
-            // }, {
-            //     colour: MAGENTA,
-            //     doors: [{ x: 3, y: 0 }],
-            //     triggers: [
-            //         {
-            //             type: I_BUTTON,
-            //             pos: { x: 8, y: 0 }
-            //         }
-            //     ]
-            // }
+
         ],
+        
         meta: {
             required: 0,
-            double: 2,
+            double: 0,
             triple: 0,
-            secret: { x: 0, y: 6 },
+            secret: { x: 10, y: 10 },
         }
     },
 
-    // Level 10 - needs to be a later level - maybe 15?
+    // Level 11 - Puzzle
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 0, y: 10 },
+        end: { x: 10, y: 0 },
+        bow: { x: 0, y: 0 },
+
+        caves: [],
+
+        map: {
+            walls: [],
+            fences: [],
+        },
+
+        entities: {
+            rocks: [],
+        },
+
+        interactables: [
+
+        ],
+        
+        meta: {
+            required: 0,
+            double: 0,
+            triple: 0,
+            secret: { x: 10, y: 10 },
+        }
+    },
+
+    // Level 12 - Make an archer shoot a rock
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 0, y: 10 },
+        end: { x: 10, y: 0 },
+        bow: { x: 0, y: 0 },
+
+        caves: [],
+
+        map: {
+            walls: [],
+            fences: [],
+        },
+
+        entities: {
+            rocks: [],
+        },
+
+        interactables: [
+
+        ],
+        
+        meta: {
+            required: 0,
+            double: 0,
+            triple: 0,
+            secret: { x: 10, y: 10 },
+        }
+    },
+
+    // Level 13 - Kill enemies in corridors
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 0, y: 10 },
+        end: { x: 10, y: 0 },
+        bow: { x: 0, y: 0 },
+
+        caves: [],
+
+        map: {
+            walls: [],
+            fences: [],
+        },
+
+        entities: {
+            rocks: [],
+        },
+
+        interactables: [
+
+        ],
+        
+        meta: {
+            required: 0,
+            double: 0,
+            triple: 0,
+            secret: { x: 10, y: 10 },
+        }
+    },
+
+    // Level 14 - Rock maze
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 5, y: 10 },
+        end: { x: 10, y: 8 },
+        bow: { x: 6, y: 10 },
+
+        caves: [{
+            pos: { x: 10, y: 6 },
+            enemies: '100001'
+        }],
+    
+        map: {
+            fences: [
+                { x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 1 }, { x: 5, y: 1}, { x: 6, y: 1 }, { x: 7, y: 1 }, { x: 8, y: 1 }, { x: 9, y: 1 },
+                { x: 1, y: 9 }, { x: 2, y: 9 }, { x: 3, y: 9 }, { x: 4, y: 9 }, { x: 6, y: 9 }, { x: 7, y: 9 }, { x: 8, y: 9 }, { x: 9, y: 9 },
+                { x: 9, y: 2 }, { x: 9, y: 3 }, { x: 9, y: 4 }, { x: 9, y: 5 }, { x: 9, y: 6 }, { x: 9, y: 7 }, { x: 9, y: 8 },
+                { x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 }, { x: 1, y: 5 }, { x: 1, y: 6 }, { x: 1, y: 7 }, { x: 1, y: 8 },
+                { x: 3, y: 2 }, { x: 3, y: 3 }, { x: 7, y: 2 }, { x: 7, y: 3 }
+            ]
+        },
+    
+        entities: {
+            rocks: [{ x: 2, y: 8 }, { x: 8, y: 2 }]
+        },
+    
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 1, y: 10 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 6 }
+                    }
+                ]
+            }, {
+                colour: BLUE,
+                doors: [{ x: 2, y: 3 }, { x: 6, y: 5 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 0 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 8, y: 8 }
+                    }
+                ]
+            }, {
+                colour: GREEN,
+                doors: [{ x: 8, y: 3 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 0 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 5, y: 5 }
+                    }
+                ]
+            }, {
+                colour: YELLOW,
+                doors: [{ x: 2, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 10 }
+                    }
+                ]
+            }, {
+                colour: CYAN,
+                doors: [{ x: 10, y: 7 }, { x: 10, y: 9 }, { x: 5, y: 9 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 2 }
+                    }
+                ]
+            }
+        ],
+        meta: {
+            required: 0,
+            double: 12,
+            triple: 7,
+            secret: { x: 8, y: 2 },
+        }
+    },
+
+    // Level 15 - Race through the map while enemies open doors
     {
         size: { width: 11, height: 11 },
         start: { x: 5, y: 10 },

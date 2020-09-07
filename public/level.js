@@ -251,7 +251,7 @@ class Level {
             this.caveTimer -= this.caveInterval;
 
             for (let cave of this.caves) {
-                if (cave.counter >= cave.enemies.length) return;
+                if (cave.counter >= cave.enemies.length) continue;
 
                 let enemyType = cave.enemies[cave.counter];
                 if (enemyType == S_REPEAT) {
