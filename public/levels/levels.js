@@ -613,27 +613,55 @@ let levels = [
         size: { width: 11, height: 11 },
         start: { x: 0, y: 10 },
         end: { x: 10, y: 0 },
-        bow: { x: 0, y: 0 },
+        bow: { x: 1, y: 9 },
 
-        caves: [],
+        caves: [
+            {
+                pos: { x: 0, y: 0 },
+                enemies: '1111'
+            }, {
+                pos: { x: 10, y: 10 },
+                enemies: '1111'
+            }, 
+        ],
+
+        caveInterval: 480,
 
         map: {
-            walls: [],
+            walls: [{ x: 3, y: 3 }, { x: 5, y: 3 }, { x: 7, y: 3 },
+                { x: 3, y: 5 }, { x: 5, y: 5 }, { x: 7, y: 5 },
+                { x: 3, y: 7 }, { x: 5, y: 7 }, { x: 7, y: 7 },
+                { x: 1, y: 5 }, { x: 9, y: 5 }, { x: 5, y: 1 }, { x: 5, y: 9 },
+                { x: 9, y: 1 }, { x: 10, y: 1 }],
             fences: [],
         },
 
-        entities: {
-            rocks: [],
-        },
-
         interactables: [
-
+            {
+                colour: RED,
+                doors: [{ x: 9, y: 0 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 4, y: 4 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 4, y: 6 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 6, y: 4 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 6, y: 6 }
+                    }
+                ]
+            }
         ],
         
         meta: {
             required: 0,
-            double: 0,
-            triple: 0,
+            double: 12,
+            triple: 8,
             secret: { x: 10, y: 10 },
         }
     },

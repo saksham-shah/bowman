@@ -21,6 +21,9 @@ let graphics = {
 
 const soundsToLoad = [
     {
+        name: 'music',
+        file: 'music.mp3'
+    }, {
         name: 'arrowpull',
         file: 'arrowpull.wav'
     }, {
@@ -66,6 +69,7 @@ const soundsToLoad = [
 ];
 
 const volumes = {
+    music: 0.3,
     arrowpull: 0.5,
     arrowpull2: 0.5,
     arrowwall: 0.5,
@@ -196,19 +200,21 @@ function setup() {
 
     setupUI();
 
-    let sounds = {
+    let soundsFake = {
         hover: { play: () => {} },
         click: { play: () => {} },
     }
 
     setFont(font);
-    setSounds(sounds);
+    setSounds(soundsFake);
     // setCursors({
     //     game: 'assets/game.cur',
     //     ghost: 'assets/ghost.cur'
     // });
 
     setScreen('levels');
+
+    sounds.music.loop();
 
     let version = localStorage.getItem('bowman version');
 
