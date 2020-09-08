@@ -187,6 +187,14 @@ function setupLevelSelect() {
             }
         }
     })
+    .addButton({
+        position: { x: 75, y: 75 },
+        width: 75,
+        height: 75,
+        textSize: 75,
+        text: '<',
+        onClick: () => setScreen('menu')
+    });
 }
 
 /*

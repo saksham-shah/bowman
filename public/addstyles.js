@@ -128,25 +128,15 @@ function addStyles() {
         },
         slider: {
             default: {
-                line: 75,
-                circle: 100,
-                text: 200,
+                line: '#8d5010',
+                circle: '#6d3e0a',
+                text: '#fdead2',
                 hover: {
-                    line: 50,
-                    circle: 75,
+                    line: '#6d3e0a',
+                    circle: '#4e2d05',
                     text: 255
                 }
             }
-            // default: {
-            //     line: 150,
-            //     circle: 200,
-            //     text: 30,
-            //     hover: {
-            //         line: 110,
-            //         circle: 240,
-            //         text: 0
-            //     }
-            // }
         },
         table: {
             default: {

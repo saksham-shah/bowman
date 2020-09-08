@@ -28,12 +28,6 @@ function addLockedScreen() {
             text(`You need ${needed} more star${needed == 1 ? '' : 's'} to play Level ${level + 1}.\nGet more stars by firing fewer arrows\nin previous levels, or by using the\nfree star button.`, w / 2, 200);
         }
     })
-    .on('keyDown', e => {
-        if (e.key == 'p') {
-            closePopup();
-            game.paused = false;
-        }
-    })
     .addButton({
         position: { x: w / 2, y: 425 },
         width: 250,

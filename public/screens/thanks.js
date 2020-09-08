@@ -22,12 +22,6 @@ function addThanksScreen() {
             text(`That was the last level.\nI hope you enjoyed it!`, w / 2, 200);
         }
     })
-    .on('keyDown', e => {
-        if (e.key == 'p') {
-            closePopup();
-            game.paused = false;
-        }
-    })
     .addButton({
         position: { x: w / 2, y: 325 },
         width: 250,

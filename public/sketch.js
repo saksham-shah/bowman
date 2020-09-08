@@ -140,9 +140,9 @@ function preload() {
 
     for (let sound of soundsToLoad) {
         let p5sound = loadSound('assets/sound/' + sound.file);
-        let vol = volumes[sound.name];
-        if (vol == undefined) vol = 1;
-        p5sound.setVolume(vol);
+        // let vol = volumes[sound.name];
+        // if (vol == undefined) vol = 1;
+        // p5sound.setVolume(vol);
 
         sounds[sound.name] = p5sound;
     }
@@ -172,35 +172,70 @@ function setup() {
     });
     
     //add screens
-    addScreen('game', {
-        draw: () => {
-            if (game && !game.paused) {
-                // dt = deltaTime * 0.06;
-                // if (dt > 5) dt = 5;
-                game.update();
-            }
-
-            if (game) drawLevel(game.toObject());
-        }
-    })
-    .on('mouseDown', e => {
-        if (game && !game.paused) game.click(e.button == 0);
-    })
-    .on('keyDown', e => {
-        if (e.key == ' ' && game && !game.paused) return game.click(false);
-
-        if ((e.key == 'p') && game && !game.paused && (game.ended == -1)) {
-            openPopup('pause', game.level);
-        } else if (e.key == 'r' && game && !game.paused && (game.ended == -1)) {
-            game = new Level(game.level);
-        }
-    });
-
     setupLevelSelect();
     addLevelEndScreen();
     addPauseScreen();
     addLockedScreen();
     addThanksScreen();
+
+    let storedSettings = localStorage.getItem('bowman settings');
+    if (storedSettings) {
+        settings = JSON.parse(storedSettings);
+    } else {
+        localStorage.setItem('bowman settings', JSON.stringify(settings));
+    }
+
+    let v = settings.sound / 50;
+    for (let soundName in sounds) {
+        if (soundName != 'music') {
+            let vol = volumes[soundName];
+            if (vol == undefined) vol = 1;
+            if (soundName != 'winstars') {
+                sounds[soundName].setVolume(v * vol);
+            } else {
+                for (let s of sounds[soundName]) {
+                    s.setVolume(v * vol);
+                }
+            }
+        }
+    }
+
+    sounds.music.setVolume(settings.music / 50 * volumes.music);
+
+    addMainScreens();
+
+    let w = 675, h = 500;
+    addPopup('beta', {
+        width: w,
+        height: h,
+        draw: () => {
+            fill('#fdb159');
+            stroke('#fca440');
+            strokeWeight(10);
+
+            rect(w / 2, h / 2, w, h, 20);
+
+            // Text
+            textAlign(CENTER);
+            textSize(80);
+            fill(255);
+            noStroke();
+            text(`Warning`, w / 2, 125);
+
+            textSize(40);
+            text(`This is a beta version of the game.\nWhen the full version is released (13\nSeptember), you will most likely lose\nyour progress.`, w / 2, 200);
+        }
+    })
+    .addButton({
+        position: { x: w / 2, y: 425 },
+        width: 250,
+        height: 50,
+        textSize: 45,
+        text: 'CLOSE',
+        onClick: () => {
+            closePopup();
+        }
+    });
 
     addStyles();
 
@@ -216,7 +251,7 @@ function setup() {
     //     ghost: 'assets/ghost.cur'
     // });
 
-    setScreen('levels');
+    setScreen('menu');
 
     sounds.music.loop();
 
@@ -232,6 +267,8 @@ function setup() {
             });
         }
         localStorage.setItem('bowman stats', JSON.stringify(stats));
+
+        openPopup('beta');
     } else {
         localStorage.setItem('bowman version', '1');
         localStorage.setItem('bowman stats', JSON.stringify(stats));
