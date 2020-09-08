@@ -17,17 +17,17 @@ function addMainScreens() {
     })
     .addButton({
         position: { x: 800, y: 450 },
-        width: 300,
-        height: 75,
-        textSize: 50,
+        width: 400,
+        height: 100,
+        textSize: 75,
         text: 'Play',
         onClick: () => setScreen('levels')
     })
     .addButton({
-        position: { x: 800, y: 600 },
-        width: 300,
-        height: 75,
-        textSize: 50,
+        position: { x: 800, y: 650 },
+        width: 400,
+        height: 100,
+        textSize: 75,
         text: 'Settings',
         onClick: () => setScreen('settings')
     });
