@@ -325,6 +325,9 @@ function drawEntity(entity) {
                 rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)
             }
             break;
+        case SPIKE:
+            image(graphics.rock.spike, -CELL / 2, -CELL / 2);
+            break;
         default:
             fill(50);
             stroke(200);

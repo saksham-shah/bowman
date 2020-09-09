@@ -54,6 +54,7 @@ PLAYER = 0,
 ROCK = 1,
 CORPSE = 2,
 ARCHER = 3,
+SPIKE = 4,
 
 // Cell types
 EMPTY = 0,

@@ -35,7 +35,7 @@ function addLevelEndScreen() {
 
             let t;
             if (result.stars == 0) {
-                t = 'Oh no! You were shot!';
+                t = 'Oh no! You were killed!';
                 textSize(50);
             } else if (result.stars < 3) {
                 t = `${result.arrows} fewer arrow${result.arrows == 1 ? '' : 's'} for next star`;

@@ -153,6 +153,11 @@ class Level {
             this.pickupables.push(rockEntity);
         }
 
+        for (let spike of data.entities.spikes) {
+            let spikeEntity = new Spike(spike);
+            this.entities.splice(0, 0, spikeEntity);
+        }
+
         this.particles = [];
         this.footprints = [];
         this.lastFootprint = 0;
@@ -507,7 +512,7 @@ class Level {
                 this.droppingEntity = true;
             }
 
-        } else if (this.hoveredEntity || !leftMouse) {
+        } else if (!leftMouse) {
             if (!this.hoveredEntity) {
                 for (let entity of this.pickupables) {
                     if (entity.closeToPlayer) {

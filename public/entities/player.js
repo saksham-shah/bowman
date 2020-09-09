@@ -42,7 +42,8 @@ class Player extends Entity {
                 // console.log(speed);
                 game.arrowsFired++;
                 sounds.arrowpull.stop();
-                return new Arrow(p5.Vector.fromAngle(this.mouseAngle, 30).add(this.pos), speed, this.mouseAngle, P_PLAYER);
+                // return new Arrow(p5.Vector.fromAngle(this.mouseAngle, 30).add(this.pos), speed, this.mouseAngle, P_PLAYER);
+                return new Arrow(this.pos.copy(), speed, this.mouseAngle, P_PLAYER);
             }
         }
     } else if (this.pullback > 0) {

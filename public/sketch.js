@@ -105,6 +105,7 @@ function preload() {
     graphics.rock.base = loadImage(graphicsFolder + 'rock/rock.png');
     graphics.rock.close = loadImage(graphicsFolder + 'rock/rockclose.png');
     graphics.rock.hover = loadImage(graphicsFolder + 'rock/rockhover.png');
+    graphics.rock.spike = loadImage(graphicsFolder + 'rock/spike.png');
 
     graphics.enemies.archer = [];
     for (let i = 0; i < 4; i++) {

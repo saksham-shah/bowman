@@ -186,7 +186,7 @@ class Arrow {
 
                 entity.vel.add(p5.Vector.fromAngle(this.angle, this.speed * FORCE / entity.mass));
 
-                if (entity.type == ROCK || entity.type == CORPSE) {
+                if (entity.type == ROCK || entity.type == CORPSE || entity.type == SPIKE) {
                     entity.angularVel += 0.2 * FORCE * Math.sin(this.angle - relAngle);
                 }
 
