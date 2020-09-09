@@ -38,7 +38,8 @@ class Level {
                     buttonID: -1,
                     interactID: -1,
                     targets: [],
-                    arrows: []
+                    arrows: [],
+                    spikes: 0
                 });
             }
 

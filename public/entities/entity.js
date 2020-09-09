@@ -74,7 +74,7 @@ class Entity {
 
             let entityCollide = collideWithPoint(this.pos, entity.pos, this.r + entity.r, entity.mass / (this.mass + entity.mass));
             if (entityCollide.moved) {
-                if (!this.pickedUp && this.type !== SPIKE) {
+                if (!this.pickedUp) {
                     if (this.type !== PLAYER) {
                         let mag = this.vel.mag();
                         this.vel.x += 2 * (entityCollide.pos.x - this.pos.x) / dt;
@@ -84,9 +84,11 @@ class Entity {
 
                     this.pos.x = entityCollide.pos.x;
                     this.pos.y = entityCollide.pos.y;
-                } else if (this.type == SPIKE) {
-                    if (entity.type == PLAYER || entity.type == ARCHER) {
-                        entity.hit = true;
+
+                    if (this.type == SPIKE) {
+                        if (entity.type == PLAYER || entity.type == ARCHER) {
+                            entity.hit = true;
+                        }
                     }
                 }
 

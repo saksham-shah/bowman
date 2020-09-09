@@ -1196,7 +1196,7 @@ let levels = [
         meta: {
             required: 0,
             double: 7,
-            triple: 5,
+            triple: 2,
             secret: { x: 0, y: 0 },
 
             text: {
@@ -1205,12 +1205,229 @@ let levels = [
                         text: ['Spikes cannot be picked up.'],
                         position: NORTH
                     }, {
-                        text: ['They will kill you and your enemies on impact, without leaving a corpse behind.'],
+                        text: ['They will kill anyone that touches them.'],
                         position: SOUTH
                     }
                 ]
             },
             maxHeight: 700
+        }
+    },
+
+    // Level 17 - Spike war
+    {
+        size: { width: 9, height: 9 },
+        start: { x: 4, y: 6 },
+        end: { x: 8, y: 8 },
+        bow: { x: 4, y: 5 },
+
+        caves: [
+            {
+                pos: { x: 0, y: 0 },
+                enemies: '1010101010'
+            }, {
+                pos: { x: 8, y: 0 },
+                enemies: '0101010101'
+            }
+        ],
+
+        caveInterval: 120,
+
+        map: {
+            walls: [{ x: 7, y: 7 }, { x: 7, y: 8 }, { x: 1, y: 7 }, { x: 1, y: 8 }],
+        },
+
+        entities: {
+            spikes: [{ x: 4, y: 4 }],
+        },
+
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 8, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 4, y: 0 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 4, y: 8 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 4 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 8, y: 4 }
+                    }
+                ]
+            }, {
+                colour: BLUE,
+                doors: [{ x: 0, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 1 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 1, y: 0 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 8, y: 1 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 7, y: 0 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 3, y: 8 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 5, y: 8 }
+                    }
+                ]
+            }
+        ],
+
+        meta: {
+            required: 0,
+            double: 12,
+            triple: 1,
+            secret: { x: 0, y: 8 },
+
+            text: {
+                default: [
+                    {
+                        text: ['Enemies will try to avoid spikes if possible.'],
+                        position: NORTH
+                    }, {
+                        text: ['However, there are ways to force them to hit a spike.'],
+                        position: SOUTH
+                    }
+                ]
+            },
+            maxHeight: 700
+        }
+    },
+
+    // Level 18 - Block the holes
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 5, y: 6 },
+        end: { x: 0, y: 0 },
+        bow: { x: 5, y: 5 },
+
+        caves: [
+            {
+                pos: { x: 3, y: 0 },
+                enemies: '00000100100100'
+            }, {
+                pos: { x: 5, y: 0 },
+                enemies: '00000010010010'
+            }, {
+                pos: { x: 7, y: 0 },
+                enemies: '000000010010010'
+            }, {
+                pos: { x: 5, y: 10 },
+                enemies: '100001'
+            }, {
+                pos: { x: 9, y: 0 },
+                enemies: '000001'
+            }
+        ],
+
+        caveInterval: 60,
+
+        map: {
+            // walls: [{ x: 7, y: 7 }, { x: 7, y: 8 }, { x: 1, y: 7 }, { x: 1, y: 8 }],
+            fences: [{ x: 2, y: 0 }, { x: 2, y: 1 }, { x: 2, y: 2 }, { x: 2, y: 3 }, { x: 2, y: 4 }, { x: 2, y: 5 }, { x: 2, y: 6 }, { x: 2, y: 7 },
+                { x: 8, y: 0 }, { x: 8, y: 1 }, { x: 8, y: 2 }, { x: 8, y: 3 }, { x: 8, y: 4 }, { x: 8, y: 5 }, { x: 8, y: 6 }, { x: 8, y: 7 },
+                { x: 3, y: 4 }, { x: 4, y: 4 }, { x: 5, y: 4 }, { x: 6, y: 4 }, { x: 7, y: 4 },
+                { x: 3, y: 7 }, { x: 3, y: 8 }, { x: 3, y: 9 }, { x: 1, y: 7 },
+                { x: 7, y: 7 }, { x: 7, y: 8 }, { x: 7, y: 9 }, { x: 9, y: 7 }
+            ]
+        },
+
+        entities: {
+            rocks: [{ x: 3, y: 6 }, { x: 8, y: 8 }],
+            spikes: [{ x: 3, y: 3 }, { x: 5, y: 3 }, { x: 7, y: 3 }]
+        },
+
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 0, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 8 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 0 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 10 }
+                    }
+                ]
+            }, {
+                colour: BLUE,
+                doors: [{ x: 10, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 8 }
+                    }
+                ]
+            }, {
+                colour: GREEN,
+                doors: [{ x: 3, y: 10 }],
+                triggers: [
+                    {
+                        type: I_TARGET,
+                        pos: { x: 0, y: 2 },
+                        direction: WEST
+                    }
+                ]
+            }, {
+                colour: YELLOW,
+                doors: [{ x: 7, y: 10 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 10 }
+                    }
+                ]
+            }, {
+                colour: CYAN,
+                doors: [{ x: 8, y: 3 }, { x: 8, y: 5 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 3, y: 2 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 5, y: 2 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 7, y: 2 }
+                    }
+                ]
+            }
+        ],
+
+        meta: {
+            required: 0,
+            double: 9,
+            triple: 2,
+            secret: { x: 3, y: 0 },
+
+            text: {
+                bow: [
+                    {
+                        text: ['Quick! Block the holes!'],
+                        position: NORTH
+                    }
+                ]
+            },
+            maxHeight: 750
         }
     }
 ];
