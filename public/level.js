@@ -60,6 +60,7 @@ class Level {
             this.grid[data.bow.x][data.bow.y].type = BOW;
         }
         this.arrows = [];
+        this.fireballs = [];
 
         this.interactables = [];
         this.buttons = [];
@@ -209,11 +210,26 @@ class Level {
             if (entity.pickedUp) continue;
 
             let projectile = entity.superUpdate(this.grid, this.entities);
-            if (projectile) this.arrows.push(projectile);
+            if (projectile) {
+                if (projectile.type == ARROW) {
+                    this.arrows.push(projectile);
+                } else {
+                    this.fireballs.push(projectile);
+                }
+            }
         }
 
         for (let arrow of this.arrows) {
             if (arrow.hit === null) arrow.update(this.grid, this.entities, this.targets, this.interactables);
+        }
+
+        for (let i = this.fireballs.length - 1; i >= 0; i--) {
+            let fireball = this.fireballs[i];
+            fireball.update(this.grid, this.entities);
+
+            if (fireball.hit != null) {
+                this.fireballs.splice(i, 1);
+            }
         }
 
         for (let i = this.entities.length - 1; i >= 0; i--) {
@@ -270,13 +286,17 @@ class Level {
                 let spawn = false;
 
                 switch(enemyType) {
-                    case S_BOW: {
+                    case S_BOW:
                         // console.log('Bow enemy spawning!');
                         this.entities.push(new Archer(cave.pos, this.player));
 
                         spawn = true;
                         break;
-                    }
+                    case S_MAGE:
+                        this.entities.push(new Mage(cave.pos, this.player));
+
+                        spawn = true;
+                        break;                    
                 }
 
                 if (spawn) {
@@ -579,6 +599,11 @@ class Level {
             }
         }
 
+        let fireballs = [];
+        for (let fireball of this.fireballs) {
+            fireballs.push(fireball.toObject());
+        }
+
         let particles = [];
         for (let i = this.particles.length - 1; i >= 0; i--) {
             if (this.particles[i].update()) {
@@ -619,7 +644,7 @@ class Level {
         // }
 
         return {
-            entities, arrows, particles,
+            entities, arrows, particles, fireballs,
             grid: this.grid,
             interactables: this.interactables,
             buttons: this.buttons,

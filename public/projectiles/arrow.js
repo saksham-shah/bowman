@@ -9,6 +9,8 @@ class Arrow {
         this.hit = null;
         this.remove = false;
 
+        this.type = ARROW;
+
         this.time = 0;
 
         this.previousCell = { x: -1, y: -1 };

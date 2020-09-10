@@ -49,7 +49,7 @@ function displayText(meta, textType) {
 }
 
 function drawLevel(level) {
-    let { entities, arrows, grid, interactables, buttons, targets, power, reached, particles } = level;
+    let { entities, arrows, grid, interactables, buttons, targets, power, reached, particles, fireballs } = level;
 
     push();
     translate(cornerX, cornerY);
@@ -60,6 +60,10 @@ function drawLevel(level) {
     // for (let footprint of footprints) {
         // drawFootprint(footprint);
     // }
+
+    for (let fireball of fireballs) {
+        drawFireball(fireball);
+    }
 
     for (let arrow of arrows) {
         // if (!arrow.grounded) continue;
@@ -329,6 +333,7 @@ function drawEntity(entity) {
             image(graphics.rock.spike, -CELL / 2, -CELL / 2);
             break;
         default:
+            rotate(-Math.PI / 2);
             fill(50);
             stroke(200);
             ellipse(0, 0, entity.r * 2);
@@ -374,6 +379,17 @@ function drawParticle(particle) {
     fill(particle.colour);
     noStroke();
     rect(particle.pos.x, particle.pos.y, particle.r, particle.r);
+}
+
+function drawFireball(fireball) {
+    push();
+    translate(fireball.pos);
+
+    noStroke();
+    fill(255, 150, 0);
+
+    ellipse(0, 0, F_RADIUS * 2);
+    pop();
 }
 
 function drawFootprint(footprint) {

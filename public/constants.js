@@ -20,6 +20,10 @@ PULLBACK = 60,
 FORCE = 0.5,
 MINSTEP = 5,
 
+// Fireballs
+F_SPEED = 3,
+F_RADIUS = 10;
+
 REFRESH = 60,
 
 // Directions
@@ -55,6 +59,11 @@ ROCK = 1,
 CORPSE = 2,
 ARCHER = 3,
 SPIKE = 4,
+MAGE = 5,
+
+// Projectiles
+ARROW = 0,
+FIREBALL = 1,
 
 // Cell types
 EMPTY = 0,
@@ -70,7 +79,8 @@ OPENDOOR = 8,
 
 // Enemy spawns
 S_NOTHING = 0,
-S_BOW = 1
+S_BOW = 1,
+S_MAGE = 2,
 S_REPEAT = '*',
 
 // Projectile fired by

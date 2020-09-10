@@ -1,5 +1,5 @@
 class Enemy extends Entity {
-    constructor(cell, target, type, r = 15, mass = 1.5, health = 40) {
+    constructor(cell, target, type, health = 40, r = 15, mass = 1.5) {
         super(cell, r, mass, type);
 
         this.fireAs = P_ENEMY;
