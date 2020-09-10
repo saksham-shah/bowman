@@ -71,7 +71,16 @@ const soundsToLoad = [
     }, {
         name: 'doorclose',
         file: 'doorclose.wav'
-    },
+    }, {
+        name: 'fireballfire',
+        file: 'fireballfire.wav'
+    }, {
+        name: 'fireballhit',
+        file: 'fireballhit.wav'
+    }, {
+        name: 'breakable',
+        file: 'breakable.wav'
+    }
 ];
 
 const volumes = {
@@ -83,7 +92,9 @@ const volumes = {
     arrowfire: 0.25,
     entitydie: 1.5,
     dooropen: 2,
-    doorclose: 2
+    doorclose: 2,
+    fireballhit: 1.5,
+    breakable: 0.5
 }
 
 let font, sounds = {};
@@ -94,6 +105,7 @@ function preload() {
     graphics.map.fence = loadImage(graphicsFolder + 'map/fence.png');
     graphics.map.bow = loadImage(graphicsFolder + 'map/bow.png');
     graphics.map.cave = loadImage(graphicsFolder + 'map/hole.png');
+    graphics.map.breakable = loadImage(graphicsFolder + 'map/breakable.png');
 
     graphics.player.base = loadImage(graphicsFolder + 'player/playerbase.png');
     graphics.player.bow = [];
@@ -112,6 +124,11 @@ function preload() {
         graphics.enemies.archer.push(loadImage(graphicsFolder + `enemies/archer${i}.png`));
     }
 
+    graphics.enemies.mage = [];
+    for (let i = 0; i < 4; i++) {
+        graphics.enemies.mage.push(loadImage(graphicsFolder + `enemies/mage${i}.png`));
+    }
+
     graphics.corpses.player = loadImage(graphicsFolder + 'corpses/playercorpse.png');
 
     graphics.corpses.archer = {};
@@ -119,7 +136,13 @@ function preload() {
     graphics.corpses.archer.close = loadImage(graphicsFolder + 'corpses/archerclose.png');
     graphics.corpses.archer.hover = loadImage(graphicsFolder + 'corpses/archerhover.png');
 
+    graphics.corpses.mage = {};
+    graphics.corpses.mage.base = loadImage(graphicsFolder + 'corpses/mage.png');
+    graphics.corpses.mage.close = loadImage(graphicsFolder + 'corpses/mageclose.png');
+    graphics.corpses.mage.hover = loadImage(graphicsFolder + 'corpses/magehover.png');
+
     graphics.projectiles.arrow = loadImage(graphicsFolder + 'projectiles/arrow.png');
+    graphics.projectiles.fireball = loadImage(graphicsFolder + 'projectiles/fireball.png');
 
     for (let colour of COLOURS) {
         graphics.buttons[colour] = [];

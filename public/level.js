@@ -54,6 +54,10 @@ class Level {
             this.grid[fence.x][fence.y].type = FENCE;
         }
 
+        for (let breakable of data.map.breakables) {
+            this.grid[breakable.x][breakable.y].type = BREAKABLE;
+        }
+
         this.grid[data.end.x][data.end.y].type = END;
 
         if (data.bow !== null) {
@@ -229,6 +233,69 @@ class Level {
 
             if (fireball.hit != null) {
                 this.fireballs.splice(i, 1);
+
+                if (fireball.hitCell) {
+                    let rock = new Rock(fireball.hitCell);
+                    rock.vel = p5.Vector.fromAngle(fireball.angle, F_SPEED);
+                    this.entities.push(rock);
+                    this.pickupables.push(rock);
+
+                    sounds.breakable.play();
+
+                    this.particle({
+                        pos: createVector(fireball.hitCell.x * CELL + CELL / 2, fireball.hitCell.y * CELL + CELL / 2),
+                        speed: 3,
+                        speedErr: 1.5,
+                        angle: 0,
+                        angleErr: Math.PI * 2,
+                        r: 7,
+                        life: 30,
+                        lifeErr: 15,
+                        col: 100,
+                        num: 15
+                    });
+                }
+
+                game.particle({
+                    pos: fireball.pos.copy(),
+                    speed: 2,
+                    speedErr: 1,
+                    angle: fireball.angle,
+                    angleErr: Math.PI * 0.25,
+                    r: 10,
+                    life: 20,
+                    lifeErr: 7,
+                    col: [200, 0, 0],
+                    num: 5
+                });
+        
+                game.particle({
+                    pos: fireball.pos.copy(),
+                    speed: 2,
+                    speedErr: 1,
+                    angle: fireball.angle,
+                    angleErr: Math.PI * 0.25,
+                    r: 7,
+                    life: 25,
+                    lifeErr: 7,
+                    col: [255, 150, 0],
+                    num: 10
+                });
+        
+                game.particle({
+                    pos: fireball.pos.copy(),
+                    speed: 2,
+                    speedErr: 1,
+                    angle: fireball.angle,
+                    angleErr: Math.PI * 0.25,
+                    r: 7,
+                    life: 30,
+                    lifeErr: 7,
+                    col: [255, 255, 0],
+                    num: 10
+                });
+
+                sounds.fireballhit.play();
             }
         }
 
@@ -344,12 +411,12 @@ class Level {
 
                     if (activate) {
                         interactable.activated = true;
+                        
+                        sounds.doorclose.stop();
+                        sounds.dooropen.play();
 
                         for (let door of interactable.doors) {
                             this.grid[door.x][door.y].type = EMPTY;
-
-                            sounds.doorclose.stop();
-                            sounds.dooropen.play();
 
                             this.particle({
                                 pos: createVector(door.x * CELL + CELL / 2, door.y * CELL + CELL / 2),

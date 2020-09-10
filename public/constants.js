@@ -21,8 +21,8 @@ FORCE = 0.5,
 MINSTEP = 5,
 
 // Fireballs
-F_SPEED = 3,
-F_RADIUS = 10;
+F_SPEED = 5,
+F_RADIUS = 9;
 
 REFRESH = 60,
 

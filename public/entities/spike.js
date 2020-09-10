@@ -19,8 +19,6 @@ class Spike extends Entity {
         if (this.previousUpdate > 0) this.previousUpdate -= dt;
 
         if ((this.vel.magSq() > 0.01 && this.previousUpdate <= 0) || this.previousCells.length == 0) {
-            console.log('doing an update');
-
             this.previousUpdate = 20;
 
             for (let cell of this.previousCells) {

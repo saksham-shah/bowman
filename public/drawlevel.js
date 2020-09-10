@@ -201,6 +201,8 @@ function drawGrid(grid, interactables, buttons, targets, reached) {
                     // rect(x * CELL + CELL / 2, y * CELL + CELL / 2, CELL, CELL);
                     image(graphics.map.cave, x * CELL, y * CELL);
                     break;
+                case BREAKABLE:
+                    image(graphics.map.breakable, x * CELL, y * CELL);
                 default:
                     // draw = false;
             }
@@ -318,6 +320,25 @@ function drawEntity(entity) {
                 }
 
                 image(img, -CELL / 2, -CELL / 2);
+            } else if (entity.body == MAGE) {
+                // rotate(Math.PI / 2)
+                img = graphics.corpses.mage.base;
+                if (entity.pickedUp) {
+                    if (entity.canBePlaced) {
+                        tint(255, 150);
+                    } else {
+                        tint(255, 0, 0, 150);
+                    }
+                
+                } else {
+                    if (entity.hovered) {
+                        img = graphics.corpses.mage.hover;
+                    } else if (entity.closeToPlayer) {
+                        img = graphics.corpses.mage.close;
+                    }
+                }
+
+                image(img, -CELL / 2, -CELL / 2);
             }
 
             if (entity.healthPercent > 0) {
@@ -331,6 +352,18 @@ function drawEntity(entity) {
             break;
         case SPIKE:
             image(graphics.rock.spike, -CELL / 2, -CELL / 2);
+            break;
+        case MAGE:
+            frame = Math.min(3, Math.ceil(entity.pullback / PULLBACK * 3));
+            img = graphics.enemies.mage[frame];
+            image(img, -CELL / 2, -CELL * 11 / 16);
+
+            fill(150, 0, 0);
+            stroke(200);
+            rotate(-entity.angle - Math.PI / 2);
+            rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
+            fill(0, 150, 0);
+            rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)
             break;
         default:
             rotate(-Math.PI / 2);
@@ -382,14 +415,15 @@ function drawParticle(particle) {
 }
 
 function drawFireball(fireball) {
-    push();
-    translate(fireball.pos);
+    image(graphics.projectiles.fireball, fireball.pos.x - 9, fireball.pos.y - 9);
+    // push();
+    // translate(fireball.pos);
 
-    noStroke();
-    fill(255, 150, 0);
+    // noStroke();
+    // fill(255, 150, 0);
 
-    ellipse(0, 0, F_RADIUS * 2);
-    pop();
+    // ellipse(0, 0, F_RADIUS * 2);
+    // pop();
 }
 
 function drawFootprint(footprint) {

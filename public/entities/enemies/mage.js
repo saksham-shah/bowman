@@ -1,17 +1,17 @@
 class Mage extends Enemy {
     constructor(cell, target) {
-        super(cell, target, MAGE, 70);
+        super(cell, target, MAGE, 100);
 
         this.fireAngle = 0;
         this.firingAt = { x: 0, y: 0 };
 
         this.maxAcc = 0.25;
-        this.targetVel = 1;
+        this.targetVel = 0.75;
 
         this.pullback = 0;
         this.pullingBack = false;
 
-        this.fireRate = 300;
+        this.fireRate = 240;
 
         this.cooldown = 120;
     }
@@ -24,7 +24,7 @@ class Mage extends Enemy {
         } else if (!this.pullingBack) {
             if (this.clearLineOfSight(grid)) {
                 this.pullingBack = true;
-                // sounds.arrowpull2.play();
+                sounds.fireballfire.play();
                 this.moving = false;
                 this.firingAt = { x: this.target.pos.x, y: this.target.pos.y };
                 this.cooldown = this.fireRate;
@@ -41,7 +41,7 @@ class Mage extends Enemy {
                 this.moving = true;
                 this.pullingBack = false;
                 // fire fireball
-                return new Fireball(this.pos.copy(), this.fireAngle, P_ENEMY);
+                return new Fireball(p5.Vector.fromAngle(this.fireAngle, 24).add(this.pos), this.fireAngle, P_ENEMY);
                 // return new Arrow(this.pos.copy(), MAXSPEED, this.fireAngle, P_ENEMY);
             }
         } else if (this.pullback > 0) {

@@ -1318,23 +1318,21 @@ let levels = [
         caves: [
             {
                 pos: { x: 3, y: 0 },
-                enemies: '00000100100100'
+                enemies: '00000000100100100'
             }, {
                 pos: { x: 5, y: 0 },
-                enemies: '00000010010010'
+                enemies: '00000000010010010'
             }, {
                 pos: { x: 7, y: 0 },
-                enemies: '000000010010010'
+                enemies: '000000000010010010'
             }, {
                 pos: { x: 5, y: 10 },
-                enemies: '100001'
+                enemies: '100000001'
             }, {
                 pos: { x: 9, y: 0 },
-                enemies: '000001'
+                enemies: '000000001'
             }
         ],
-
-        caveInterval: 60,
 
         map: {
             // walls: [{ x: 7, y: 7 }, { x: 7, y: 8 }, { x: 1, y: 7 }, { x: 1, y: 8 }],
@@ -1397,7 +1395,7 @@ let levels = [
                 ]
             }, {
                 colour: CYAN,
-                doors: [{ x: 8, y: 3 }, { x: 8, y: 5 }],
+                doors: [{ x: 8, y: 3 }],
                 triggers: [
                     {
                         type: I_BUTTON,
@@ -1429,5 +1427,574 @@ let levels = [
             },
             maxHeight: 750
         }
-    }
+    },
+
+    // Level 19 - Defend against the spike
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 5, y: 5 },
+        end: { x: 0, y: 3 },
+        bow: { x: 4, y: 5 },
+
+        caves: [
+            {
+                pos: { x: 0, y: 5 },
+                enemies: '1'
+            }, {
+                pos: { x: 6, y: 3 },
+                enemies: '1'
+            }, {
+                pos: { x: 2, y: 3 },
+                enemies: '1'
+            }, {
+                pos: { x: 4, y: 7 },
+                enemies: '1'
+            }, {
+                pos: { x: 8, y: 7 },
+                enemies: '1'
+            }, {
+                pos: { x: 0, y: 7 },
+                enemies: '1'
+            }
+        ],
+
+        map: {
+            walls: [{ x: 1, y: 4 }, { x: 3, y: 4 }, { x: 5, y: 4 }, { x: 7, y: 4 }, { x: 9, y: 4 },
+                { x: 1, y: 6 }, { x: 2, y: 6 }, { x: 3, y: 6 }, { x: 5, y: 6 }, { x: 7, y: 6 }, { x: 9, y: 6 },
+                { x: 1, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 1 }, { x: 5, y: 1 }, { x: 7, y: 1 }, { x: 8, y: 1 }, { x: 9, y: 1 },
+                { x: 1, y: 9 }, { x: 3, y: 9 }, { x: 5, y: 9 }, { x: 6, y: 9 }, { x: 7, y: 9 }, { x: 9, y: 9 },
+                { x: 1, y: 2 }, { x: 3, y: 2 }, { x: 5, y: 2 }, { x: 7, y: 2 }, { x: 9, y: 2 },
+                { x: 1, y: 3 }, { x: 3, y: 3 }, { x: 5, y: 3 }, { x: 7, y: 3 }, { x: 9, y: 3 },
+                { x: 1, y: 8 }, { x: 3, y: 8 }, { x: 5, y: 8 }, { x: 7, y: 8 }, { x: 9, y: 8 },
+                { x: 1, y: 7 }, { x: 3, y: 7 }, { x: 5, y: 7 }, { x: 7, y: 7 }, { x: 9, y: 7 },
+                { x: 2, y: 4}, { x: 6, y: 4 }, { x: 4, y: 6 }, { x: 8, y: 6 },
+            ],
+            fences: [{ x: 1, y: 5 }, { x: 4, y: 4 }, { x: 8, y: 4 }, { x: 6, y: 6 },
+                { x: 2, y: 1 }, { x: 6, y: 1 }, { x: 4, y: 9 }, { x: 8, y: 9 }
+            ]
+        },
+
+        entities: {
+            rocks: [{ x: 3, y: 5 }, { x: 2, y: 7 }],
+            spikes: [{ x: 2, y: 5 }]
+        },
+
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 10, y: 6 }, { x: 0, y: 8 }],
+                triggers: [
+                    {
+                        type: I_TARGET,
+                        pos: { x: 4, y: 2 },
+                        direction: NORTH
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 8, y: 2 },
+                        direction: NORTH
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 6, y: 8 },
+                        direction: SOUTH
+                    }
+                ]
+            }, {
+                colour: BLUE,
+                doors: [{ x: 4, y: 3 }, { x: 8, y: 3 }, { x: 6, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 5 }
+                    }
+                ]
+            }, {
+                colour: GREEN,
+                doors: [{ x: 10, y: 4 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 10 }
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 4, y: 10 },
+                        direction: SOUTH
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 8, y: 10 },
+                        direction: SOUTH
+                    }
+                ]
+            }, {
+                colour: YELLOW,
+                doors: [{ x: 0, y: 2 }, { x: 0, y: 4 }, { x: 0, y: 6 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 0 }
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 2, y: 0 },
+                        direction: NORTH
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 6, y: 0 },
+                        direction: NORTH
+                    }
+                ]
+            }
+        ],
+
+        meta: {
+            required: 0,
+            double: 9,
+            triple: 3,
+            secret: { x: 0, y: 5 },
+        }
+    },
+
+    // Level 20 - Spike assault
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 0, y: 5 },
+        end: { x: 0, y: 8 },
+        bow: { x: 1, y: 5 },
+
+        caves: [
+            {
+                pos: { x: 0, y: 10 },
+                enemies: '1'
+            }, {
+                pos: { x: 10, y: 0 },
+                enemies: '1001'
+            }, {
+                pos: { x: 7, y: 9 },
+                enemies: '0000001'
+            }, {
+                pos: { x: 10, y: 4 },
+                enemies: '100100100'
+            }, {
+                pos: { x: 10, y: 5 },
+                enemies: '010010010'
+            }, {
+                pos: { x: 10, y: 6 },
+                enemies: '001001001'
+            }
+        ],
+
+        caveInterval: 120,
+
+        map: {
+            walls: [{ x: 5, y: 3 }, { x: 6, y: 3 }, { x: 7, y: 3 }, { x: 8, y: 3 }, { x: 9, y: 3 }, { x: 10, y: 3 },
+                { x: 5, y: 7 }, { x: 6, y: 7 }, { x: 7, y: 7 }, { x: 8, y: 7 }, { x: 9, y: 7 }, { x: 10, y: 7 },
+                { x: 4, y: 8 }, { x: 4, y: 9 }, { x: 8, y: 8 }, { x: 8, y: 9 }, { x: 4, y: 3 }, { x: 4, y: 7 },
+            ],
+            fences: [{ x: 0, y: 3 }, { x: 1, y: 3 }, { x: 2, y: 3 },
+                { x: 0, y: 7 }, { x: 1, y: 7 }, { x: 2, y: 7 },
+                { x: 5, y: 0 }, { x: 5, y: 2 },
+                { x: 0, y: 9 }, { x: 1, y: 9 }, { x: 1, y: 10 },
+                { x: 7, y: 4 }, { x: 7, y: 5 }, { x: 7, y: 6 }
+            ]
+        },
+
+        entities: {
+            rocks: [{ x: 2, y: 2 }, { x: 3, y: 10 }],
+            spikes: [{ x: 6, y: 4 }, { x: 6, y: 5 }, { x: 6, y: 6 }]
+        },
+
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 3, y: 3 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 4, y: 0 }
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 0, y: 0 },
+                        direction: NORTH
+                    }
+                ]
+            }, {
+                colour: BLUE,
+                doors: [{ x: 5, y: 1 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 2 }
+                    }
+                ]
+            }, {
+                colour: GREEN,
+                doors: [{ x: 5, y: 4 }, { x: 5, y: 5 }, { x: 5, y: 6 }, { x: 3, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 4 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 6 }
+                    }
+                ]
+            }, {
+                colour: YELLOW,
+                doors: [{ x: 8, y: 10 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 7, y: 8 }
+                    }
+                ]
+            }, {
+                colour: CYAN,
+                doors: [{ x: 1, y: 8 }],
+                triggers: [
+                    {
+                        type: I_TARGET,
+                        pos: { x: 10, y: 10 },
+                        direction: EAST
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 10 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 5 }
+                    }
+                ]
+            }, {
+                colour: MAGENTA,
+                doors: [{ x: 4, y: 10 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 8 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 8 }
+                    }
+                ]
+            }
+        ],
+
+        meta: {
+            required: 0,
+            double: 12,
+            triple: 7,
+            secret: { x: 6, y: 5 },
+        }
+    },
+
+    // Level 21 - Mage
+    {
+        size: { width: 9, height: 9 },
+        start: { x: 2, y: 4 },
+        end: { x: 8, y: 0 },
+        bow: { x: 4, y: 4 },
+
+        caves: [
+            {
+                pos: { x: 6, y: 4 },
+                enemies: '2'
+            }, {
+                pos: { x: 8, y: 2 },
+                enemies: '10001'
+            }
+        ],
+
+        map: {
+            walls: [{ x: 7, y: 0 }, { x: 7, y: 1 }, { x: 7, y: 2 }, { x: 7, y: 3 }, { x: 7, y: 4 }, { x: 7, y: 5 }, { x: 7, y: 6 }, { x: 7, y: 7 },
+                { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 }, { x: 1, y: 5 }, { x: 1, y: 6 }, { x: 1, y: 7 }, { x: 1, y: 8 },
+            ],
+            breakables: [{ x: 1, y: 2 }, { x: 1, y: 6 }]
+        },
+
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 7, y: 8 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 1 }
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 4, y: 8 },
+                        direction: SOUTH
+                    }
+                ]
+            }, {
+                colour: BLUE,
+                doors: [{ x: 8, y: 1 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 8, y: 8 }
+                    }
+                ]
+            }
+        ],
+
+        meta: {
+            required: 0,
+            double: 7,
+            triple: 1,
+            secret: { x: 0, y: 0 },
+
+            text: {
+                bow: [
+                    {
+                        text: ['A mage!'],
+                        position: NORTH
+                    }, {
+                        text: ['Watch out for their fireballs!'],
+                        position: SOUTH
+                    }
+                ]
+            },
+            maxHeight: 750
+        }
+    },
+
+    // Level 22 - Mage destroys wall
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 0, y: 0 },
+        end: { x: 0, y: 6 },
+        bow: { x: 4, y: 2 },
+
+        caves: [
+            {
+                pos: { x: 0, y: 4 },
+                enemies: '2'
+            }, {
+                pos: { x: 10, y: 10 },
+                enemies: '1'
+            }
+        ],
+
+        map: {
+            walls: [{ x: 5, y: 0 }, { x: 5, y: 1 }, { x: 5, y: 3 }, { x: 5, y: 4 }, { x: 5, y: 5 }, { x: 5, y: 6 }, { x: 5, y: 7 }, { x: 5, y: 9 }, { x: 5, y: 10 },
+                { x: 0, y: 5 }, { x: 1, y: 5 }, { x: 2, y: 5 }, { x: 3, y: 5 }, { x: 5, y: 5 }, { x: 6, y: 5 }, { x: 7, y: 5 }, { x: 9, y: 5 }, { x: 10, y: 5 },
+                { x: 0, y: 7 }, { x: 1, y: 7 }
+            ],
+            breakables: [{ x: 5, y: 2 }, { x: 8, y: 2 }, { x: 8, y: 8 }, { x: 3, y: 8 }]
+        },
+
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 8, y: 5 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 0 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 4 }
+                    }
+                ]
+            }, {
+                colour: BLUE,
+                doors: [{ x: 5, y: 8 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 6 }
+                    }, {
+                        type: I_TARGET,
+                        pos: { x: 8, y: 10 },
+                        direction: SOUTH
+                    }
+                ]
+            }, {
+                colour: GREEN,
+                doors: [{ x: 4, y: 5 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 8 }
+                    }
+                ]
+            }, {
+                colour: YELLOW,
+                doors: [{ x: 1, y: 6 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 4, y: 6 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 0, y: 10 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 10 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 4, y: 10 }
+                    }
+                ]
+            }
+        ],
+
+        meta: {
+            required: 0,
+            double: 6,
+            triple: 0,
+            secret: { x: 6, y: 6 },
+
+            text: {
+                default: [
+                    {
+                        text: ['Fireballs can destroy rock walls.'],
+                        position: NORTH
+                    }
+                ]
+            },
+            maxHeight: 750
+        }
+    },
+
+    // Level 23 - Kill X enemies with mages
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 0, y: 0 },
+        end: { x: 10, y: 10 },
+        bow: { x: 5, y: 5 },
+
+        caves: [
+            
+        ],
+
+        map: {
+            walls: [],
+            fences: []
+        },
+
+        entities: {
+            rocks: [],
+            spikes: []
+        },
+
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 0, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 8 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 0 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 10 }
+                    }
+                ]
+            }
+        ],
+
+        meta: {
+            required: 0,
+            double: 0,
+            triple: 0,
+            secret: { x: 10, y: 10 },
+        }
+    },
+
+    // Level 24 - Lots of archers behind a wall the mage might break
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 0, y: 0 },
+        end: { x: 10, y: 10 },
+        bow: { x: 5, y: 5 },
+
+        caves: [
+            
+        ],
+
+        map: {
+            walls: [],
+            fences: []
+        },
+
+        entities: {
+            rocks: [],
+            spikes: []
+        },
+
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 0, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 8 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 0 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 10 }
+                    }
+                ]
+            }
+        ],
+
+        meta: {
+            required: 0,
+            double: 0,
+            triple: 0,
+            secret: { x: 10, y: 10 },
+        }
+    },
+
+    // Level 25 - Final level, haven't decided yet
+    {
+        size: { width: 11, height: 11 },
+        start: { x: 0, y: 0 },
+        end: { x: 10, y: 10 },
+        bow: { x: 5, y: 5 },
+
+        caves: [
+            
+        ],
+
+        map: {
+            walls: [],
+            fences: []
+        },
+
+        entities: {
+            rocks: [],
+            spikes: []
+        },
+
+        interactables: [
+            {
+                colour: RED,
+                doors: [{ x: 0, y: 7 }],
+                triggers: [
+                    {
+                        type: I_BUTTON,
+                        pos: { x: 2, y: 8 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 0 }
+                    }, {
+                        type: I_BUTTON,
+                        pos: { x: 10, y: 10 }
+                    }
+                ]
+            }
+        ],
+
+        meta: {
+            required: 0,
+            double: 0,
+            triple: 0,
+            secret: { x: 10, y: 10 },
+        }
+    },
 ];
