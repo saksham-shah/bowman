@@ -48,7 +48,7 @@ function setupLevelSelect() {
 
                 hovered = cell.x + cell.y * 5;
 
-                if (hovered >= levels.length || stats.totalStars < levels[hovered].meta.required) {
+                if (hovered >= levels.length || stats.totalStars < requiredStars[hovered]) {
                     hovered = -1;
 
                 } else if (hovered != oldHovered) {
@@ -65,6 +65,11 @@ function setupLevelSelect() {
 
             textSize(60);
             text('Get stars to unlock levels!', 400, 200);
+
+            if (hovered >= 0) {
+                textSize(40);
+                text(`Difficulty: ${levels[hovered].meta.difficulty || '-'}`, 400, 250);
+            }
 
             textSize(50);
             text('Stars', 250, 370);
@@ -88,7 +93,7 @@ function setupLevelSelect() {
                 noStroke();
                 if (i >= levels.length) {
                     fill('#4e2d05');
-                } else if (levels[i].meta.required > stats.totalStars) {
+                } else if (requiredStars[i] > stats.totalStars) {
                     fill('#ac6316')
                 } else if (i == hovered) {
                     // fill('#fdb159');
@@ -101,7 +106,7 @@ function setupLevelSelect() {
                 rect(x + 50, y + 50, 100, 100, 10);
 
                 if (i < levels.length) {
-                    if (stats.totalStars >= levels[i].meta.required) {
+                    if (stats.totalStars >= requiredStars[i]) {
                         if (stats.levelData[i].secret) {
                             stroke(255, 225, 0);
                             strokeWeight(5);
@@ -137,7 +142,7 @@ function setupLevelSelect() {
                     } else {
                         noStroke();
                         fill(255);
-                        let size, needed = levels[i].meta.required - stats.totalStars;
+                        let size, needed = requiredStars[i] - stats.totalStars;
                         if (needed < 10) {
                             textSize(72)
                             text(needed, x + 30, y + 70);

@@ -8,7 +8,7 @@ function addLockedScreen() {
         onDisplay: _level => {
             level = _level;
 
-            needed = levels[level].meta.required - stats.totalStars;
+            needed = requiredStars[level] - stats.totalStars;
         },
         draw: () => {
             fill('#fdb159');

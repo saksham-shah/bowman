@@ -62,7 +62,7 @@ function addPauseScreen() {
             closePopup();
             let nextLevel = level + 1;
             if (nextLevel < levels.length) {
-                if (stats.totalStars >= levels[nextLevel].meta.required) {
+                if (stats.totalStars >= requiredStars[nextLevel]) {
                     setScreen('game');
                     game = new Level(nextLevel);
     

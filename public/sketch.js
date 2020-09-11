@@ -228,38 +228,38 @@ function setup() {
 
     addMainScreens();
 
-    let w = 675, h = 500;
-    addPopup('beta', {
-        width: w,
-        height: h,
-        draw: () => {
-            fill('#fdb159');
-            stroke('#fca440');
-            strokeWeight(10);
+    // let w = 675, h = 500;
+    // addPopup('beta', {
+    //     width: w,
+    //     height: h,
+    //     draw: () => {
+    //         fill('#fdb159');
+    //         stroke('#fca440');
+    //         strokeWeight(10);
 
-            rect(w / 2, h / 2, w, h, 20);
+    //         rect(w / 2, h / 2, w, h, 20);
 
-            // Text
-            textAlign(CENTER);
-            textSize(80);
-            fill(255);
-            noStroke();
-            text(`Warning`, w / 2, 125);
+    //         // Text
+    //         textAlign(CENTER);
+    //         textSize(80);
+    //         fill(255);
+    //         noStroke();
+    //         text(`Warning`, w / 2, 125);
 
-            textSize(40);
-            text(`This is a beta version of the game.\nWhen the full version is released (13\nSeptember), you will most likely lose\nyour progress.`, w / 2, 200);
-        }
-    })
-    .addButton({
-        position: { x: w / 2, y: 425 },
-        width: 250,
-        height: 50,
-        textSize: 45,
-        text: 'CLOSE',
-        onClick: () => {
-            closePopup();
-        }
-    });
+    //         textSize(40);
+    //         text(`This is a beta version of the game.\nWhen the full version is released (13\nSeptember), you will most likely lose\nyour progress.`, w / 2, 200);
+    //     }
+    // })
+    // .addButton({
+    //     position: { x: w / 2, y: 425 },
+    //     width: 250,
+    //     height: 50,
+    //     textSize: 45,
+    //     text: 'CLOSE',
+    //     onClick: () => {
+    //         closePopup();
+    //     }
+    // });
 
     addStyles();
 
@@ -292,7 +292,7 @@ function setup() {
         }
         localStorage.setItem('bowman stats', JSON.stringify(stats));
 
-        openPopup('beta');
+        // openPopup('beta');
     } else {
         localStorage.setItem('bowman version', '1');
         localStorage.setItem('bowman stats', JSON.stringify(stats));

@@ -83,6 +83,11 @@ function drawLevel(level) {
         drawEntityArrows(entity);
     }
 
+    for (let entity of entities) {
+        if (entity.type !== ARCHER && entity.type !== CORPSE && entity.type !== MAGE) continue;
+        drawEntityHealth(entity);
+    }
+
     for (let particle of particles) {
         drawParticle(particle);
     }
@@ -287,12 +292,12 @@ function drawEntity(entity) {
             });
             pop();
 
-            fill(150, 0, 0);
-            stroke(200);
-            rotate(-entity.angle - Math.PI / 2);
-            rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
-            fill(0, 150, 0);
-            rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)
+            // fill(150, 0, 0);
+            // stroke(200);
+            // rotate(-entity.angle - Math.PI / 2);
+            // rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
+            // fill(0, 150, 0);
+            // rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)
             break;
         case CORPSE:
             if (entity.body == PLAYER) {
@@ -341,14 +346,14 @@ function drawEntity(entity) {
                 image(img, -CELL / 2, -CELL / 2);
             }
 
-            if (entity.healthPercent > 0) {
-                rotate(-entity.angle - Math.PI / 2);
-                fill(150, 0, 0);
-                stroke(200);
-                rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
-                fill(0, 150, 0);
-                rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)
-            }
+            // if (entity.healthPercent > 0) {
+            //     rotate(-entity.angle - Math.PI / 2);
+            //     fill(150, 0, 0);
+            //     stroke(200);
+            //     rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
+            //     fill(0, 150, 0);
+            //     rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)
+            // }
             break;
         case SPIKE:
             image(graphics.rock.spike, -CELL / 2, -CELL / 2);
@@ -358,12 +363,12 @@ function drawEntity(entity) {
             img = graphics.enemies.mage[frame];
             image(img, -CELL / 2, -CELL * 11 / 16);
 
-            fill(150, 0, 0);
-            stroke(200);
-            rotate(-entity.angle - Math.PI / 2);
-            rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
-            fill(0, 150, 0);
-            rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)
+            // fill(150, 0, 0);
+            // stroke(200);
+            // rotate(-entity.angle - Math.PI / 2);
+            // rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
+            // fill(0, 150, 0);
+            // rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)
             break;
         default:
             rotate(-Math.PI / 2);
@@ -388,6 +393,24 @@ function drawEntityArrows(entity) {
 
     for (let arrow of entity.arrows) {
         drawArrow(arrow);
+    }
+
+    pop();
+}
+
+function drawEntityHealth(entity) {
+    push();
+    translate(entity.pos);
+    // rotate(entity.angle + Math.PI / 2);
+
+    if (entity.healthPercent > 0) {
+        // rotate(-entity.angle - Math.PI / 2);
+        strokeWeight(2);
+        fill(150, 0, 0);
+        stroke(200);
+        rect(0, -entity.r * 2, entity.r * 2.5, entity.r / 1.5 );
+        fill(0, 150, 0);
+        rect(-entity.r * 1.25 + entity.r * 1.25 * entity.healthPercent, -entity.r * 2, entity.r * 2.5 * entity.healthPercent, entity.r / 1.5)
     }
 
     pop();

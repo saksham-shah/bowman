@@ -82,7 +82,7 @@ function addLevelEndScreen() {
             closePopup();
             let level = result.level + 1;
             if (level < levels.length) {
-                if (stats.totalStars >= levels[level].meta.required) {
+                if (stats.totalStars >= requiredStars[level]) {
                     setScreen('game');
                     game = new Level(level);
     
