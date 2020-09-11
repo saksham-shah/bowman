@@ -92,7 +92,7 @@ function edgeValue(cell, grid) {
         case FENCE:
             return 100000;
         case BREAKABLE:
-            return 100000;
+            return 10000;
         default:
             return 1 + 10 * grid[cell.x][cell.y].spikes;
     }

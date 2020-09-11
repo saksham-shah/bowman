@@ -86,7 +86,7 @@ class Entity {
                     this.pos.y = entityCollide.pos.y;
 
                     if (this.type == SPIKE) {
-                        if (entity.type == PLAYER || entity.type == ARCHER) {
+                        if (entity.type == PLAYER || entity.type == ARCHER || entity.type == MAGE) {
                             entity.hit = true;
                         }
                     }
