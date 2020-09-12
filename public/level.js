@@ -602,9 +602,15 @@ class Level {
 
         } else if (!leftMouse) {
             if (!this.hoveredEntity) {
+                let closest = Infinity;
+                let mousePos = createVector(this.mousePos.x, this.mousePos.y);
                 for (let entity of this.pickupables) {
                     if (entity.closeToPlayer) {
-                        this.hoveredEntity = entity;
+                        let d = p5.Vector.dist(entity.pos, mousePos);
+                        if (d < closest) {
+                            this.hoveredEntity = entity;
+                            closest = d;
+                        }
                     }
                 }
             }
