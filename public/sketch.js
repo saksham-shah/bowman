@@ -162,22 +162,22 @@ function preload() {
     graphics.star.gold = loadImage(graphicsFolder + 'star/stargold.png');
     graphics.star.grey = loadImage(graphicsFolder + 'star/stargrey.png');
 
-    for (let sound of soundsToLoad) {
-        let p5sound = loadSound('assets/sound/' + sound.file);
-        // let vol = volumes[sound.name];
-        // if (vol == undefined) vol = 1;
-        // p5sound.setVolume(vol);
+    // for (let sound of soundsToLoad) {
+    //     let p5sound = loadSound('assets/sound/' + sound.file);
+    //     // let vol = volumes[sound.name];
+    //     // if (vol == undefined) vol = 1;
+    //     // p5sound.setVolume(vol);
 
-        sounds[sound.name] = p5sound;
-    }
+    //     sounds[sound.name] = p5sound;
+    // }
 
-    sounds.winstars = [];
-    for (let i = 0; i < 3; i++) {
-        sounds.winstars.push(loadSound(`assets/sound/win${i}.wav`));
-    }
+    sounds.winstars = [null, null, null];
+    // for (let i = 0; i < 3; i++) {
+    //     sounds.winstars.push(loadSound(`assets/sound/win${i}.wav`));
+    // }
 
     // font = loadFont('/assets/font/PressStart2P-Regular.ttf');
-    font = loadFont('assets/font/VT323-Regular.ttf');
+    // font = loadFont('assets/font/VT323-Regular.ttf');
 }
 
 function setup() {
@@ -196,6 +196,7 @@ function setup() {
     });
     
     //add screens
+    addLoadScreen();
     setupLevelSelect();
     addLevelEndScreen();
     addPauseScreen();
@@ -209,22 +210,22 @@ function setup() {
         localStorage.setItem('bowman settings', JSON.stringify(settings));
     }
 
-    let v = settings.sound / 50;
-    for (let soundName in sounds) {
-        if (soundName != 'music') {
-            let vol = volumes[soundName];
-            if (vol == undefined) vol = 1;
-            if (soundName != 'winstars') {
-                sounds[soundName].setVolume(v * vol);
-            } else {
-                for (let s of sounds[soundName]) {
-                    s.setVolume(v * vol);
-                }
-            }
-        }
-    }
+    // let v = settings.sound / 50;
+    // for (let soundName in sounds) {
+    //     if (soundName != 'music') {
+    //         let vol = volumes[soundName];
+    //         if (vol == undefined) vol = 1;
+    //         if (soundName != 'winstars') {
+    //             sounds[soundName].setVolume(v * vol);
+    //         } else {
+    //             for (let s of sounds[soundName]) {
+    //                 s.setVolume(v * vol);
+    //             }
+    //         }
+    //     }
+    // }
 
-    sounds.music.setVolume(settings.music / 50 * volumes.music);
+    // sounds.music.setVolume(settings.music / 50 * volumes.music);
 
     addMainScreens();
 
@@ -265,19 +266,21 @@ function setup() {
 
     setupUI();
 
-    setFont(font);
-    setSounds({
-        hover: sounds.buttonhover,
-        click: sounds.buttonclick
-    });
+    // setFont(font);
+    // setSounds({
+    //     hover: sounds.buttonhover,
+    //     click: sounds.buttonclick
+    // });
     // setCursors({
     //     game: 'assets/game.cur',
     //     ghost: 'assets/ghost.cur'
     // });
 
-    setScreen('menu');
+    // setScreen('menu');
 
-    sounds.music.loop();
+    // sounds.music.loop();
+
+    setScreen('loading');
 
     let version = localStorage.getItem('bowman version');
 
