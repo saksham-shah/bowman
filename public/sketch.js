@@ -317,7 +317,7 @@ function setup() {
 function draw() {
     // if (game) {
         dt = deltaTime * 0.06;
-        if (dt > 5) dt = 5;
+        if (dt > 1.5) dt = 1.5;
         // game.update();
     // }
 

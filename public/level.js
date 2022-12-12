@@ -190,7 +190,7 @@ class Level {
         this.checkPlayer();
 
         if (this.ended != -1) {
-            this.ended--;
+            this.ended -= dt;
 
             if (this.ended == 0) {
                 this.paused = true;
